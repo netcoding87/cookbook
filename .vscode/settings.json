@@ -1,0 +1,24 @@
+{
+  // format on save
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // exclude files from search & files explorer
+  "files.exclude": {
+    "**/.git": true
+  },
+  // settings for eslint extension
+  "eslint.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.packageManager": "yarn",
+  "eslint.options": {
+    "configFile": ".eslintrc.js"
+  },
+  "eslint.autoFixOnSave": true,
+  "eslint.workingDirectories": ["./packages/client"],
+  "eslint.validate": [
+    { "language": "javascript", "autoFix": true },
+    { "language": "javascriptreact", "autoFix": true },
+    { "language": "typescript", "autoFix": true },
+    { "language": "typescriptreact", "autoFix": true }
+  ]
+}
