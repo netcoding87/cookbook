@@ -1,0 +1,16 @@
+{
+  "name": "cb-server",
+  "version": "0.0.1",
+  "main": "main.ts",
+  "author": "Nick Wittland",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/main.ts"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.2"
+  }
+}

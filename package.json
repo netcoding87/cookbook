@@ -5,9 +5,10 @@
   "private": true,
   "main": "./electron/main.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "lerna run start",
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna build",
+    "test": "lerna test",
     "electron": "electron .",
     "electron-build": "run-s build electron",
     "pack-win": "electron-packager . --out=out --overwrite --asar --platform=win32 --prune=true --ignore=\"(.vscode*|node_modules*|public*|src*)\"",
@@ -15,34 +16,12 @@
     "pack-linux": "electron-packager . --out=out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",
     "pack-mas": "electron-packager . --out=out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "dependencies": {
-    "@types/jest": "24.0.23",
-    "@types/node": "12.12.11",
-    "@types/react": "16.9.11",
-    "@types/react-dom": "16.9.4",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.2.0",
     "typescript": "3.7.2"
   },
   "devDependencies": {
     "electron": "^7.1.2",
     "electron-packager": "^14.1.0",
-    "npm-run-all": "^4.1.5"
+    "lerna": "^3.19.0"
   }
 }
