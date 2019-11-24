@@ -18,7 +18,7 @@ const createWindow = () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile("build/index.html");
+  mainWindow.loadFile("packages/client/build/index.html");
 
   // Show window once it is ready to show.
   mainWindow.once("ready-to-show", () => mainWindow.show());
