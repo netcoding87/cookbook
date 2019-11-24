@@ -18,14 +18,12 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.{js,tsx}": [
-        "eslint --fix",
-        "prettier --write",
-        "jest --bail --findRelatedTests",
-        "git add"
-      ]
-    }
+    "*.{js,tsx}": [
+      "eslint --fix",
+      "prettier --write",
+      "jest --bail --findRelatedTests",
+      "git add"
+    ]
   },
   "commitlint": {
     "extends": [
