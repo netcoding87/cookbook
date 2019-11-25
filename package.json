@@ -1,14 +1,13 @@
 {
-  "name": "cookbook",
+  "name": "cb-client",
   "version": "0.1.0",
   "homepage": ".",
-  "private": true,
   "main": "./electron/main.js",
+  "private": true,
   "scripts": {
-    "start": "lerna run start --parallel",
-    "bootstrap": "lerna bootstrap",
-    "build": "lerna run build",
-    "test": "lerna run test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "electron": "electron .",
     "electron-build": "run-s build electron",
     "pack-win": "electron-packager . --out=out --overwrite --asar --platform=win32 --prune=true --ignore=\"(.vscode*|node_modules*|public*|src*)\"",
@@ -16,14 +15,75 @@
     "pack-linux": "electron-packager . --out=out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",
     "pack-mas": "electron-packager . --out=out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json"
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js,tsx}": [
+      "eslint --fix",
+      "prettier --write",
+      "jest --bail --findRelatedTests",
+      "git add"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/",
+      "!src/**/*.d.ts",
+      "!src/**/index.{js,jsx,ts,tsx}",
+      "!src/serviceWorker.{js,jsx,ts,tsx}"
+    ]
+  },
+  "babelMacros": {
+    "styledComponents": {
+      "pure": true
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
+    "@types/jest": "24.0.23",
+    "@types/node": "12.12.11",
+    "@types/react": "16.9.11",
+    "@types/react-dom": "16.9.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
+    "styled-components": "^4.4.1",
     "typescript": "3.7.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "@types/react-router-dom": "^5.1.2",
+    "@types/styled-components": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "electron": "^7.1.2",
     "electron-packager": "^14.1.0",
     "eslint": "^6.7.1",
