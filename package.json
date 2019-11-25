@@ -1,16 +1,18 @@
 {
-  "name": "cb-client",
+  "name": "cookbook",
   "version": "0.1.0",
   "homepage": ".",
   "main": "./electron/main.js",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "run-p start-cra start-server",
+    "start-cra": "react-scripts start",
+    "start-server": "node ./electron/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "electron": "electron .",
     "electron-build": "run-s build electron",
-    "pack-win": "electron-packager . --out=out --overwrite --asar --platform=win32 --prune=true --ignore=\"(.vscode*|node_modules*|public*|src*)\"",
+    "pack-win": "electron-packager . --out=out --overwrite --asar --platform=win32 --prune=true",
     "pack-osx": "electron-packager . --out=out --overwrite --asar --platform=darwin --icon=./dist/assets/icon/logo.icns --ignore=/src",
     "pack-linux": "electron-packager . --out=out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",
     "pack-mas": "electron-packager . --out=out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json"

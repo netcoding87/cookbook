@@ -1,24 +1,13 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
-let express = require('express')
-
-let server = express()
+const server = require('./server')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 const createWindow = () => {
-  // Start server
-  server.get('/', function(req, res) {
-    res.send('Hello World!')
-  })
-
-  server.listen(4000, function() {
-    console.log('🚀 Server ready at http://localhost:4000')
-  })
-
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
