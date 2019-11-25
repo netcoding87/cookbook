@@ -5,10 +5,10 @@
   "private": true,
   "main": "./electron/main.js",
   "scripts": {
-    "start": "lerna run start",
+    "start": "lerna run start --parallel",
     "bootstrap": "lerna bootstrap",
-    "build": "lerna build",
-    "test": "lerna test",
+    "build": "lerna run build",
+    "test": "lerna run test",
     "electron": "electron .",
     "electron-build": "run-s build electron",
     "pack-win": "electron-packager . --out=out --overwrite --asar --platform=win32 --prune=true --ignore=\"(.vscode*|node_modules*|public*|src*)\"",
