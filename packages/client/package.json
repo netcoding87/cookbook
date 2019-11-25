@@ -39,6 +39,11 @@
       "!src/serviceWorker.{js,jsx,ts,tsx}"
     ]
   },
+  "babelMacros": {
+    "styledComponents": {
+      "pure": true
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
