@@ -1,13 +1,17 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
-const server = require('./server')
+const { Test } = require('./test')
+
+let myServer = Test()
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 const createWindow = () => {
+  myServer.start()
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
@@ -19,7 +23,11 @@ const createWindow = () => {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('build/index.html')
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.loadURL('http://localhost:3000')
+  } else {
+    mainWindow.loadFile('build/index.html')
+  }
 
   // Show window once it is ready to show.
   mainWindow.once('ready-to-show', () => mainWindow.show())
@@ -40,6 +48,9 @@ app.on('ready', createWindow)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+  //server.stop()
+  myServer.stop()
+
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') app.quit()
