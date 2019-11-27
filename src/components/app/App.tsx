@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Footer from '../footer'
 import Header from '../header'
 import './App.css'
 
@@ -8,7 +9,7 @@ const App: React.FC = () => {
     <>
       <Header></Header>
       Content
-      <footer>Footer</footer>
+      <Footer>Footer</Footer>
     </>
   )
 }
