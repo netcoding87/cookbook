@@ -1,7 +1,8 @@
-import { Input } from '@material-ui/core'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import AccountCircle from '@material-ui/icons/AccountCircle'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
 
 import { Head } from './Header.styles'
 
@@ -10,31 +11,21 @@ const Header: React.FC = () => {
     <Head>
       Head
       <span>
-        <Input
-          startAdornment={
-            <InputAdornment position="start">
-              <AccountCircle />
-            </InputAdornment>
-          }
-        />
-
-        {/* <Form.Group as={Col} md="4" controlId="validationCustomUsername">
-          <Form.Label>Username</Form.Label>
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="text"
-              placeholder="Username"
-              aria-describedby="inputGroupPrepend"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Please choose a username.
-            </Form.Control.Feedback>
-          </InputGroup>
-        </Form.Group> */}
+        <Button variant="secondary">
+          <FontAwesomeIcon icon="plus" />
+        </Button>
+        <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Text id="inputGroupPrepend">
+              <FontAwesomeIcon icon="search" />
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            type="text"
+            placeholder="Search"
+            aria-describedby="inputGroupPrepend"
+          />
+        </InputGroup>
       </span>
     </Head>
   )

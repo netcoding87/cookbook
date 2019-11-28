@@ -2,15 +2,14 @@ import React, { useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Dashboard from '../Dashboard'
+import GlobalStyle from '../GlobalStyle'
 import Header from '../Header'
-import './App.css'
 
 const App: React.FC = () => {
   const [data, setData] = useState('')
   const fetchData = async () => {
     const response = await fetch('http://localhost:4000/categories')
     const myJson = await response.json()
-    console.log(myJson)
     setData(myJson)
   }
 
@@ -19,6 +18,7 @@ const App: React.FC = () => {
       <Header></Header>
       <div style={{ marginTop: '24px' }}>
         <BrowserRouter>
+          <GlobalStyle />
           <Switch>
             <Route path="/">
               <Dashboard />
