@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
-import Footer from '../footer'
-import Header from '../header'
+import Header from '../Header'
 import './App.css'
 
 const App: React.FC = () => {
@@ -19,7 +18,7 @@ const App: React.FC = () => {
       Content <button onClick={fetchData}>Fetch</button>
       <hr />
       {JSON.stringify(data)}
-      <Footer>Footer</Footer>
+      {/* <Footer>Footer</Footer> */}
     </>
   )
 }
