@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
+import Dashboard from '../Dashboard'
 import Header from '../Header'
 import './App.css'
 
@@ -15,10 +17,19 @@ const App: React.FC = () => {
   return (
     <>
       <Header></Header>
-      Content <button onClick={fetchData}>Fetch</button>
-      <hr />
-      {JSON.stringify(data)}
-      {/* <Footer>Footer</Footer> */}
+      <div style={{ marginTop: '24px' }}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/">
+              <Dashboard />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+        Content <button onClick={fetchData}>Fetch</button>
+        <hr />
+        {JSON.stringify(data)}
+        {/* <Footer>Footer</Footer> */}
+      </div>
     </>
   )
 }
