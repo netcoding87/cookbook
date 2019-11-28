@@ -1,53 +1,41 @@
-var express = require('express')
-var path = require('path')
+// server.js
+const jsonServer = require('json-server')
+const cors = require('cors')
+const path = require('path')
+const fs = require('fs')
 
-const sqlite3 = require('sqlite3').verbose()
+exports.Server = () => {
+  const start = (port = 4000) => {
+    // create express server
+    const server = jsonServer.create()
 
-var dbfile =
-  process.env.HOME !== '%HOMEDRIVE%%HOMEPATH%'
-    ? process.env.HOME + path.sep + 'cookbook.db'
-    : '.cookbook'
-
-// open the database
-let db = new sqlite3.Database(dbfile, err => {
-  if (err) {
-    console.error(err.message)
-  }
-  console.log(process.env.HOME)
-  console.log('Connected to the cookbook database.')
-})
-
-db.serialize(function() {
-  db.run('CREATE TABLE lorem (info TEXT)')
-  var stmt = db.prepare('INSERT INTO lorem VALUES (?)')
-
-  for (var i = 0; i < 10; i++) {
-    stmt.run('Ipsum ' + i)
-  }
-
-  stmt.finalize()
-})
-
-var app = express()
-
-app.get('/', function(req, res) {
-  db.serialize(function() {
-    db.each('SELECT rowid AS id, info FROM lorem', function(err, row) {
-      res.send(row.id + ': ' + row.info)
-    })
-  })
-  res.send('Hello World!')
-})
-
-server = app.listen(4000, function() {
-  console.log('🚀 Server ready at http://localhost:4000')
-})
-
-server.on('close', () => {
-  db.close(err => {
-    if (err) {
-      console.error(err.message)
+    // setup middlewares
+    if (process.env.NODE_ENV === 'development') {
+      server.use(cors({ origin: 'http://localhost:3000' }))
     }
-    console.log('Close the database connection.')
-  })
-})
+
+    // setup database route
+    var dbfile = '.cookbook'
+    if (process.env.HOME !== '%HOMEDRIVE%%HOMEPATH%') {
+      const dir = `${process.env.HOME}${path.sep}.cookbook`
+      !fs.existsSync(dir) && fs.mkdirSync(dir)
+      dbfile = `${dir}${path.sep}.cookbook`
+    }
+
+    const router = jsonServer.router(dbfile)
+    server.use(router)
+
+    // start server
+    server.listen(port, () => {
+      console.log(`JSON Server is running on http://localhost:${port}`)
+    })
+  }
+
+  return {
+    start: start,
+  }
+}
+
+if (process.env.NODE_ENV === 'development') {
+  this.Server().start()
+}

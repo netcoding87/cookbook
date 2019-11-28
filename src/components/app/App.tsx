@@ -7,7 +7,7 @@ import './App.css'
 const App: React.FC = () => {
   const [data, setData] = useState('')
   const fetchData = async () => {
-    const response = await fetch('http://localhost:4000')
+    const response = await fetch('http://localhost:4000/categories')
     const myJson = await response.json()
     console.log(myJson)
     setData(myJson)
