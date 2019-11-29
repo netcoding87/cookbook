@@ -11,9 +11,11 @@ export const Head = styled.header`
 `
 
 export const Title = styled.h1`
-  color: #eeeeee;
+  /* color: #f2b27c; */
+  color: #efede8;
   font-size: 1.8rem;
   font-weight: bold;
+  font-family: 'Gloria Hallelujah';
   margin: 0 8px;
 `
 
