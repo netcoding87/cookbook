@@ -8,7 +8,7 @@ import Header from '../Header'
 const App: React.FC = () => {
   const [data, setData] = useState('')
   const fetchData = async () => {
-    const response = await fetch('http://localhost:4000/categories')
+    const response = await fetch('http://localhost:4000/recipes')
     const myJson = await response.json()
     setData(myJson)
   }
