@@ -10,6 +10,13 @@ export const Head = styled.header`
   padding: 8px;
 `
 
+export const Title = styled.h1`
+  color: #eeeeee;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 8px;
+`
+
 export const ActionBar = styled.div`
   display: flex;
   justify-content: flex-end;

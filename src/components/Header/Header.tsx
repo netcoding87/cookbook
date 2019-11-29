@@ -7,17 +7,22 @@ import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 
-import { ActionBar, Head } from './Header.styles'
+import { ActionBar, Head, Title } from './Header.styles'
 
 const Header: React.FC = () => {
   return (
     <Head>
       <Container fluid>
         <Row>
-          <Col xs={12} md={8}>
-            Head
+          <Col xs={12} md={8} className="d-flex align-items-center">
+            <img src="favicon-32x32.png" alt="Logo" />
+            <Title>Cookbook</Title>
           </Col>
-          <Col xs={12} md={4}>
+          <Col
+            xs={12}
+            md={4}
+            className="d-flex align-items-center justify-content-end"
+          >
             <ActionBar>
               <Button variant="secondary">
                 <FontAwesomeIcon icon="plus" />
