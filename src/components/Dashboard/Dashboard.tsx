@@ -30,30 +30,25 @@ const Dashboard: React.FC = () => {
 
   return (
     <Layout>
-      <div>
-        Dashboard
-        <hr />
-        <Container fluid>
-          <Row>
-            {data.map(item => {
-              const img = imageData.find(image => image.recipeId === item.id)
-              return (
-                <Col key={item.id} xs={12} sm={4} md={3}>
-                  <Link to={`recipe/${item.id}`}>
-                    {' '}
-                    <Card bg="light">
-                      <Card.Img variant="top" src={img ? img.image : NoImage} />
-                      <Card.Body>
-                        X X X X X<Card.Title>{item.title}</Card.Title>
-                      </Card.Body>
-                    </Card>
-                  </Link>
-                </Col>
-              )
-            })}
-          </Row>
-        </Container>
-      </div>
+      <Container fluid>
+        <Row>
+          {data.map(item => {
+            const img = imageData.find(image => image.recipeId === item.id)
+            return (
+              <Col key={item.id} xs={12} sm={4} md={3}>
+                <Link to={`recipe/${item.id}`}>
+                  <Card bg="light">
+                    <Card.Img variant="top" src={img ? img.image : NoImage} />
+                    <Card.Body>
+                      X X X X X<Card.Title>{item.title}</Card.Title>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </Col>
+            )
+          })}
+        </Row>
+      </Container>
     </Layout>
   )
 }
