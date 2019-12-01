@@ -37,3 +37,4 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 https://emojipedia.org/
 https://favicon.io/favicon-converter/
+https://github.com/jpuri/react-draft-wysiwyg
