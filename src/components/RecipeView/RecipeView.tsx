@@ -36,7 +36,7 @@ const RecipeView: React.FC = () => {
           readonly
           initialRating={data.ranking}
           emptySymbol={<FontAwesomeIcon icon={['far', 'star']} />}
-          fullSymbol={<FontAwesomeIcon icon={['fas', 'star']} />}
+          fullSymbol={<FontAwesomeIcon icon={['fas', 'star']} color="orange" />}
         />{' '}
         | Schwierigkeit: Mittel
       </div>
