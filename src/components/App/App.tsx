@@ -3,22 +3,22 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Dashboard from '../Dashboard'
 import GlobalStyle from '../GlobalStyle'
-import Header from '../Header'
+import RecipeView from '../RecipeView'
 
 const App: React.FC = () => {
   return (
     <>
-      <Header></Header>
-      <div style={{ marginTop: '24px' }}>
-        <BrowserRouter>
-          <GlobalStyle />
-          <Switch>
-            <Route path="/">
-              <Dashboard />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <GlobalStyle />
+        <Switch>
+          <Route exact path="/">
+            <Dashboard />
+          </Route>
+          <Route path="/recipe/:id">
+            <RecipeView />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </>
   )
 }

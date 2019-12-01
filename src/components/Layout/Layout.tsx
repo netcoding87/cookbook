@@ -1,7 +1,15 @@
 import React from 'react'
 
-const Layout: React.FC = () => {
-  return <div>Layout</div>
+import Header from '../Header'
+import { Content } from './Layout.styles'
+
+const Layout: React.FC = ({ children }) => {
+  return (
+    <>
+      <Header></Header>
+      <Content>{children}</Content>
+    </>
+  )
 }
 
 export default Layout

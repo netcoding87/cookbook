@@ -6,7 +6,9 @@ import Container from 'react-bootstrap/Container'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
+import { Link } from 'react-router-dom'
 
+import logo from './favicon-32x32.png'
 import { ActionBar, Head, Title } from './Header.styles'
 
 const Header: React.FC = () => {
@@ -15,8 +17,10 @@ const Header: React.FC = () => {
       <Container fluid>
         <Row>
           <Col xs={12} md={8} className="d-flex align-items-center">
-            <img src="favicon-32x32.png" alt="Logo" />
-            <Title>Cookbook</Title>
+            <img src={logo} alt="Logo" />
+            <Link to="/">
+              <Title>Cookbook</Title>
+            </Link>
           </Col>
           <Col
             xs={12}
