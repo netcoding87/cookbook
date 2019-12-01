@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 export const Head = styled.header`
@@ -9,8 +10,14 @@ export const Head = styled.header`
   padding: 8px;
 `
 
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+`
+
 export const Title = styled.h1`
-  /* color: #f2b27c; */
   color: #efede8;
   font-size: 1.8rem;
   font-weight: bold;

@@ -6,21 +6,20 @@ import Container from 'react-bootstrap/Container'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
-import { Link } from 'react-router-dom'
 
 import logo from './favicon-32x32.png'
-import { ActionBar, Head, Title } from './Header.styles'
+import { ActionBar, Head, StyledLink, Title } from './Header.styles'
 
 const Header: React.FC = () => {
   return (
     <Head>
       <Container fluid>
         <Row>
-          <Col xs={12} md={8} className="d-flex align-items-center">
-            <img src={logo} alt="Logo" />
-            <Link to="/">
+          <Col xs={12} md={8}>
+            <StyledLink to="/" style={{ textDecoration: 'none' }}>
+              <img src={logo} alt="Logo" />
               <Title>Cookbook</Title>
-            </Link>
+            </StyledLink>
           </Col>
           <Col
             xs={12}
