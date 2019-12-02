@@ -1,11 +1,12 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import Rating from 'react-rating'
+import Button from 'react-bootstrap/Button'
 import { useParams } from 'react-router'
 import useSWR from 'swr'
 
+import NoImage from '../../assets/camera.png'
 import { ImageData, RecipeData } from '../../interfaces'
 import Layout from '../Layout'
+import Rating from '../Rating'
 
 const RecipeView: React.FC = () => {
   const { id } = useParams()
@@ -27,21 +28,25 @@ const RecipeView: React.FC = () => {
     return <div>Loading...</div>
   }
 
+  const imageSrc = imageData
+    ? imageData.length > 0
+      ? imageData[0].image
+      : NoImage
+    : ''
+
   return (
     <Layout>
       <h1>{data.title}</h1>
       {data.subtitle && <div>{data.subtitle}</div>}
       <div>
-        <Rating
-          readonly
-          initialRating={data.ranking}
-          emptySymbol={<FontAwesomeIcon icon={['far', 'star']} />}
-          fullSymbol={<FontAwesomeIcon icon={['fas', 'star']} color="orange" />}
-        />{' '}
-        | Schwierigkeit: Mittel
+        <Rating rating={data.ranking} readonly /> | Schwierigkeit: Mittel
       </div>
       <hr />
-      <img src={imageData[0].image} height="240" alt={data.title} />
+      <img src={imageSrc} height="240" alt={data.title} />
+      <hr />
+      <Button variant="outline-primary">Edit</Button>
+      <Button variant="outline-primary">Back</Button>
+      <Button variant="outline-secondary">Delete</Button>
     </Layout>
   )
 }
