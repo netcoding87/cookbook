@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
 import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 
 import NoImage from '../../assets/camera.png'
@@ -44,8 +45,9 @@ const RecipeView: React.FC = () => {
       <hr />
       <img src={imageSrc} height="240" alt={data.title} />
       <hr />
-      <Button variant="outline-primary">Edit</Button>
-      <Button variant="outline-primary">Back</Button>
+      <Link to={`/recipe/${id}/edit`}>
+        <Button variant="outline-primary">Edit</Button>
+      </Link>
       <Button variant="outline-secondary">Delete</Button>
     </Layout>
   )

@@ -22,7 +22,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
 
   return (
     <Col xs={12} sm={4} md={3} xl={2}>
-      <Link to={`recipe/${recipe.id}`}>
+      <Link to={`/recipe/${recipe.id}`}>
         <Card bg="light">
           <Card.Img variant="top" src={imageSrc} />
           <Card.Body>
