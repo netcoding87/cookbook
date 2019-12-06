@@ -1,6 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
+import FormGroup from 'react-bootstrap/FormGroup'
+import FormLabel from 'react-bootstrap/FormLabel'
+import {
+  Field as FFField,
+  Form as FFForm,
+  FormSpy as FFFormSpy,
+} from 'react-final-form'
 import { useHistory, useParams } from 'react-router'
 import useSWR from 'swr'
 
@@ -13,30 +19,10 @@ const RecipeEdit: React.FC = () => {
   const history = useHistory()
   const { id } = useParams()
 
-  const [title, setTitle] = useState('')
-
   const { data } = useSWR<RecipeData>(
     `http://localhost:4000/recipes/${id}`,
-    url => fetch(url).then(response => response.json()),
-    {
-      onSuccess: data => {
-        console.log(data)
-        setTitle(data.title)
-      },
-    }
+    url => fetch(url).then(response => response.json())
   )
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event)
-    setTitle(event.target.value)
-  }
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    const form = event.currentTarget
-    form.checkValidity()
-  }
 
   if (!data) {
     return <div>Loading...</div>
@@ -46,27 +32,42 @@ const RecipeEdit: React.FC = () => {
     <Layout>
       Recipe Edit
       <hr />
-      <h1>{title.length > 0 ? title : <i>No title...</i>}</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="title">
-          <Form.Label>Titel</Form.Label>
-          <Input
-            type="type"
-            placeholder="Titel"
-            value={title}
-            onChange={handleTitleChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="title">
-          <Form.Label>Untertitel</Form.Label>
-          <Input type="type" placeholder="Untertitel" />
-        </Form.Group>
-      </Form>
-      <ActionBar>
-        <Button type="submit">Save</Button>
-        <Button onClick={() => history.goBack()}>Cancel</Button>
-      </ActionBar>
+      <FFForm
+        onSubmit={values => console.log(JSON.stringify(values))}
+        initialValues={data}
+      >
+        {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <h1>
+              <FFFormSpy subscription={{ values: true }}>
+                {({ values }) =>
+                  values['title'] && values['title'].length > 0 ? (
+                    values['title']
+                  ) : (
+                    <i>No title...</i>
+                  )
+                }
+              </FFFormSpy>
+            </h1>
+            <FormGroup controlId="title">
+              <FormLabel>Titel</FormLabel>
+              <FFField name="title" placeholder="Titel">
+                {({ input }) => <Input {...input} required />}
+              </FFField>
+            </FormGroup>
+            <FormGroup controlId="subtitle">
+              <FormLabel>Untertitel</FormLabel>
+              <FFField name="subtitle" placeholder="Untertitel">
+                {({ input }) => <Input {...input} />}
+              </FFField>
+            </FormGroup>
+            <ActionBar>
+              <Button type="submit">Save</Button>
+              <Button onClick={() => history.goBack()}>Cancel</Button>
+            </ActionBar>
+          </form>
+        )}
+      </FFForm>
     </Layout>
   )
 }
