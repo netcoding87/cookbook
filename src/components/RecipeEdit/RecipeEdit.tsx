@@ -1,7 +1,14 @@
+import createDecorator from 'final-form-focus'
 import React from 'react'
 import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
+import FormControl from 'react-bootstrap/FormControl'
 import FormGroup from 'react-bootstrap/FormGroup'
 import FormLabel from 'react-bootstrap/FormLabel'
+import Row from 'react-bootstrap/Row'
+import ToggleButton from 'react-bootstrap/ToggleButton'
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 import {
   Field as FFField,
   Form as FFForm,
@@ -13,7 +20,13 @@ import useSWR from 'swr'
 import { RecipeData } from '../../interfaces'
 import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
-import { Input } from './RecipeEdit.styles'
+import Rating from '../Rating'
+import { Input, RatingContainer } from './RecipeEdit.styles'
+
+const required = (value: any) =>
+  value ? undefined : 'Diese Angabe ist erforderlich'
+
+const focusOnError = createDecorator<RecipeData>()
 
 const RecipeEdit: React.FC = () => {
   const history = useHistory()
@@ -24,45 +37,235 @@ const RecipeEdit: React.FC = () => {
     url => fetch(url).then(response => response.json())
   )
 
+  const onSubmit = async (values: RecipeData) => {
+    await fetch(`http://localhost:4000/recipes/${values.id}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    }).then(() => history.push(`/recipe/${id}`))
+  }
+
   if (!data) {
     return <div>Loading...</div>
   }
 
   return (
     <Layout>
-      Recipe Edit
-      <hr />
       <FFForm
-        onSubmit={values => console.log(JSON.stringify(values))}
+        onSubmit={onSubmit}
         initialValues={data}
+        decorators={[focusOnError]}
+        subscription={{ submitting: true }}
       >
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <h1>
-              <FFFormSpy subscription={{ values: true }}>
-                {({ values }) =>
-                  values['title'] && values['title'].length > 0 ? (
-                    values['title']
-                  ) : (
-                    <i>No title...</i>
-                  )
-                }
-              </FFFormSpy>
-            </h1>
-            <FormGroup controlId="title">
-              <FormLabel>Titel</FormLabel>
-              <FFField name="title" placeholder="Titel">
-                {({ input }) => <Input {...input} required />}
-              </FFField>
-            </FormGroup>
-            <FormGroup controlId="subtitle">
-              <FormLabel>Untertitel</FormLabel>
-              <FFField name="subtitle" placeholder="Untertitel">
-                {({ input }) => <Input {...input} />}
-              </FFField>
-            </FormGroup>
+        {({ handleSubmit, submitting, pristine }) => (
+          <form noValidate onSubmit={handleSubmit}>
+            <FFFormSpy subscription={{ values: true }}>
+              {({ values }) => (
+                <h1>
+                  {values['title'] && values['title'].length > 0
+                    ? values['title']
+                    : '\u00A0'}
+                </h1>
+              )}
+            </FFFormSpy>
+            <hr />
+            <Container fluid>
+              <Row>
+                <Col xs={12} sm={8} md={6}>
+                  <FFField name="title" placeholder="Titel" validate={required}>
+                    {({ input, meta, ...rest }) => (
+                      <FormGroup controlId="title">
+                        <FormLabel>Titel</FormLabel>
+                        <Input
+                          {...input}
+                          {...rest}
+                          isInvalid={meta.error && meta.touched}
+                          required
+                        />
+                        {meta.error && meta.touched && (
+                          <FormControl.Feedback type="invalid">
+                            {meta.error}
+                          </FormControl.Feedback>
+                        )}
+                      </FormGroup>
+                    )}
+                  </FFField>
+                  <FFField name="subtitle" placeholder="Untertitel">
+                    {({ input, ...rest }) => (
+                      <FormGroup controlId="subtitle">
+                        <FormLabel>Untertitel</FormLabel>
+                        <Input {...input} {...rest} />
+                      </FormGroup>
+                    )}
+                  </FFField>
+                  <FFField name="keywords" placeholder="Suchwörter">
+                    {({ input, ...rest }) => (
+                      <FormGroup controlId="keywords">
+                        <FormLabel>Suchwörter</FormLabel>
+                        <Input {...input} {...rest} />
+                      </FormGroup>
+                    )}
+                  </FFField>
+                  <FFField
+                    name="categories"
+                    placeholder="Kategorie"
+                    validate={required}
+                  >
+                    {({ input, meta, ...rest }) => (
+                      <FormGroup controlId="categories">
+                        <FormLabel>Kategorie</FormLabel>
+                        <Input
+                          {...input}
+                          {...rest}
+                          isInvalid={meta.error && meta.touched}
+                          required
+                        />
+                        {meta.error && meta.touched && (
+                          <FormControl.Feedback type="invalid">
+                            {meta.error}
+                          </FormControl.Feedback>
+                        )}
+                      </FormGroup>
+                    )}
+                  </FFField>
+                </Col>
+                <Col xs={12} sm={4} md={6}>
+                  <img
+                    className="img-fluid img-thumbnail"
+                    src="http://via.placeholder.com/500x375"
+                    alt="{{recipe.title}}"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={6}>
+                  <FFField
+                    name="preparationTime"
+                    placeholder="Vorbereitungszeit"
+                  >
+                    {({ input, ...rest }) => (
+                      <FormGroup controlId="preparationTime">
+                        <FormLabel>Vorbereitungszeit</FormLabel>
+                        <Input {...input} {...rest} />
+                      </FormGroup>
+                    )}
+                  </FFField>
+                  <FFField
+                    name="cookingTime"
+                    placeholder="Back-/Kochzeit"
+                    validate={required}
+                  >
+                    {({ input, meta, ...rest }) => (
+                      <FormGroup controlId="cookingTime">
+                        <FormLabel>Back-/Kochzeit</FormLabel>
+                        <Input
+                          {...input}
+                          {...rest}
+                          isInvalid={meta.error && meta.touched}
+                          required
+                        />
+                        {meta.error && meta.touched && (
+                          <FormControl.Feedback type="invalid">
+                            {meta.error}
+                          </FormControl.Feedback>
+                        )}
+                      </FormGroup>
+                    )}
+                  </FFField>
+                  <FFField name="restTime" placeholder="Ruhezeit">
+                    {({ input, ...rest }) => (
+                      <FormGroup controlId="restTime">
+                        <FormLabel>Ruhezeit</FormLabel>
+                        <Input {...input} {...rest} />
+                      </FormGroup>
+                    )}
+                  </FFField>
+                </Col>
+                <Col sm={6}>
+                  <FFField name="ranking" placeholder="Bewertung">
+                    {({ input }) => (
+                      <FormGroup controlId="ranking">
+                        <FormLabel>Bewertung</FormLabel>
+                        <RatingContainer>
+                          <Rating
+                            rating={input.value}
+                            onChange={(value: number) => input.onChange(value)}
+                          />
+                        </RatingContainer>
+                      </FormGroup>
+                    )}
+                  </FFField>
+                  <FFField name="difficulty">
+                    {({ input, ...rest }) => (
+                      <FormGroup controlId="ranking">
+                        <FormLabel>Schwierigkeit</FormLabel>
+                        <div>
+                          <ToggleButtonGroup
+                            type="radio"
+                            name="difficulty"
+                            value={input.value}
+                            onChange={(value: unknown) => input.onChange(value)}
+                            {...rest}
+                          >
+                            <ToggleButton value={1} variant="outline-secondary">
+                              Leicht
+                            </ToggleButton>
+                            <ToggleButton value={2} variant="outline-secondary">
+                              Mittel
+                            </ToggleButton>
+                            <ToggleButton value={3} variant="outline-secondary">
+                              Schwer
+                            </ToggleButton>
+                          </ToggleButtonGroup>
+                        </div>
+                      </FormGroup>
+                    )}
+                  </FFField>
+                  <FFField
+                    name="servings"
+                    placeholder="Anzahl der Portionen"
+                    validate={required}
+                  >
+                    {({ input, meta, ...rest }) => (
+                      <FormGroup controlId="servings">
+                        <FormLabel>Anzahl der Portionen</FormLabel>
+                        <Input
+                          {...input}
+                          {...rest}
+                          isInvalid={meta.error && meta.touched}
+                          required
+                        />
+                        {meta.error && meta.touched && (
+                          <FormControl.Feedback type="invalid">
+                            {meta.error}
+                          </FormControl.Feedback>
+                        )}
+                      </FormGroup>
+                    )}
+                  </FFField>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col>
+                  <FFField name="source" placeholder="Quelle">
+                    {({ input, ...rest }) => (
+                      <FormGroup controlId="source">
+                        <FormLabel>Quelle</FormLabel>
+                        <Input {...input} {...rest} />
+                      </FormGroup>
+                    )}
+                  </FFField>
+                </Col>
+              </Row>
+            </Container>
             <ActionBar>
-              <Button type="submit">Save</Button>
+              <Button type="submit" disabled={submitting || pristine}>
+                Save
+              </Button>
               <Button onClick={() => history.goBack()}>Cancel</Button>
             </ActionBar>
           </form>
