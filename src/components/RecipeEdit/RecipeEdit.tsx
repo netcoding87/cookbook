@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import createDecorator from 'final-form-focus'
-import React from 'react'
+import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import FormControl from 'react-bootstrap/FormControl'
 import FormGroup from 'react-bootstrap/FormGroup'
 import FormLabel from 'react-bootstrap/FormLabel'
+import Image from 'react-bootstrap/Image'
 import Row from 'react-bootstrap/Row'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
@@ -29,25 +30,38 @@ import {
   UploadButton,
 } from './RecipeEdit.styles'
 
-const required = (value: any) =>
+const required = (value: unknown) =>
   value ? undefined : 'Diese Angabe ist erforderlich'
 
 const focusOnError = createDecorator<RecipeData>()
 
-const readFile = (file: File) => {
-  const reader = new FileReader()
+const readImageFromFile = (file: File) => {
+  const fileReader = new FileReader()
 
-  reader.onload = (e: ProgressEvent<FileReader>) => {
-    let dataURL = e.target.result
-    dataURL = dataURL.replace(';base64', `;name=${file.name};base64`)
-  }
+  return new Promise<string>((resolve, reject) => {
+    fileReader.onerror = event => {
+      fileReader.abort()
+      reject(event)
+    }
 
-  reader.readAsDataURL(file)
+    fileReader.onload = () => {
+      let dataURL = fileReader.result
+      dataURL = (dataURL as string).replace(
+        ';base64',
+        `;name=${file.name};base64`
+      )
+      resolve(dataURL)
+    }
+
+    fileReader.readAsDataURL(file)
+  })
 }
 
 const RecipeEdit: React.FC = () => {
   const history = useHistory()
   const { id } = useParams()
+
+  const [image, setImage] = useState('')
 
   const { data } = useSWR<RecipeData>(
     `http://localhost:4000/recipes/${id}`,
@@ -57,12 +71,15 @@ const RecipeEdit: React.FC = () => {
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log(event.target.files)
     const files = event.target.files
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i]
-      readFile(files[i])
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+
+        const imageData = await readImageFromFile(file)
+        setImage(imageData)
+      }
     }
   }
 
@@ -165,11 +182,15 @@ const RecipeEdit: React.FC = () => {
                   <ImageContainer>
                     <UploadButton>
                       <label htmlFor="imageUpload">
-                        <FontAwesomeIcon
-                          icon={['fas', 'image']}
-                          color="#6c757d"
-                          size="10x"
-                        />
+                        {image ? (
+                          <Image src={image} alt={data.title} rounded fluid />
+                        ) : (
+                          <FontAwesomeIcon
+                            icon={['fas', 'image']}
+                            color="#6c757d"
+                            size="10x"
+                          />
+                        )}
                       </label>
                       <input
                         type="file"
