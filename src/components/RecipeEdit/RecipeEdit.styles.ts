@@ -22,8 +22,26 @@ export const Input = styled(FormControl)<{ required?: boolean }>`
   }
 `
 
+export const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+`
+
 export const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   height: 38px;
+`
+
+export const UploadButton = styled.div`
+  & label {
+    cursor: pointer;
+  }
+
+  & > input[type='file'] {
+    display: none;
+  }
 `

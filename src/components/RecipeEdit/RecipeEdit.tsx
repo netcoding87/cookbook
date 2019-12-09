@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import createDecorator from 'final-form-focus'
 import React from 'react'
 import Button from 'react-bootstrap/Button'
@@ -21,12 +22,28 @@ import { RecipeData } from '../../interfaces'
 import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
 import Rating from '../Rating'
-import { Input, RatingContainer } from './RecipeEdit.styles'
+import {
+  ImageContainer,
+  Input,
+  RatingContainer,
+  UploadButton,
+} from './RecipeEdit.styles'
 
 const required = (value: any) =>
   value ? undefined : 'Diese Angabe ist erforderlich'
 
 const focusOnError = createDecorator<RecipeData>()
+
+const readFile = (file: File) => {
+  const reader = new FileReader()
+
+  reader.onload = (e: ProgressEvent<FileReader>) => {
+    let dataURL = e.target.result
+    dataURL = dataURL.replace(';base64', `;name=${file.name};base64`)
+  }
+
+  reader.readAsDataURL(file)
+}
 
 const RecipeEdit: React.FC = () => {
   const history = useHistory()
@@ -37,7 +54,19 @@ const RecipeEdit: React.FC = () => {
     url => fetch(url).then(response => response.json())
   )
 
-  const onSubmit = async (values: RecipeData) => {
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    console.log(event.target.files)
+    const files = event.target.files
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      readFile(files[i])
+    }
+  }
+
+  const handleSubmit = async (values: RecipeData) => {
     await fetch(`http://localhost:4000/recipes/${values.id}`, {
       method: 'PUT',
       headers: {
@@ -55,7 +84,7 @@ const RecipeEdit: React.FC = () => {
   return (
     <Layout>
       <FFForm
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         initialValues={data}
         decorators={[focusOnError]}
         subscription={{ submitting: true }}
@@ -133,11 +162,23 @@ const RecipeEdit: React.FC = () => {
                   </FFField>
                 </Col>
                 <Col xs={12} sm={4} md={6}>
-                  <img
-                    className="img-fluid img-thumbnail"
-                    src="http://via.placeholder.com/500x375"
-                    alt="{{recipe.title}}"
-                  />
+                  <ImageContainer>
+                    <UploadButton>
+                      <label htmlFor="imageUpload">
+                        <FontAwesomeIcon
+                          icon={['fas', 'image']}
+                          color="#6c757d"
+                          size="10x"
+                        />
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="imageUpload"
+                        onChange={handleImageUpload}
+                      />
+                    </UploadButton>
+                  </ImageContainer>
                 </Col>
               </Row>
               <Row>
