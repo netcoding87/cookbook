@@ -4,10 +4,10 @@ import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 
-import NoImage from '../../assets/camera.png'
-import { ImageData, RecipeData } from '../../interfaces'
+import { RecipeData } from '../../interfaces'
 import Layout from '../Layout'
 import Rating from '../Rating'
+import RecipeImage from '../RecipeImage'
 
 const RecipeView: React.FC = () => {
   const { id } = useParams()
@@ -16,24 +16,9 @@ const RecipeView: React.FC = () => {
     url => fetch(url).then(response => response.json())
   )
 
-  const { data: imageData } = useSWR<ImageData[]>(
-    `http://localhost:4000/images?recipeId=${id}`,
-    url => fetch(url).then(response => response.json())
-  )
-
   if (!data) {
     return <div>Loading...</div>
   }
-
-  if (!imageData) {
-    return <div>Loading...</div>
-  }
-
-  const imageSrc = imageData
-    ? imageData.length > 0
-      ? imageData[0].image
-      : NoImage
-    : ''
 
   return (
     <Layout>
@@ -43,7 +28,7 @@ const RecipeView: React.FC = () => {
         <Rating rating={data.ranking} readonly /> | Schwierigkeit: Mittel
       </div>
       <hr />
-      <img src={imageSrc} height="240" alt={data.title} />
+      <RecipeImage id={id!} title={data.title} height="150px" />
       <hr />
       <Link to={`/recipe/${id}/edit`}>
         <Button variant="outline-primary">Edit</Button>

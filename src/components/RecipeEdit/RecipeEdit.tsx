@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import createDecorator from 'final-form-focus'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
@@ -19,6 +19,7 @@ import {
 import { useHistory, useParams } from 'react-router'
 import useSWR from 'swr'
 
+import { useImage } from '../../hooks'
 import { RecipeData } from '../../interfaces'
 import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
@@ -68,6 +69,14 @@ const RecipeEdit: React.FC = () => {
     url => fetch(url).then(response => response.json())
   )
 
+  const { image: dbImage } = useImage(id!)
+
+  useEffect(() => {
+    if (dbImage) {
+      setImage(dbImage.image)
+    }
+  }, [dbImage])
+
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -91,7 +100,24 @@ const RecipeEdit: React.FC = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(values),
-    }).then(() => history.push(`/recipe/${id}`))
+    }).then(async () => {
+      let imageUploadURL = `http://localhost:4000/images`
+      let imageUploadMethod = `PUT`
+
+      if (dbImage) {
+        imageUploadURL = `http://localhost:4000/images/${dbImage.id}`
+        imageUploadMethod = `PUT`
+      }
+
+      await fetch(imageUploadURL, {
+        method: imageUploadMethod,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: image, recipeId: values.id }),
+      }).then(() => history.push(`/recipe/${id}`))
+    })
   }
 
   if (!data) {
