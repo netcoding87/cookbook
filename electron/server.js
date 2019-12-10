@@ -11,7 +11,7 @@ exports.Server = () => {
 
     // setup middlewares
     if (process.env.NODE_ENV === 'development') {
-      server.use(cors({ origin: 'http://localhost:3000' }))
+      server.use(cors({ origin: 'http://localhost:3201' }))
     }
 
     // setup database route
@@ -24,7 +24,7 @@ exports.Server = () => {
       dbfile = `${dir}${path.sep}.cookbook`
     }
 
-    const router = jsonServer.router(dbfile)
+    const router = jsonServer.router(dbfile, { foreignKeySuffix: 'Id' })
     server.use(router)
 
     // start server
