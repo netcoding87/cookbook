@@ -3,7 +3,7 @@ export interface RecipeData {
   title: string
   subtitle?: string
   keywords?: string
-  servcings: string
+  servings: string
   difficulty: number
   source?: string
   preparationTime?: string
