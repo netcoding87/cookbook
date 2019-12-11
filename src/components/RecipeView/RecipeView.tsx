@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
@@ -12,6 +12,7 @@ import Layout from '../Layout'
 import Rating from '../Rating'
 import RecipeImage from '../RecipeImage'
 import IngredientsView from './IngredientsView'
+import PreparationView from './PreparationView'
 import { ImageContainer } from './RecipeView.styles'
 
 const RecipeView: React.FC = () => {
@@ -36,7 +37,10 @@ const RecipeView: React.FC = () => {
       <Container fluid>
         <Row>
           <Col>
-            <IngredientsView recipe={data} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <IngredientsView recipe={data} />
+              <PreparationView recipe={data} />
+            </Suspense>
           </Col>
           <Col sm={6}>
             <ImageContainer>
