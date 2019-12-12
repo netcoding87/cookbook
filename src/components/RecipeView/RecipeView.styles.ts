@@ -7,3 +7,7 @@ export const ImageContainer = styled.div`
 
   height: 100%;
 `
+
+export const Gutter = styled.div`
+  height: 36px;
+`

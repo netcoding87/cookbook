@@ -13,7 +13,7 @@ import Rating from '../Rating'
 import RecipeImage from '../RecipeImage'
 import IngredientsView from './IngredientsView'
 import PreparationView from './PreparationView'
-import { ImageContainer } from './RecipeView.styles'
+import { Gutter, ImageContainer } from './RecipeView.styles'
 
 const RecipeView: React.FC = () => {
   const { id } = useParams()
@@ -39,6 +39,7 @@ const RecipeView: React.FC = () => {
           <Col>
             <Suspense fallback={<div>Loading recipe data...</div>}>
               <IngredientsView recipe={data} />
+              <Gutter />
               <PreparationView recipe={data} />
             </Suspense>
           </Col>
