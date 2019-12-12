@@ -2,6 +2,7 @@ import React from 'react'
 import Table from 'react-bootstrap/Table'
 
 import { RecipeData } from '../../../interfaces'
+import { HeadlineContainer } from './PreparationView.styles'
 
 interface PreparationViewProps {
   recipe: RecipeData
@@ -10,16 +11,16 @@ interface PreparationViewProps {
 const PreparationView: React.FC<PreparationViewProps> = ({ recipe }) => {
   return (
     <>
-      <p>
-        <h6>
+      <HeadlineContainer>
+        <h5>
           <u>Zubereitung:</u>
-        </h6>
+        </h5>
         {recipe.preparationTime && (
           <div>Vorbereitungszeit: {recipe.preparationTime}</div>
         )}
         <div>Back- / Kochzeit: {recipe.cookingTime}</div>
         {recipe.restTime && <div>Ruhezeit: {recipe.restTime}</div>}
-      </p>
+      </HeadlineContainer>
       <Table hover size="sm">
         <tbody>
           <tr>

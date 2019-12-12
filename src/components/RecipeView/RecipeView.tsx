@@ -37,7 +37,7 @@ const RecipeView: React.FC = () => {
       <Container fluid>
         <Row>
           <Col>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div>Loading recipe data...</div>}>
               <IngredientsView recipe={data} />
               <PreparationView recipe={data} />
             </Suspense>
