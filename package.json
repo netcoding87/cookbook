@@ -88,6 +88,7 @@
     "react-rating": "^2.0.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
+    "react-select": "^3.0.8",
     "styled-components": "^4.4.1",
     "swr": "^0.1.12",
     "typescript": "3.7.2"
@@ -98,6 +99,7 @@
     "@types/final-form-focus": "^1.1.1",
     "@types/react-html-parser": "^2.0.1",
     "@types/react-router-dom": "^5.1.2",
+    "@types/react-select": "^3.0.8",
     "@types/styled-components": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
