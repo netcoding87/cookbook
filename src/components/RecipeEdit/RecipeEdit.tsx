@@ -29,6 +29,7 @@ import {
   ImageContainer,
   Input,
   RatingContainer,
+  Select,
   UploadButton,
 } from './RecipeEdit.styles'
 
@@ -193,6 +194,21 @@ const RecipeEdit: React.FC = () => {
                         <Input
                           {...input}
                           {...rest}
+                          isInvalid={meta.error && meta.touched}
+                          required
+                        />
+                        <Select
+                          defaultValue={{
+                            value: 'chocolate',
+                            label: 'Chocolate',
+                          }}
+                          isMulti
+                          onChange={(value: unknown) => console.log(value)}
+                          options={[
+                            { value: 'chocolate', label: 'Chocolate' },
+                            { value: 'strawberry', label: 'Strawberry' },
+                            { value: 'vanilla', label: 'Vanilla' },
+                          ]}
                           isInvalid={meta.error && meta.touched}
                           required
                         />
