@@ -339,11 +339,16 @@ const RecipeEdit: React.FC = () => {
               </Row>
 
               <Row>
-                <Col>
+                <Col md={6}>
+                  <h5>Zutaten:</h5>
+                </Col>
+                <Col md={6}>
                   <FFField name="preparations">
                     {({ input }) => (
                       <FormGroup controlId="preparations">
-                        <FormLabel>Zubereitung</FormLabel>
+                        <FormLabel>
+                          <h5>Zubereitung:</h5>
+                        </FormLabel>
                         <Editor
                           value={input.value}
                           onChange={value => input.onChange(value)}
