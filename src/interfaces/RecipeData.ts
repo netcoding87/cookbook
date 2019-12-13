@@ -2,14 +2,15 @@ export interface RecipeData {
   id: number
   title: string
   subtitle?: string
+  tags: string
   keywords?: string
+  ranking: number
   servings: string
   difficulty: number
-  source?: string
   preparationTime?: string
   cookingTime: string
   restTime: string
-  ranking: number
+  preparations?: string
+  source?: string
   isPublic: boolean
-  tags: string
 }

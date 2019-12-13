@@ -24,6 +24,7 @@ import { RecipeData } from '../../interfaces'
 import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
 import Rating from '../Rating'
+import Editor from './Editor'
 import {
   ImageContainer,
   Input,
@@ -182,12 +183,12 @@ const RecipeEdit: React.FC = () => {
                     )}
                   </FFField>
                   <FFField
-                    name="categories"
+                    name="tags"
                     placeholder="Kategorie"
                     validate={required}
                   >
                     {({ input, meta, ...rest }) => (
-                      <FormGroup controlId="categories">
+                      <FormGroup controlId="tags">
                         <FormLabel>Kategorie</FormLabel>
                         <Input
                           {...input}
@@ -331,6 +332,22 @@ const RecipeEdit: React.FC = () => {
                             {meta.error}
                           </FormControl.Feedback>
                         )}
+                      </FormGroup>
+                    )}
+                  </FFField>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col>
+                  <FFField name="preparations">
+                    {({ input }) => (
+                      <FormGroup controlId="preparations">
+                        <FormLabel>Zubereitung</FormLabel>
+                        <Editor
+                          value={input.value}
+                          onChange={value => input.onChange(value)}
+                        />
                       </FormGroup>
                     )}
                   </FFField>
