@@ -16,7 +16,7 @@ import {
   Form as FFForm,
   FormSpy as FFFormSpy,
 } from 'react-final-form'
-import { useHistory, useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 
 import { useImage } from '../../hooks'
@@ -58,6 +58,56 @@ const readImageFromFile = (file: File) => {
 
     fileReader.readAsDataURL(file)
   })
+}
+
+const distinctArray = (array: string[]) => {
+  return Array.from(new Set(array.map((item: string) => item)))
+}
+
+interface CustomOption {
+  label: string
+  value: string
+}
+
+const promiseCategores = async (value: string) => {
+  const fetchCategories = (): Promise<string[]> => {
+    return new Promise(resolve => {
+      fetch('http://localhost:4000/recipes')
+        .then(response => response.json())
+        .then((body: RecipeData[]) => {
+          let categoriesString = ''
+          body.forEach(item => {
+            if (item.tags.trim().length > 0) {
+              categoriesString += `${item.tags.trim()};`
+            }
+          })
+          return resolve(categoriesString.slice(0, -1).split(';'))
+        })
+    })
+  }
+
+  let data = await fetchCategories()
+
+  data = distinctArray(data)
+
+  // console.log(data)
+  data = data.sort((a, b) => a.localeCompare(b))
+  // console.log(data)
+
+  let arr: CustomOption[] = []
+  data.forEach(item => {
+    arr.push({ value: item.toLowerCase(), label: item })
+  })
+
+  // console.log(arr)
+
+  arr = arr.filter(item =>
+    item.label.toLowerCase().includes(value.toLowerCase())
+  )
+
+  // console.log(arr)
+
+  return arr
 }
 
 const RecipeEdit: React.FC = () => {
@@ -126,6 +176,12 @@ const RecipeEdit: React.FC = () => {
     return <div>Loading...</div>
   }
 
+  const tags: CustomOption[] = []
+  data.tags
+    .split(';')
+    .sort((a, b) => a.localeCompare(b))
+    .forEach(tag => tags.push({ label: tag, value: tag.toLowerCase() }))
+
   return (
     <Layout>
       <FFForm
@@ -191,24 +247,29 @@ const RecipeEdit: React.FC = () => {
                     {({ input, meta, ...rest }) => (
                       <FormGroup controlId="tags">
                         <FormLabel>Kategorie</FormLabel>
-                        <Input
+                        {/* <Input
                           {...input}
                           {...rest}
                           isInvalid={meta.error && meta.touched}
                           required
-                        />
+                        /> */}
                         <Select
-                          defaultValue={{
-                            value: 'chocolate',
-                            label: 'Chocolate',
-                          }}
+                          defaultValue={tags}
                           isMulti
-                          onChange={(value: unknown) => console.log(value)}
-                          options={[
-                            { value: 'chocolate', label: 'Chocolate' },
-                            { value: 'strawberry', label: 'Strawberry' },
-                            { value: 'vanilla', label: 'Vanilla' },
-                          ]}
+                          onChange={(value: CustomOption[]) => {
+                            let newValue = ''
+                            value.forEach(item => {
+                              if (newValue.length > 0) {
+                                newValue += ';'
+                              }
+
+                              newValue += item.label
+                            })
+                            input.onChange(newValue)
+                          }}
+                          loadOptions={promiseCategores}
+                          cacheOptions
+                          defaultOptions
                           isInvalid={meta.error && meta.touched}
                           required
                         />

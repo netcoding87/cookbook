@@ -1,5 +1,5 @@
 import FormControl from 'react-bootstrap/FormControl'
-import CreatableSelect from 'react-select/creatable'
+import AsyncCreatableSelect from 'react-select/async-creatable'
 import styled from 'styled-components/macro'
 
 interface InputProps {
@@ -23,7 +23,7 @@ export const Input = styled(FormControl)<{ required?: boolean }>`
   }
 `
 
-export const Select = styled(CreatableSelect)<{
+export const Select = styled(AsyncCreatableSelect)<{
   required?: boolean
   isInvalid?: boolean
 }>`
