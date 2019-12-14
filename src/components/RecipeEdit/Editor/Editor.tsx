@@ -2,14 +2,15 @@ import JoditEditor from 'jodit-react'
 import React from 'react'
 
 const config = {
-  placeholder: 'Lorem ipsum',
-  toolbarButtonSize: 'large',
+  buttons:
+    'bold,underline,italic,|,|,ul,ol,|,outdent,indent,|,|,undo,redo,|,fullsize',
   enter: 'P',
+  placeholder: 'Lorem ipsum',
   showCharsCounter: false,
   showWordsCounter: false,
   showXPathInStatusbar: false,
-  buttons:
-    'bold,underline,italic,|,|,ul,ol,|,outdent,indent,|,|,undo,redo,|,fullsize',
+  toolbarAdaptive: false,
+  toolbarButtonSize: 'large',
 }
 
 interface EditorProps {
@@ -18,11 +19,11 @@ interface EditorProps {
 }
 
 const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
-  const handleOnChange = (value: string) => {
+  const handleOnBlur = (value: string) => {
     onChange(value)
   }
 
-  return <JoditEditor value={value} config={config} onChange={handleOnChange} />
+  return <JoditEditor value={value} config={config} onBlur={handleOnBlur} />
 }
 
 export default Editor
