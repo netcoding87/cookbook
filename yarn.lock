@@ -8417,10 +8417,10 @@ jju@^1.1.0:
   resolved "https://registry.yarnpkg.com/jju/-/jju-1.4.0.tgz#a3abe2718af241a2b2904f84a625970f389ae32a"
   integrity sha1-o6vicYryQaKykE+EpiWXDzia4yo=
 
-jodit-react@^1.0.31:
-  version "1.0.31"
-  resolved "https://registry.yarnpkg.com/jodit-react/-/jodit-react-1.0.31.tgz#8ff0b3ba0cf9a0b770ef829f9fb2d70160076b2e"
-  integrity sha512-0GZxx/IMO0hXBNp6S4rNyykRfoDjVVmVGdAuKVaokx0+hT8eNOAN9AKdbjreri6EeGZ9jDou1N+G8vKAr1gJpA==
+jodit-react@^1.0.33:
+  version "1.0.33"
+  resolved "https://registry.yarnpkg.com/jodit-react/-/jodit-react-1.0.33.tgz#3950b3fc76000b4620ec9df5751896419429c563"
+  integrity sha512-d/VMEs/SVtBfjLCM92U8LvhQ3j8nd+056kAc4fuN17ibY0V0KjqumM1QeFISuceeXC+J9kIhprKwkrFGk6pkeQ==
   dependencies:
     "@types/react" "^16.9.16"
     jodit "^3.3.2"
