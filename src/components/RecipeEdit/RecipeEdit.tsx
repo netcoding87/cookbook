@@ -77,7 +77,7 @@ const promiseCategores = async (value: string) => {
         .then((body: RecipeData[]) => {
           let categoriesString = ''
           body.forEach(item => {
-            if (item.tags.trim().length > 0) {
+            if (item.tags && item.tags.trim().length > 0) {
               categoriesString += `${item.tags.trim()};`
             }
           })
@@ -177,10 +177,11 @@ const RecipeEdit: React.FC = () => {
   }
 
   const tags: CustomOption[] = []
-  data.tags
-    .split(';')
-    .sort((a, b) => a.localeCompare(b))
-    .forEach(tag => tags.push({ label: tag, value: tag.toLowerCase() }))
+  data.tags &&
+    data.tags
+      .split(';')
+      .sort((a, b) => a.localeCompare(b))
+      .forEach(tag => tags.push({ label: tag, value: tag.toLowerCase() }))
 
   return (
     <Layout>
@@ -231,19 +232,7 @@ const RecipeEdit: React.FC = () => {
                       </FormGroup>
                     )}
                   </FFField>
-                  <FFField name="keywords" placeholder="Suchwörter">
-                    {({ input, ...rest }) => (
-                      <FormGroup controlId="keywords">
-                        <FormLabel>Suchwörter</FormLabel>
-                        <Input {...input} {...rest} />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                  <FFField
-                    name="tags"
-                    placeholder="Kategorie"
-                    validate={required}
-                  >
+                  <FFField name="tags" placeholder="Kategorie">
                     {({ input, meta, ...rest }) => (
                       <FormGroup controlId="tags">
                         <FormLabel>Kategorie</FormLabel>
@@ -270,14 +259,7 @@ const RecipeEdit: React.FC = () => {
                           loadOptions={promiseCategores}
                           cacheOptions
                           defaultOptions
-                          isInvalid={meta.error && meta.touched}
-                          required
                         />
-                        {meta.error && meta.touched && (
-                          <FormControl.Feedback type="invalid">
-                            {meta.error}
-                          </FormControl.Feedback>
-                        )}
                       </FormGroup>
                     )}
                   </FFField>
@@ -319,25 +301,11 @@ const RecipeEdit: React.FC = () => {
                       </FormGroup>
                     )}
                   </FFField>
-                  <FFField
-                    name="cookingTime"
-                    placeholder="Back-/Kochzeit"
-                    validate={required}
-                  >
+                  <FFField name="cookingTime" placeholder="Back-/Kochzeit">
                     {({ input, meta, ...rest }) => (
                       <FormGroup controlId="cookingTime">
                         <FormLabel>Back-/Kochzeit</FormLabel>
-                        <Input
-                          {...input}
-                          {...rest}
-                          isInvalid={meta.error && meta.touched}
-                          required
-                        />
-                        {meta.error && meta.touched && (
-                          <FormControl.Feedback type="invalid">
-                            {meta.error}
-                          </FormControl.Feedback>
-                        )}
+                        <Input {...input} {...rest} />
                       </FormGroup>
                     )}
                   </FFField>
@@ -390,25 +358,11 @@ const RecipeEdit: React.FC = () => {
                       </FormGroup>
                     )}
                   </FFField>
-                  <FFField
-                    name="servings"
-                    placeholder="Anzahl der Portionen"
-                    validate={required}
-                  >
+                  <FFField name="servings" placeholder="Anzahl der Portionen">
                     {({ input, meta, ...rest }) => (
                       <FormGroup controlId="servings">
                         <FormLabel>Anzahl der Portionen</FormLabel>
-                        <Input
-                          {...input}
-                          {...rest}
-                          isInvalid={meta.error && meta.touched}
-                          required
-                        />
-                        {meta.error && meta.touched && (
-                          <FormControl.Feedback type="invalid">
-                            {meta.error}
-                          </FormControl.Feedback>
-                        )}
+                        <Input {...input} {...rest} />
                       </FormGroup>
                     )}
                   </FFField>
