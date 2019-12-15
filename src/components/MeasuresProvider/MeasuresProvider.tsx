@@ -1,22 +1,39 @@
 import React from 'react'
 import useSWR from 'swr'
 
-import { MeasureData } from '../../interfaces'
+import { CategoryData, MeasureData } from '../../interfaces'
 
-const MeasuresContext = React.createContext<MeasureData[]>([])
+interface StaticDataProviderData {
+  categories: CategoryData[]
+  measures: MeasureData[]
+}
+
+const MeasuresContext = React.createContext<StaticDataProviderData>({
+  categories: [],
+  measures: [],
+})
 
 const MeasuresProvider: React.FC = ({ children }) => {
-  const { data } = useSWR<MeasureData[]>(
+  const { data: measures } = useSWR<MeasureData[]>(
     `http://localhost:4000/measures`,
     url => fetch(url).then(response => response.json())
   )
 
-  if (!data) {
+  const { data: categories } = useSWR<CategoryData[]>(
+    `http://localhost:4000/categories`,
+    url => fetch(url).then(response => response.json())
+  )
+
+  if (!measures || !categories) {
     return <div>Loading...</div>
   }
 
   return (
-    <MeasuresContext.Provider value={data}>{children}</MeasuresContext.Provider>
+    <MeasuresContext.Provider
+      value={{ categories: categories, measures: measures }}
+    >
+      {children}
+    </MeasuresContext.Provider>
   )
 }
 

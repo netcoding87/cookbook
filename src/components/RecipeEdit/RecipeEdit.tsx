@@ -17,12 +17,15 @@ import {
   FormSpy as FFFormSpy,
 } from 'react-final-form'
 import { useHistory, useParams } from 'react-router-dom'
+import Select, { ValueType } from 'react-select'
+import AsyncCreatableSelect from 'react-select/async-creatable'
 import useSWR from 'swr'
 
 import { useImage } from '../../hooks'
 import { RecipeData } from '../../interfaces'
 import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
+import { useMeasures } from '../MeasuresProvider/MeasuresProvider'
 import Rating from '../Rating'
 import Editor from './Editor'
 import IngredientsEditor from './IngredientsEditor'
@@ -30,7 +33,6 @@ import {
   ImageContainer,
   Input,
   RatingContainer,
-  Select,
   UploadButton,
 } from './RecipeEdit.styles'
 
@@ -65,29 +67,29 @@ const distinctArray = (array: string[]) => {
   return Array.from(new Set(array.map((item: string) => item)))
 }
 
-interface CustomOption {
+interface SelectOption {
   label: string
   value: string
 }
 
-const promiseCategores = async (value: string) => {
-  const fetchCategories = (): Promise<string[]> => {
+const promiseTags = async (value: string) => {
+  const fetchTags = (): Promise<string[]> => {
     return new Promise(resolve => {
       fetch('http://localhost:4000/recipes')
         .then(response => response.json())
         .then((body: RecipeData[]) => {
-          let categoriesString = ''
+          let tagsString = ''
           body.forEach(item => {
             if (item.tags && item.tags.trim().length > 0) {
-              categoriesString += `${item.tags.trim()};`
+              tagsString += `${item.tags.trim()};`
             }
           })
-          return resolve(categoriesString.slice(0, -1).split(';'))
+          return resolve(tagsString.slice(0, -1).split(';'))
         })
     })
   }
 
-  let data = await fetchCategories()
+  let data = await fetchTags()
 
   data = distinctArray(data)
 
@@ -95,7 +97,7 @@ const promiseCategores = async (value: string) => {
   data = data.sort((a, b) => a.localeCompare(b))
   // console.log(data)
 
-  let arr: CustomOption[] = []
+  let arr: SelectOption[] = []
   data.forEach(item => {
     arr.push({ value: item.toLowerCase(), label: item })
   })
@@ -115,20 +117,67 @@ const RecipeEdit: React.FC = () => {
   const history = useHistory()
   const { id } = useParams()
 
-  const [image, setImage] = useState('')
+  const tags: SelectOption[] = []
 
-  const { data } = useSWR<RecipeData>(
-    `http://localhost:4000/recipes/${id}`,
+  const [recipe, setRecipe] = useState<RecipeData>()
+  const [image, setImage] = useState('')
+  const [categories, setCategories] = useState<SelectOption[]>([])
+
+  const { data: dbRecipes } = useSWR<RecipeData[]>(
+    `http://localhost:4000/recipes`,
     url => fetch(url).then(response => response.json())
   )
 
   const { image: dbImage } = useImage(id!)
+  const { categories: dbCategories } = useMeasures()
 
   useEffect(() => {
     if (dbImage) {
       setImage(dbImage.image)
     }
   }, [dbImage])
+
+  useEffect(() => {
+    if (dbCategories) {
+      setCategories(
+        dbCategories.map(category => ({
+          label: category.name,
+          value: category.id,
+        }))
+      )
+    }
+  }, [dbCategories])
+
+  useEffect(() => {
+    if (dbRecipes) {
+      const dbRecipe = dbRecipes.filter(
+        dbRecipe => dbRecipe.id.toString() === id
+      )
+
+      if (dbRecipe.length === 1) {
+        const recipe = dbRecipe[0]
+
+        // console.log(tags)
+        // console.log(recipe.tags)
+        recipe.tags &&
+          recipe.tags
+            .split(';')
+            .sort((a, b) => a.localeCompare(b))
+            .forEach(tag => tags.push({ label: tag, value: tag.toLowerCase() }))
+
+        // console.log(tags)
+        setRecipe(recipe)
+      }
+    }
+
+    if (recipe) {
+      recipe.tags &&
+        recipe.tags
+          .split(';')
+          .sort((a, b) => a.localeCompare(b))
+          .forEach(tag => tags.push({ label: tag, value: tag.toLowerCase() }))
+    }
+  }, [dbRecipes, id, recipe, tags])
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -173,22 +222,15 @@ const RecipeEdit: React.FC = () => {
     })
   }
 
-  if (!data) {
+  if (!dbRecipes || !recipe) {
     return <div>Loading...</div>
   }
-
-  const tags: CustomOption[] = []
-  data.tags &&
-    data.tags
-      .split(';')
-      .sort((a, b) => a.localeCompare(b))
-      .forEach(tag => tags.push({ label: tag, value: tag.toLowerCase() }))
 
   return (
     <Layout>
       <FFForm
         onSubmit={handleSubmit}
-        initialValues={data}
+        initialValues={recipe}
         decorators={[focusOnError]}
         subscription={{ submitting: true }}
       >
@@ -233,33 +275,53 @@ const RecipeEdit: React.FC = () => {
                       </FormGroup>
                     )}
                   </FFField>
-                  <FFField name="tags" placeholder="Kategorie">
-                    {({ input, meta, ...rest }) => (
+                  <FFField name="tags" placeholder="Suchwörter">
+                    {({ input }) => (
                       <FormGroup controlId="tags">
-                        <FormLabel>Kategorie</FormLabel>
-                        {/* <Input
-                          {...input}
-                          {...rest}
-                          isInvalid={meta.error && meta.touched}
-                          required
-                        /> */}
-                        <Select
-                          defaultValue={tags}
+                        <FormLabel>Suchwörter</FormLabel>
+                        <AsyncCreatableSelect
+                          // defaultValue={tags}
                           isMulti
-                          onChange={(value: CustomOption[]) => {
-                            let newValue = ''
-                            value.forEach(item => {
-                              if (newValue.length > 0) {
-                                newValue += ';'
-                              }
+                          onChange={value => {
+                            const newValue = ''
 
-                              newValue += item.label
-                            })
+                            // if (value) {
+                            //   value.forEach(item => {
+                            //     if (newValue.length > 0) {
+                            //       newValue += ';'
+                            //     }
+
+                            //     newValue += item.label
+                            //   })
+                            // }
+
                             input.onChange(newValue)
                           }}
-                          loadOptions={promiseCategores}
+                          loadOptions={promiseTags}
                           cacheOptions
                           defaultOptions
+                        />
+                      </FormGroup>
+                    )}
+                  </FFField>
+                  <FFField name="categoryId" placeholder="Kategorie">
+                    {({ input }) => (
+                      <FormGroup controlId="categoryId">
+                        <FormLabel>Kategorie</FormLabel>
+                        <Select
+                          defaultValue={
+                            categories[
+                              categories.findIndex(
+                                category => category.value === recipe.categoryId
+                              )
+                            ]
+                          }
+                          options={categories}
+                          onChange={(value: ValueType<SelectOption>) => {
+                            if (value) {
+                              input.onChange((value as SelectOption).value)
+                            }
+                          }}
                         />
                       </FormGroup>
                     )}
@@ -270,7 +332,7 @@ const RecipeEdit: React.FC = () => {
                     <UploadButton>
                       <label htmlFor="imageUpload">
                         {image ? (
-                          <Image src={image} alt={data.title} rounded fluid />
+                          <Image src={image} alt={recipe.title} rounded fluid />
                         ) : (
                           <FontAwesomeIcon
                             icon={['fas', 'image']}
@@ -303,7 +365,7 @@ const RecipeEdit: React.FC = () => {
                     )}
                   </FFField>
                   <FFField name="cookingTime" placeholder="Back-/Kochzeit">
-                    {({ input, meta, ...rest }) => (
+                    {({ input, ...rest }) => (
                       <FormGroup controlId="cookingTime">
                         <FormLabel>Back-/Kochzeit</FormLabel>
                         <Input {...input} {...rest} />
@@ -360,7 +422,7 @@ const RecipeEdit: React.FC = () => {
                     )}
                   </FFField>
                   <FFField name="servings" placeholder="Anzahl der Portionen">
-                    {({ input, meta, ...rest }) => (
+                    {({ input, ...rest }) => (
                       <FormGroup controlId="servings">
                         <FormLabel>Anzahl der Portionen</FormLabel>
                         <Input {...input} {...rest} />
@@ -373,7 +435,7 @@ const RecipeEdit: React.FC = () => {
               <Row>
                 <Col md={6}>
                   <h5>Zutaten:</h5>
-                  <IngredientsEditor recipe={data} />
+                  <IngredientsEditor recipe={recipe} />
                 </Col>
                 <Col md={6}>
                   <FFField name="preparations">

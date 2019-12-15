@@ -22,7 +22,7 @@ const IngredientsView: React.FC<IngredientsViewProps> = ({ recipe }) => {
     { suspense: true }
   )
 
-  const measures = useMeasures()
+  const { measures } = useMeasures()
 
   if (data === undefined || data.length === 0) {
     return null

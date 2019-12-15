@@ -11,6 +11,7 @@ export interface RecipeData {
   cookingTime?: string
   restTime?: string
   preparations?: string
+  categoryId: string
   source?: string
   isPublic?: boolean
 }
