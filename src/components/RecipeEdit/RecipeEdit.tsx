@@ -25,6 +25,7 @@ import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
 import Rating from '../Rating'
 import Editor from './Editor'
+import IngredientsEditor from './IngredientsEditor'
 import {
   ImageContainer,
   Input,
@@ -372,6 +373,7 @@ const RecipeEdit: React.FC = () => {
               <Row>
                 <Col md={6}>
                   <h5>Zutaten:</h5>
+                  <IngredientsEditor recipe={data} />
                 </Col>
                 <Col md={6}>
                   <FFField name="preparations">
