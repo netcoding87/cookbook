@@ -2,14 +2,14 @@ import React from 'react'
 import Table from 'react-bootstrap/Table'
 
 import { RecipeData } from '../../../interfaces'
-import { useMeasures } from '../../MeasuresProvider/MeasuresProvider'
+import { useStaticData } from '../../StaticDataProvider'
 
 interface IngredientsEditorProps {
   recipe: RecipeData
 }
 
 const IngredientsEditor: React.FC<IngredientsEditorProps> = ({ recipe }) => {
-  const { categories } = useMeasures()
+  const { categories } = useStaticData()
   // console.log(categories)
 
   return (

@@ -3,14 +3,14 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Dashboard from '../Dashboard'
 import GlobalStyle from '../GlobalStyle'
-import MeasuresProvider from '../MeasuresProvider'
 import RecipeEdit from '../RecipeEdit'
 import RecipeView from '../RecipeView'
+import StaticDataProvider from '../StaticDataProvider'
 
 const App: React.FC = () => {
   return (
     <>
-      <MeasuresProvider>
+      <StaticDataProvider>
         <BrowserRouter>
           <GlobalStyle />
           <Switch>
@@ -28,7 +28,7 @@ const App: React.FC = () => {
             </Route>
           </Switch>
         </BrowserRouter>
-      </MeasuresProvider>
+      </StaticDataProvider>
     </>
   )
 }

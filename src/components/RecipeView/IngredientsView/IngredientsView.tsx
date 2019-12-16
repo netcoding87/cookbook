@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table'
 import useSWR from 'swr'
 
 import { IngredientData, RecipeData } from '../../../interfaces'
-import { useMeasures } from '../../MeasuresProvider/MeasuresProvider'
+import { useStaticData } from '../../StaticDataProvider'
 import { HeadlineContainer } from './IngredientsView.styles'
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -22,7 +22,7 @@ const IngredientsView: React.FC<IngredientsViewProps> = ({ recipe }) => {
     { suspense: true }
   )
 
-  const { measures } = useMeasures()
+  const { measures } = useStaticData()
 
   if (data === undefined || data.length === 0) {
     return null

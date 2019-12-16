@@ -3,17 +3,17 @@ import useSWR from 'swr'
 
 import { CategoryData, MeasureData } from '../../interfaces'
 
-interface StaticDataProviderData {
+interface StaticData {
   categories: CategoryData[]
   measures: MeasureData[]
 }
 
-const MeasuresContext = React.createContext<StaticDataProviderData>({
+const StaticDataContext = React.createContext<StaticData>({
   categories: [],
   measures: [],
 })
 
-const MeasuresProvider: React.FC = ({ children }) => {
+const StaticDataProvider: React.FC = ({ children }) => {
   const { data: measures } = useSWR<MeasureData[]>(
     `http://localhost:4000/measures`,
     url => fetch(url).then(response => response.json())
@@ -29,16 +29,16 @@ const MeasuresProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <MeasuresContext.Provider
+    <StaticDataContext.Provider
       value={{ categories: categories, measures: measures }}
     >
       {children}
-    </MeasuresContext.Provider>
+    </StaticDataContext.Provider>
   )
 }
 
-export const useMeasures = () => {
-  return React.useContext(MeasuresContext)
+export const useStaticData = () => {
+  return React.useContext(StaticDataContext)
 }
 
-export default MeasuresProvider
+export default StaticDataProvider

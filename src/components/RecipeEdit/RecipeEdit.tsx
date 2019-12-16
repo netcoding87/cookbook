@@ -25,8 +25,8 @@ import { useImage, useTags } from '../../hooks'
 import { RecipeData } from '../../interfaces'
 import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
-import { useMeasures } from '../MeasuresProvider/MeasuresProvider'
 import Rating from '../Rating'
+import { useStaticData } from '../StaticDataProvider'
 import Editor from './Editor'
 import IngredientsEditor from './IngredientsEditor'
 import {
@@ -81,7 +81,7 @@ const RecipeEdit: React.FC = () => {
 
   const { tags } = useTags()
   const { image: dbImage } = useImage(id!)
-  const { categories } = useMeasures()
+  const { categories } = useStaticData()
 
   useEffect(() => {
     if (dbImage) {
