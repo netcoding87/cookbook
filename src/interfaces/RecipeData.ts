@@ -3,7 +3,6 @@ export interface RecipeData {
   title: string
   subtitle?: string
   tags?: string
-  keywords?: string
   ranking: number
   servings?: string
   difficulty: number
@@ -11,7 +10,6 @@ export interface RecipeData {
   cookingTime?: string
   restTime?: string
   preparations?: string
-  categoryId: string
   source?: string
-  isPublic?: boolean
+  categoryId: string
 }
