@@ -18,10 +18,10 @@ import {
 } from 'react-final-form'
 import { useHistory, useParams } from 'react-router-dom'
 import Select, { ValueType } from 'react-select'
-import AsyncCreatableSelect from 'react-select/async-creatable'
+import CreatableSelect from 'react-select/creatable'
 import useSWR from 'swr'
 
-import { useImage } from '../../hooks'
+import { useImage, useTags } from '../../hooks'
 import { RecipeData } from '../../interfaces'
 import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
@@ -63,121 +63,31 @@ const readImageFromFile = (file: File) => {
   })
 }
 
-const distinctArray = (array: string[]) => {
-  return Array.from(new Set(array.map((item: string) => item)))
-}
-
 interface SelectOption {
   label: string
   value: string
-}
-
-const promiseTags = async (value: string) => {
-  const fetchTags = (): Promise<string[]> => {
-    return new Promise(resolve => {
-      fetch('http://localhost:4000/recipes')
-        .then(response => response.json())
-        .then((body: RecipeData[]) => {
-          let tagsString = ''
-          body.forEach(item => {
-            if (item.tags && item.tags.trim().length > 0) {
-              tagsString += `${item.tags.trim()};`
-            }
-          })
-          return resolve(tagsString.slice(0, -1).split(';'))
-        })
-    })
-  }
-
-  let data = await fetchTags()
-
-  data = distinctArray(data)
-
-  // console.log(data)
-  data = data.sort((a, b) => a.localeCompare(b))
-  // console.log(data)
-
-  let arr: SelectOption[] = []
-  data.forEach(item => {
-    arr.push({ value: item.toLowerCase(), label: item })
-  })
-
-  // console.log(arr)
-
-  arr = arr.filter(item =>
-    item.label.toLowerCase().includes(value.toLowerCase())
-  )
-
-  // console.log(arr)
-
-  return arr
 }
 
 const RecipeEdit: React.FC = () => {
   const history = useHistory()
   const { id } = useParams()
 
-  const tags: SelectOption[] = []
-
-  const [recipe, setRecipe] = useState<RecipeData>()
   const [image, setImage] = useState('')
-  const [categories, setCategories] = useState<SelectOption[]>([])
 
-  const { data: dbRecipes } = useSWR<RecipeData[]>(
-    `http://localhost:4000/recipes`,
+  const { data: recipe } = useSWR<RecipeData>(
+    `http://localhost:4000/recipes/${id}`,
     url => fetch(url).then(response => response.json())
   )
 
+  const { tags } = useTags()
   const { image: dbImage } = useImage(id!)
-  const { categories: dbCategories } = useMeasures()
+  const { categories } = useMeasures()
 
   useEffect(() => {
     if (dbImage) {
       setImage(dbImage.image)
     }
   }, [dbImage])
-
-  useEffect(() => {
-    if (dbCategories) {
-      setCategories(
-        dbCategories.map(category => ({
-          label: category.name,
-          value: category.id,
-        }))
-      )
-    }
-  }, [dbCategories])
-
-  useEffect(() => {
-    if (dbRecipes) {
-      const dbRecipe = dbRecipes.filter(
-        dbRecipe => dbRecipe.id.toString() === id
-      )
-
-      if (dbRecipe.length === 1) {
-        const recipe = dbRecipe[0]
-
-        // console.log(tags)
-        // console.log(recipe.tags)
-        recipe.tags &&
-          recipe.tags
-            .split(';')
-            .sort((a, b) => a.localeCompare(b))
-            .forEach(tag => tags.push({ label: tag, value: tag.toLowerCase() }))
-
-        // console.log(tags)
-        setRecipe(recipe)
-      }
-    }
-
-    if (recipe) {
-      recipe.tags &&
-        recipe.tags
-          .split(';')
-          .sort((a, b) => a.localeCompare(b))
-          .forEach(tag => tags.push({ label: tag, value: tag.toLowerCase() }))
-    }
-  }, [dbRecipes, id, recipe, tags])
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -222,7 +132,7 @@ const RecipeEdit: React.FC = () => {
     })
   }
 
-  if (!dbRecipes || !recipe) {
+  if (!recipe) {
     return <div>Loading...</div>
   }
 
@@ -279,27 +189,38 @@ const RecipeEdit: React.FC = () => {
                     {({ input }) => (
                       <FormGroup controlId="tags">
                         <FormLabel>Suchwörter</FormLabel>
-                        <AsyncCreatableSelect
-                          // defaultValue={tags}
+                        <CreatableSelect
+                          defaultValue={
+                            recipe.tags
+                              ? recipe.tags
+                                  .split(';')
+                                  .sort((a, b) => a.localeCompare(b))
+                                  .map(tag => ({
+                                    value: tag.toLowerCase(),
+                                    label: tag,
+                                  }))
+                              : []
+                          }
                           isMulti
                           onChange={value => {
-                            const newValue = ''
+                            if (value) {
+                              const values = value as SelectOption[]
 
-                            // if (value) {
-                            //   value.forEach(item => {
-                            //     if (newValue.length > 0) {
-                            //       newValue += ';'
-                            //     }
+                              let newValue = ''
+                              values.forEach(option => {
+                                if (newValue.length > 0) {
+                                  newValue += ';'
+                                }
 
-                            //     newValue += item.label
-                            //   })
-                            // }
-
-                            input.onChange(newValue)
+                                newValue += option.label
+                              })
+                              input.onChange(newValue)
+                            }
                           }}
-                          loadOptions={promiseTags}
-                          cacheOptions
-                          defaultOptions
+                          options={tags.map(tag => ({
+                            value: tag.toLowerCase(),
+                            label: tag,
+                          }))}
                         />
                       </FormGroup>
                     )}
@@ -309,14 +230,18 @@ const RecipeEdit: React.FC = () => {
                       <FormGroup controlId="categoryId">
                         <FormLabel>Kategorie</FormLabel>
                         <Select
-                          defaultValue={
-                            categories[
-                              categories.findIndex(
-                                category => category.value === recipe.categoryId
-                              )
-                            ]
-                          }
-                          options={categories}
+                          defaultValue={categories
+                            .filter(
+                              category => category.id === recipe.categoryId
+                            )
+                            .map(category => ({
+                              value: category.id,
+                              label: category.name,
+                            }))}
+                          options={categories.map(category => ({
+                            value: category.id,
+                            label: category.name,
+                          }))}
                           onChange={(value: ValueType<SelectOption>) => {
                             if (value) {
                               input.onChange((value as SelectOption).value)
