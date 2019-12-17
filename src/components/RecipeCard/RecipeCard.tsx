@@ -21,13 +21,13 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   const imageSrc = data ? (data.length > 0 ? data[0].image : NoImage) : ''
 
   return (
-    <Col xs={12} sm={4} md={3} xl={2}>
+    <Col xs={6} sm={3} xl={2}>
       <Link to={`/recipe/${recipe.id}`}>
         <Card bg="light">
           <Card.Img variant="top" src={imageSrc} />
           <Card.Body>
-            <Rating rating={recipe.ranking} readonly />
-            <Card.Title>{recipe.title}</Card.Title>
+            <Rating rating={recipe.ranking} size="xs" readonly />
+            <Card.Text>{recipe.title}</Card.Text>
           </Card.Body>
         </Card>
       </Link>
