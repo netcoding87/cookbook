@@ -22,7 +22,7 @@ import CreatableSelect from 'react-select/creatable'
 import useSWR from 'swr'
 
 import { useImage, useTags } from '../../hooks'
-import { RecipeData } from '../../interfaces'
+import { IngredientData, RecipeData } from '../../interfaces'
 import { ActionBar } from '../Header/Header.styles'
 import Layout from '../Layout'
 import Rating from '../Rating'
@@ -79,6 +79,14 @@ const RecipeEdit: React.FC = () => {
     url => fetch(url).then(response => response.json())
   )
 
+  const { data: ingredients } = useSWR<IngredientData[]>(
+    `http://localhost:4000/recipes/${id}/ingredients`,
+    url => {
+      console.log('fetch')
+      return fetch(url).then(response => response.json())
+    }
+  )
+
   const { tags } = useTags()
   const { image: dbImage } = useImage(id!)
   const { categories } = useStaticData()
@@ -132,7 +140,7 @@ const RecipeEdit: React.FC = () => {
     })
   }
 
-  if (!recipe) {
+  if (!recipe || !ingredients) {
     return <div>Loading...</div>
   }
 
@@ -360,15 +368,13 @@ const RecipeEdit: React.FC = () => {
               <Row>
                 <Col md={6}>
                   <h5>Zutaten:</h5>
-                  <IngredientsEditor recipe={recipe} />
+                  <IngredientsEditor ingredients={ingredients} />
                 </Col>
                 <Col md={6}>
                   <FFField name="preparations">
                     {({ input }) => (
                       <FormGroup controlId="preparations">
-                        <FormLabel>
-                          <h5>Zubereitung:</h5>
-                        </FormLabel>
+                        <h5>Zubereitung:</h5>
                         <Editor
                           value={input.value}
                           onChange={value => input.onChange(value)}

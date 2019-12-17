@@ -5,6 +5,7 @@ import {
   faPlus,
   faSearch,
   faStar,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -13,7 +14,7 @@ import App from './components/App'
 import './index.css'
 import * as serviceWorker from './serviceWorker'
 
-library.add(faImage, faPlus, faSearch, faStar, farStar)
+library.add(faImage, faPlus, faSearch, faStar, faTrash, farStar)
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
