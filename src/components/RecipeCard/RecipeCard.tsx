@@ -2,32 +2,27 @@ import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import { Link } from 'react-router-dom'
-import useSWR from 'swr'
 
-import NoImage from '../../assets/camera.png'
-import { ImageData, RecipeData } from '../../interfaces'
+import { RecipeData } from '../../interfaces'
 import Rating from '../Rating'
+import RecipeImage from '../RecipeImage'
+import { ImageContainer, RecipeTitle } from './RecipeCard.styles'
 
 interface RecipeCardProps {
   recipe: RecipeData
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
-  const { data } = useSWR<ImageData[]>(
-    `http://localhost:4000/images?recipeId=${recipe.id}`,
-    url => fetch(url).then(response => response.json())
-  )
-
-  const imageSrc = data ? (data.length > 0 ? data[0].image : NoImage) : ''
-
   return (
     <Col xs={6} sm={3} xl={2}>
       <Link to={`/recipe/${recipe.id}`}>
         <Card bg="light">
-          <Card.Img variant="top" src={imageSrc} />
+          <ImageContainer>
+            <RecipeImage id={recipe.id.toString()} title={recipe.title} fluid />
+          </ImageContainer>
           <Card.Body>
             <Rating rating={recipe.ranking} size="xs" readonly />
-            <Card.Text>{recipe.title}</Card.Text>
+            <RecipeTitle>{recipe.title}</RecipeTitle>
           </Card.Body>
         </Card>
       </Link>
