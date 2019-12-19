@@ -1,12 +1,16 @@
 import React from 'react'
-import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
-import { Link } from 'react-router-dom'
 
 import { RecipeData } from '../../interfaces'
 import Rating from '../Rating'
-import RecipeImage from '../RecipeImage'
-import { ImageContainer, RecipeTitle } from './RecipeCard.styles'
+import {
+  ContentContainer,
+  ImageContainer,
+  RecipeCardContainer,
+  RecipeCardLink,
+  RecipeTitle,
+} from './RecipeCard.styles'
+import RecipeCardImage from './RecipeCardImage'
 
 interface RecipeCardProps {
   recipe: RecipeData
@@ -15,17 +19,17 @@ interface RecipeCardProps {
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   return (
     <Col xs={6} sm={3} xl={2}>
-      <Link to={`/recipe/${recipe.id}`}>
-        <Card bg="light">
+      <RecipeCardLink to={`/recipe/${recipe.id}`}>
+        <RecipeCardContainer>
           <ImageContainer>
-            <RecipeImage id={recipe.id.toString()} title={recipe.title} fluid />
+            <RecipeCardImage id={recipe.id.toString()} title={recipe.title} />
           </ImageContainer>
-          <Card.Body>
+          <ContentContainer>
             <Rating rating={recipe.ranking} size="xs" readonly />
             <RecipeTitle>{recipe.title}</RecipeTitle>
-          </Card.Body>
-        </Card>
-      </Link>
+          </ContentContainer>
+        </RecipeCardContainer>
+      </RecipeCardLink>
     </Col>
   )
 }
