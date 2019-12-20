@@ -89,6 +89,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-select": "^3.0.8",
+    "react-table": "^7.0.0-rc.15",
     "styled-components": "^4.4.1",
     "swr": "^0.1.12",
     "typescript": "3.7.2"
