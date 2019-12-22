@@ -1,8 +1,6 @@
 import React from 'react'
-import Col from 'react-bootstrap/Col'
 
 import { RecipeData } from '../../interfaces'
-import Rating from '../Rating'
 import {
   ContentContainer,
   ImageContainer,
@@ -14,23 +12,22 @@ import RecipeCardImage from './RecipeCardImage'
 
 interface RecipeCardProps {
   recipe: RecipeData
+  cardWidth: number
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, cardWidth }) => {
   return (
-    <Col xs={6} sm={3} xl={2}>
+    <RecipeCardContainer width={cardWidth}>
       <RecipeCardLink to={`/recipe/${recipe.id}`}>
-        <RecipeCardContainer>
-          <ImageContainer>
-            <RecipeCardImage id={recipe.id.toString()} title={recipe.title} />
-          </ImageContainer>
-          <ContentContainer>
-            <Rating rating={recipe.ranking} size="xs" readonly />
-            <RecipeTitle>{recipe.title}</RecipeTitle>
-          </ContentContainer>
-        </RecipeCardContainer>
+        <ImageContainer>
+          <RecipeCardImage id={recipe.id.toString()} title={recipe.title} />
+        </ImageContainer>
+        <ContentContainer>
+          {/* <Rating rating={recipe.ranking} size="xs" readonly /> */}
+          <RecipeTitle>{recipe.title}</RecipeTitle>
+        </ContentContainer>
       </RecipeCardLink>
-    </Col>
+    </RecipeCardContainer>
   )
 }
 

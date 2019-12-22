@@ -9,30 +9,37 @@ export const RecipeCardLink = styled(Link)`
   }
 `
 
-export const RecipeCardContainer = styled.div`
-  position: relative;
+export const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 8px;
+  margin-bottom: 0;
+
+  height: 112px;
+  overflow: hidden;
+`
+
+export const RecipeCardContainer = styled.div<{ width: number }>`
   display: flex;
   flex-direction: column;
 
-  margin-bottom: 24px;
+  width: ${props => `${props.width}px`};
 
-  background-color: #f8f9fa;
+  margin: 12px;
+
+  background-color: #e4e4e4;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
 
   &:hover {
     background-color: #dae0e5;
   }
-`
 
-export const ImageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 175px;
-  overflow: hidden;
-  /* border: 1px solid red; */
+  & ${ImageContainer} {
+    height: calc(${props => props.width} * 0.65px);
+  }
 `
 
 export const ContentContainer = styled.div`
@@ -41,7 +48,7 @@ export const ContentContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  padding: 12px;
+  padding: 8px;
 `
 
 export const RecipeTitle = styled.div`

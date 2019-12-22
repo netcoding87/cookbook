@@ -1,19 +1,22 @@
-import React, { Fragment } from 'react'
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
+import React, { Fragment, useState } from 'react'
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
 import useSWR from 'swr'
 
 import { RecipeData } from '../../interfaces'
 import Layout from '../Layout'
 import RecipeCard from '../RecipeCard'
 import { useStaticData } from '../StaticDataProvider'
-import { CategoryTitle } from './Dashboard.styles'
+import { Box, CategoryTitle, SliderContainer } from './Dashboard.styles'
 
 interface CategoryRecipeMap {
   [id: string]: RecipeData[]
 }
 
 const Dashboard: React.FC = () => {
+  const [cardWidth, setCardWidth] = useState(200)
+
   const { data } = useSWR<RecipeData[]>('http://localhost:4000/recipes', url =>
     fetch(url).then(response => response.json())
   )
@@ -49,15 +52,32 @@ const Dashboard: React.FC = () => {
           return (
             <Fragment key={key}>
               <CategoryTitle>{category && category.name}</CategoryTitle>
-              <Row>
+              <Box>
                 {recipes.map(recipe => {
-                  return <RecipeCard key={recipe.id} recipe={recipe} />
+                  return (
+                    <RecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      cardWidth={cardWidth}
+                    />
+                  )
                 })}
-              </Row>
+              </Box>
             </Fragment>
           )
         })}
       </Container>
+      <SliderContainer>
+        <Slider
+          step={1}
+          defaultValue={cardWidth}
+          min={100}
+          max={500}
+          onChange={value => {
+            setCardWidth(value)
+          }}
+        />
+      </SliderContainer>
     </Layout>
   )
 }
