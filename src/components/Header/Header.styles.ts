@@ -8,6 +8,10 @@ export const Head = styled.header`
   box-shadow: 0px 0px 32px #17a2b8;
 
   padding: 8px;
+
+  @media print {
+    display: none;
+  }
 `
 
 export const StyledLink = styled(Link)`
