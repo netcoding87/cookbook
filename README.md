@@ -42,3 +42,13 @@ https://github.com/jpuri/react-draft-wysiwyg
 
 https://codeburst.io/react-image-upload-with-kittens-cc96430eaece
 https://github.com/JakeHartnell/react-images-upload/blob/master/src/component/index.js#L116
+
+✔ Save ingredients
+✔ add / delete ingredients
+drag & drop
+create new recipe
+✔ recipe view
+electron reload problem
+filter / search
+category menu
+TESTS!
