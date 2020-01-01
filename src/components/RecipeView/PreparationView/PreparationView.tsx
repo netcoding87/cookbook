@@ -1,27 +1,32 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import ReactHtmlParser from 'react-html-parser'
 
-import { RecipeData } from '../../../interfaces'
 import { HeadlineContainer } from './PreparationView.styles'
 
 interface PreparationViewProps {
-  recipe: RecipeData
+  preparations: string | undefined
 }
 
-const PreparationView: React.FC<PreparationViewProps> = ({ recipe }) => {
+const PreparationView: React.FC<PreparationViewProps> = ({
+  preparations = undefined,
+}) => {
   return (
     <>
       <HeadlineContainer>
         <h5>
-          <u>Zubereitung:</u>
+          <FontAwesomeIcon icon={['fas', 'blender']} /> Zubereitung
         </h5>
-        {recipe.preparationTime && (
-          <div>Vorbereitungszeit: {recipe.preparationTime}</div>
-        )}
-        <div>Back- / Kochzeit: {recipe.cookingTime}</div>
-        {recipe.restTime && <div>Ruhezeit: {recipe.restTime}</div>}
       </HeadlineContainer>
-      {recipe.preparations && <div>{ReactHtmlParser(recipe.preparations)}</div>}
+      {
+        <div>
+          {preparations ? (
+            ReactHtmlParser(preparations)
+          ) : (
+            <i>Keine Zubereitung vorhanden</i>
+          )}
+        </div>
+      }
     </>
   )
 }

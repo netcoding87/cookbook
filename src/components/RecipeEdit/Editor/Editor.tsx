@@ -5,7 +5,7 @@ const config = {
   buttons:
     'bold,underline,italic,|,|,ul,ol,|,outdent,indent,|,|,undo,redo,|,fullsize',
   enter: 'P',
-  placeholder: 'Lorem ipsum',
+  placeholder: '',
   showCharsCounter: false,
   showWordsCounter: false,
   showXPathInStatusbar: false,

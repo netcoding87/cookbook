@@ -7,8 +7,9 @@ import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 
+import { ActionBar } from '../ActionBar'
 import logo from './favicon-32x32.png'
-import { ActionBar, Head, StyledLink, Title } from './Header.styles'
+import { Head, StyledLink, Title } from './Header.styles'
 
 const Header: React.FC = () => {
   return (
@@ -26,7 +27,7 @@ const Header: React.FC = () => {
             md={4}
             className="d-flex align-items-center justify-content-end"
           >
-            <ActionBar>
+            <ActionBar position="right">
               <Button variant="secondary">
                 <FontAwesomeIcon icon="plus" />
               </Button>

@@ -1,23 +1,89 @@
+/* eslint-disable react/no-multi-comp */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Table from 'react-bootstrap/Table'
-import Select from 'react-select'
+import Select, { ValueType } from 'react-select'
 
 import { IngredientData } from '../../../interfaces'
 import { useStaticData } from '../../StaticDataProvider'
 import { Input } from '../RecipeEdit.styles'
 
+type addIngredient = (
+  amount: string,
+  measureId: number,
+  ingredient: string
+) => void
+
+type deleteIngredient = (ingredient: IngredientData) => void
+type updateIngredient = (
+  ingredient: IngredientData,
+  field: string,
+  value: unknown
+) => void
+
+interface EditableCellProps {
+  value: string | undefined
+  placeholder: string
+  field: string
+  ingredient: IngredientData
+  updateIngredient: updateIngredient
+  required?: boolean
+}
+
+const EditableCell: React.FC<EditableCellProps> = ({
+  value: initialValue,
+  placeholder,
+  field,
+  ingredient,
+  updateIngredient,
+  required = false,
+}) => {
+  const [value, setValue] = useState(initialValue)
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
+  }
+
+  // We'll only update the external data when the input is blurred
+  const onBlur = () => {
+    updateIngredient(ingredient, field, value)
+  }
+
+  // If the initialValue is changed externall, sync it up with our state
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
+  return (
+    <Input
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      required={required}
+    />
+  )
+}
+
 interface IngredientsEditorProps {
   ingredients: IngredientData[]
-  onChange?: (ingredients: IngredientData[]) => void
+  onAdd: addIngredient
+  onDelete: deleteIngredient
+  onChange: updateIngredient
 }
 
 const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
   ingredients,
+  onAdd,
+  onDelete,
   onChange,
 }) => {
+  const [amount, setAmount] = useState('')
+  const [measure, setMeasure] = useState(0)
+  const [ingredient, setIngredient] = useState('')
+
   const { measures } = useStaticData()
 
   const measureOptions = measures.map(measure => ({
@@ -25,19 +91,50 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
     label: measure.name,
   }))
 
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(event.target.value)
+  }
+
+  const handleIngredientChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIngredient(event.target.value)
+  }
+
+  const handleMeasureChange = (value: ValueType<any>) => {
+    if (value) {
+      setMeasure(value.value)
+    }
+  }
+
+  const handleIngredientAdd = () => {
+    onAdd(amount, measure, ingredient)
+    setAmount('')
+    setMeasure(0)
+    setIngredient('')
+  }
+
+  const handleIngredientDelete = (ingredient: IngredientData) => {
+    onDelete(ingredient)
+  }
+
   return (
     <Table hover size="sm">
       <tbody>
         {ingredients.map(ingredient => {
-          const measure = measures.find(item => item.id === ingredient.id)
+          const measure = measures.find(
+            item => item.id === ingredient.measureId
+          )
 
           return (
             <tr key={ingredient.id}>
               <td>
-                <Input
-                  type="text"
+                <EditableCell
+                  field="amount"
                   placeholder="Menge"
-                  defaultValue={ingredient.amount}
+                  ingredient={ingredient}
+                  updateIngredient={onChange}
+                  value={ingredient.amount}
                 />
               </td>
               <td>
@@ -50,18 +147,28 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
                     }
                   }
                   options={measureOptions}
+                  onChange={(value: ValueType<any>) => {
+                    if (value) {
+                      onChange(ingredient, 'measureId', value.value)
+                    }
+                  }}
                 />
               </td>
               <td>
                 <InputGroup>
-                  <Input
-                    type="text"
+                  <EditableCell
+                    field="ingredient"
                     placeholder="Zutat"
-                    defaultValue={ingredient.ingredient}
+                    ingredient={ingredient}
+                    updateIngredient={onChange}
+                    value={ingredient.ingredient}
                     required
                   />
                   <InputGroup.Append>
-                    <Button variant="secondary">
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleIngredientDelete(ingredient)}
+                    >
                       <FontAwesomeIcon icon="trash" />
                     </Button>
                   </InputGroup.Append>
@@ -74,16 +181,31 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
       <tfoot>
         <tr>
           <td style={{ width: '100px' }}>
-            <Input type="text" placeholder="Menge" />
+            <Input
+              type="text"
+              placeholder="Menge"
+              value={amount}
+              onChange={handleAmountChange}
+            />
           </td>
           <td style={{ width: '110px' }}>
-            <Select placeholder="Einheit" options={measureOptions} />
+            <Select
+              placeholder="Einheit"
+              options={measureOptions}
+              onChange={handleMeasureChange}
+            />
           </td>
           <td>
             <InputGroup>
-              <Input type="text" placeholder="Zutat" required />
+              <Input
+                type="text"
+                placeholder="Zutat"
+                value={ingredient}
+                onChange={handleIngredientChange}
+                required
+              />
               <InputGroup.Append>
-                <Button variant="secondary">
+                <Button variant="secondary" onClick={handleIngredientAdd}>
                   <FontAwesomeIcon icon="plus" />
                 </Button>
               </InputGroup.Append>

@@ -23,7 +23,7 @@ import useSWR from 'swr'
 
 import { useImage, useTags } from '../../hooks'
 import { IngredientData, RecipeData } from '../../interfaces'
-import { ActionBar } from '../Header/Header.styles'
+import { ActionBar } from '../ActionBar'
 import Layout from '../Layout'
 import Rating from '../Rating'
 import { useStaticData } from '../StaticDataProvider'
@@ -35,6 +35,8 @@ import {
   RatingContainer,
   UploadButton,
 } from './RecipeEdit.styles'
+
+const tagSeparator = ','
 
 const required = (value: unknown) =>
   value ? undefined : 'Diese Angabe ist erforderlich'
@@ -73,18 +75,16 @@ const RecipeEdit: React.FC = () => {
   const { id } = useParams()
 
   const [image, setImage] = useState('')
+  const [ingredients, setIngredients] = useState<IngredientData[]>([])
 
   const { data: recipe } = useSWR<RecipeData>(
     `http://localhost:4000/recipes/${id}`,
     url => fetch(url).then(response => response.json())
   )
 
-  const { data: ingredients } = useSWR<IngredientData[]>(
+  const { data: dbIngredients } = useSWR<IngredientData[]>(
     `http://localhost:4000/recipes/${id}/ingredients`,
-    url => {
-      console.log('fetch')
-      return fetch(url).then(response => response.json())
-    }
+    url => fetch(url).then(response => response.json())
   )
 
   const { tags } = useTags()
@@ -96,6 +96,12 @@ const RecipeEdit: React.FC = () => {
       setImage(dbImage.image)
     }
   }, [dbImage])
+
+  useEffect(() => {
+    if (dbIngredients) {
+      setIngredients(dbIngredients)
+    }
+  }, [dbIngredients])
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -112,7 +118,47 @@ const RecipeEdit: React.FC = () => {
     }
   }
 
+  const handleIngredientAdd = (
+    amount: string,
+    measureId: number,
+    ingredient: string
+  ) => {
+    setIngredients(ingredients => {
+      ingredients.push({
+        id: Math.floor(Math.random() * 999999),
+        measureId: measureId.toString(),
+        amount: amount,
+        ingredient: ingredient,
+        recipeId: recipe ? recipe.id : -1,
+      })
+      return ingredients
+    })
+  }
+
+  const handleIngredientDelete = (ingredient: IngredientData) => {
+    setIngredients(ingredients.filter(item => item.id !== ingredient.id))
+  }
+
+  const handleIngredientChange = (
+    ingredient: IngredientData,
+    field: string,
+    value: unknown
+  ) => {
+    setIngredients(ingredients =>
+      ingredients.map(item => {
+        if (item.id === ingredient.id) {
+          return {
+            ...item,
+            [field]: value,
+          }
+        }
+        return item
+      })
+    )
+  }
+
   const handleSubmit = async (values: RecipeData) => {
+    // Update recipe data
     await fetch(`http://localhost:4000/recipes/${values.id}`, {
       method: 'PUT',
       headers: {
@@ -120,24 +166,50 @@ const RecipeEdit: React.FC = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(values),
-    }).then(async () => {
-      let imageUploadURL = `http://localhost:4000/images`
-      let imageUploadMethod = `PUT`
-
-      if (dbImage) {
-        imageUploadURL = `http://localhost:4000/images/${dbImage.id}`
-        imageUploadMethod = `PUT`
-      }
-
-      await fetch(imageUploadURL, {
-        method: imageUploadMethod,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ image: image, recipeId: values.id }),
-      }).then(() => history.push(`/recipe/${id}`))
     })
+      .then(async () => {
+        // Delete all related ingredients
+        const ids = dbIngredients ? dbIngredients.map(item => item.id) : []
+        const deleteAll = ids.map(id =>
+          fetch(`http://localhost:4000/ingredients/${id}`, { method: 'DELETE' })
+        )
+
+        await Promise.all(deleteAll)
+      })
+      .then(async () => {
+        // Create new ingredients
+        const promises = ingredients.map(ingredient => {
+          delete ingredient['id']
+          return fetch(`http://localhost:4000/ingredients`, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(ingredient),
+          })
+        })
+
+        await Promise.all(promises)
+      })
+      .then(async () => {
+        let imageUploadURL = `http://localhost:4000/images`
+        let imageUploadMethod = `POST`
+
+        if (dbImage) {
+          imageUploadURL = `http://localhost:4000/images/${dbImage.id}`
+          imageUploadMethod = `PUT`
+        }
+
+        await fetch(imageUploadURL, {
+          method: imageUploadMethod,
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ image: image, recipeId: values.id }),
+        }).then(() => history.push(`/recipe/${id}`))
+      })
   }
 
   if (!recipe || !ingredients) {
@@ -201,7 +273,7 @@ const RecipeEdit: React.FC = () => {
                           defaultValue={
                             recipe.tags
                               ? recipe.tags
-                                  .split(';')
+                                  .split(tagSeparator)
                                   .sort((a, b) => a.localeCompare(b))
                                   .map(tag => ({
                                     value: tag.toLowerCase(),
@@ -217,7 +289,7 @@ const RecipeEdit: React.FC = () => {
                               let newValue = ''
                               values.forEach(option => {
                                 if (newValue.length > 0) {
-                                  newValue += ';'
+                                  newValue += tagSeparator
                                 }
 
                                 newValue += option.label
@@ -340,13 +412,13 @@ const RecipeEdit: React.FC = () => {
                             onChange={(value: unknown) => input.onChange(value)}
                             {...rest}
                           >
-                            <ToggleButton value={1} variant="outline-secondary">
+                            <ToggleButton value={0} variant="outline-secondary">
                               Leicht
                             </ToggleButton>
-                            <ToggleButton value={2} variant="outline-secondary">
+                            <ToggleButton value={1} variant="outline-secondary">
                               Mittel
                             </ToggleButton>
-                            <ToggleButton value={3} variant="outline-secondary">
+                            <ToggleButton value={2} variant="outline-secondary">
                               Schwer
                             </ToggleButton>
                           </ToggleButtonGroup>
@@ -368,7 +440,12 @@ const RecipeEdit: React.FC = () => {
               <Row>
                 <Col md={6}>
                   <h5>Zutaten:</h5>
-                  <IngredientsEditor ingredients={ingredients} />
+                  <IngredientsEditor
+                    ingredients={ingredients}
+                    onAdd={handleIngredientAdd}
+                    onDelete={handleIngredientDelete}
+                    onChange={handleIngredientChange}
+                  />
                 </Col>
                 <Col md={6}>
                   <FFField name="preparations">
@@ -398,12 +475,20 @@ const RecipeEdit: React.FC = () => {
                 </Col>
               </Row>
             </Container>
-            <ActionBar>
-              <Button type="submit" disabled={submitting || pristine}>
-                Save
-              </Button>
-              <Button onClick={() => history.goBack()}>Cancel</Button>
-            </ActionBar>
+            <hr />
+            <Container fluid>
+              <ActionBar>
+                <Button type="submit" disabled={submitting || pristine}>
+                  <FontAwesomeIcon icon={['fas', 'save']} /> Speichern
+                </Button>
+                <Button
+                  variant="outline-secondary"
+                  onClick={() => history.goBack()}
+                >
+                  <FontAwesomeIcon icon={['fas', 'times']} /> Abbrechen
+                </Button>
+              </ActionBar>
+            </Container>
           </form>
         )}
       </FFForm>

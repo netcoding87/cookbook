@@ -28,13 +28,3 @@ export const Title = styled.h1`
   font-family: 'Gloria Hallelujah';
   margin: 0 8px;
 `
-
-export const ActionBar = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-
-  & > :not(:first-child) {
-    margin-left: 8px;
-  }
-`

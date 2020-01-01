@@ -1,5 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import Table from 'react-bootstrap/Table'
 import useSWR from 'swr'
 
 import { IngredientData, RecipeData } from '../../../interfaces'
@@ -32,29 +32,19 @@ const IngredientsView: React.FC<IngredientsViewProps> = ({ recipe }) => {
     <>
       <HeadlineContainer>
         <h5>
-          <u>Zutaten:</u>{' '}
-          <small className="text-muted">
-            (für {recipe.servings} Portionen)
-          </small>
+          <FontAwesomeIcon icon={['fas', 'balance-scale']} /> Zutaten
         </h5>
       </HeadlineContainer>
-      <Table hover size="sm">
-        <tbody>
-          {data.map(ingredient => {
-            const measure = measures.find(item => item.id === ingredient.id)
+      {data.map(ingredient => {
+        const measure = measures.find(item => item.id === ingredient.measureId)
 
-            return (
-              <tr key={ingredient.id}>
-                <td style={{ width: '50px' }} align="right">
-                  {ingredient.amount}
-                </td>
-                <td style={{ width: '50px' }}>{measure && measure.name}</td>
-                <td>{ingredient.ingredient}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </Table>
+        return (
+          <div key={ingredient.id}>
+            {ingredient.amount} {measure && measure.name}{' '}
+            {ingredient.ingredient}
+          </div>
+        )
+      })}
     </>
   )
 }
