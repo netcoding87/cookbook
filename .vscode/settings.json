@@ -15,7 +15,8 @@
     "editor.formatOnSave": false
   },
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": true,
+    "source.fixAll.eslint": true
   },
   // exclude files from search & files explorer
   "files.exclude": {
@@ -23,18 +24,11 @@
   },
   // settings for eslint extension
   "eslint.enable": true,
-  "eslint.autoFixOnSave": true,
   "eslint.alwaysShowStatus": true,
   "eslint.packageManager": "yarn",
   "eslint.options": {
     "configFile": ".eslintrc"
   },
-  "eslint.validate": [
-    { "language": "javascript", "autoFix": true },
-    { "language": "javascriptreact", "autoFix": true },
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
-  ],
   "eslint.workingDirectories": ["."],
   // settings for git lens extension
   "gitlens.currentLine.enabled": false,
