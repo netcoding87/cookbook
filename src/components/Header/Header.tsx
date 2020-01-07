@@ -28,9 +28,11 @@ const Header: React.FC = () => {
             className="d-flex align-items-center justify-content-end"
           >
             <ActionBar position="right">
-              <Button variant="secondary">
-                <FontAwesomeIcon icon="plus" />
-              </Button>
+              <StyledLink to="/new">
+                <Button variant="secondary">
+                  <FontAwesomeIcon icon="plus" />
+                </Button>
+              </StyledLink>
               <InputGroup>
                 <InputGroup.Prepend>
                   <InputGroup.Text id="inputGroupPrepend">

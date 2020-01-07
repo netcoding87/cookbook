@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Dashboard from '../Dashboard'
 import GlobalStyle from '../GlobalStyle'
 import RecipeEdit from '../RecipeEdit'
+import RecipeNew from '../RecipeNew'
 import RecipeView from '../RecipeView'
 import StaticDataProvider from '../StaticDataProvider'
 
@@ -17,14 +18,17 @@ const App: React.FC = () => {
             <Route exact path="/">
               <Dashboard />
             </Route>
+            <Route exact path="/new">
+              <RecipeNew />
+            </Route>
             <Route path="/recipe/:id" exact>
               <RecipeView />
             </Route>
             <Route path="/recipe/:id/edit" exact>
               <RecipeEdit />
             </Route>
-            <Route path="/">
-              <Dashboard />
+            <Route>
+              <RecipeView />
             </Route>
           </Switch>
         </BrowserRouter>

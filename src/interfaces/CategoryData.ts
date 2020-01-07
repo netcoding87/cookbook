@@ -1,5 +1,5 @@
 export interface CategoryData {
-  id: string
+  id: number
   name: string
   parentId: string
 }

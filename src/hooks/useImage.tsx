@@ -13,6 +13,7 @@ export function useImage(recipeId: string | number) {
   )
 
   useEffect(() => {
+    console.log(`inside here`)
     setLoading(true)
     data && data.length > 0 && setImage(data[0])
     setLoading(false)

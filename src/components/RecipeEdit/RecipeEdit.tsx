@@ -1,95 +1,29 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import createDecorator from 'final-form-focus'
 import React, { useEffect, useState } from 'react'
-import Button from 'react-bootstrap/Button'
-import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container'
-import FormControl from 'react-bootstrap/FormControl'
-import FormGroup from 'react-bootstrap/FormGroup'
-import FormLabel from 'react-bootstrap/FormLabel'
-import Image from 'react-bootstrap/Image'
-import Row from 'react-bootstrap/Row'
-import ToggleButton from 'react-bootstrap/ToggleButton'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
-import {
-  Field as FFField,
-  Form as FFForm,
-  FormSpy as FFFormSpy,
-} from 'react-final-form'
 import { useHistory, useParams } from 'react-router-dom'
-import Select, { ValueType } from 'react-select'
-import CreatableSelect from 'react-select/creatable'
 import useSWR from 'swr'
 
-import { useImage, useTags } from '../../hooks'
+import { useImage } from '../../hooks'
 import { IngredientData, RecipeData } from '../../interfaces'
-import { ActionBar } from '../ActionBar'
 import Layout from '../Layout'
-import Rating from '../Rating'
-import { useStaticData } from '../StaticDataProvider'
-import Editor from './Editor'
-import IngredientsEditor from './IngredientsEditor'
-import {
-  ImageContainer,
-  Input,
-  RatingContainer,
-  UploadButton,
-} from './RecipeEdit.styles'
-
-const tagSeparator = ','
-
-const required = (value: unknown) =>
-  value ? undefined : 'Diese Angabe ist erforderlich'
-
-const focusOnError = createDecorator<RecipeData>()
-
-const readImageFromFile = (file: File) => {
-  const fileReader = new FileReader()
-
-  return new Promise<string>((resolve, reject) => {
-    fileReader.onerror = event => {
-      fileReader.abort()
-      reject(event)
-    }
-
-    fileReader.onload = () => {
-      let dataURL = fileReader.result
-      dataURL = (dataURL as string).replace(
-        ';base64',
-        `;name=${file.name};base64`
-      )
-      resolve(dataURL)
-    }
-
-    fileReader.readAsDataURL(file)
-  })
-}
-
-interface SelectOption {
-  label: string
-  value: string
-}
+import RecipeEditForm from '../RecipeEditForm'
 
 const RecipeEdit: React.FC = () => {
   const history = useHistory()
   const { id } = useParams()
 
   const [image, setImage] = useState('')
-  const [ingredients, setIngredients] = useState<IngredientData[]>([])
 
   const { data: recipe } = useSWR<RecipeData>(
     `http://localhost:4000/recipes/${id}`,
     url => fetch(url).then(response => response.json())
   )
 
-  const { data: dbIngredients } = useSWR<IngredientData[]>(
+  const { data: ingredients } = useSWR<IngredientData[]>(
     `http://localhost:4000/recipes/${id}/ingredients`,
     url => fetch(url).then(response => response.json())
   )
 
-  const { tags } = useTags()
-  const { image: dbImage } = useImage(id!)
-  const { categories } = useStaticData()
+  const { loading: imageLoading, image: dbImage } = useImage(id!)
 
   useEffect(() => {
     if (dbImage) {
@@ -97,67 +31,11 @@ const RecipeEdit: React.FC = () => {
     }
   }, [dbImage])
 
-  useEffect(() => {
-    if (dbIngredients) {
-      setIngredients(dbIngredients)
-    }
-  }, [dbIngredients])
-
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
+  const handleSubmit = async (
+    values: RecipeData,
+    ingredients: IngredientData[],
+    image: string | null
   ) => {
-    const files = event.target.files
-
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-
-        const imageData = await readImageFromFile(file)
-        setImage(imageData)
-      }
-    }
-  }
-
-  const handleIngredientAdd = (
-    amount: string,
-    measureId: number,
-    ingredient: string
-  ) => {
-    setIngredients(ingredients => {
-      ingredients.push({
-        id: Math.floor(Math.random() * 999999),
-        measureId: measureId.toString(),
-        amount: amount,
-        ingredient: ingredient,
-        recipeId: recipe ? recipe.id : -1,
-      })
-      return ingredients
-    })
-  }
-
-  const handleIngredientDelete = (ingredient: IngredientData) => {
-    setIngredients(ingredients.filter(item => item.id !== ingredient.id))
-  }
-
-  const handleIngredientChange = (
-    ingredient: IngredientData,
-    field: string,
-    value: unknown
-  ) => {
-    setIngredients(ingredients =>
-      ingredients.map(item => {
-        if (item.id === ingredient.id) {
-          return {
-            ...item,
-            [field]: value,
-          }
-        }
-        return item
-      })
-    )
-  }
-
-  const handleSubmit = async (values: RecipeData) => {
     // Update recipe data
     await fetch(`http://localhost:4000/recipes/${values.id}`, {
       method: 'PUT',
@@ -167,50 +45,55 @@ const RecipeEdit: React.FC = () => {
       },
       body: JSON.stringify(values),
     })
-      .then(async () => {
-        // Delete all related ingredients
-        const ids = dbIngredients ? dbIngredients.map(item => item.id) : []
-        const deleteAll = ids.map(id =>
-          fetch(`http://localhost:4000/ingredients/${id}`, { method: 'DELETE' })
-        )
 
-        await Promise.all(deleteAll)
+    // Delete all related ingredients
+    const ids = ingredients ? ingredients.map(item => item.id) : []
+    const deleteAll = ids.map(id =>
+      fetch(`http://localhost:4000/ingredients/${id}`, { method: 'DELETE' })
+    )
+
+    await Promise.all(deleteAll)
+
+    // Create new ingredients
+    const promises = ingredients.map(ingredient => {
+      delete ingredient['id']
+      return fetch(`http://localhost:4000/ingredients`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ingredient),
       })
-      .then(async () => {
-        // Create new ingredients
-        const promises = ingredients.map(ingredient => {
-          delete ingredient['id']
-          return fetch(`http://localhost:4000/ingredients`, {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(ingredient),
-          })
-        })
+    })
 
-        await Promise.all(promises)
+    await Promise.all(promises)
+
+    // Update / upload image
+    if (image) {
+      let imageUploadURL = `http://localhost:4000/images`
+      let imageUploadMethod = `POST`
+
+      if (dbImage) {
+        imageUploadURL = `http://localhost:4000/images/${dbImage.id}`
+        imageUploadMethod = `PUT`
+      }
+
+      await fetch(imageUploadURL, {
+        method: imageUploadMethod,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: image, recipeId: values.id }),
       })
-      .then(async () => {
-        let imageUploadURL = `http://localhost:4000/images`
-        let imageUploadMethod = `POST`
+    }
 
-        if (dbImage) {
-          imageUploadURL = `http://localhost:4000/images/${dbImage.id}`
-          imageUploadMethod = `PUT`
-        }
-
-        await fetch(imageUploadURL, {
-          method: imageUploadMethod,
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ image: image, recipeId: values.id }),
-        }).then(() => history.push(`/recipe/${id}`))
-      })
+    // Redirect
+    history.push(`/recipe/${id}`)
   }
+
+  console.log(`ImageLoading: ${imageLoading}`)
 
   if (!recipe || !ingredients) {
     return <div>Loading...</div>
@@ -218,280 +101,12 @@ const RecipeEdit: React.FC = () => {
 
   return (
     <Layout>
-      <FFForm
+      <RecipeEditForm
         onSubmit={handleSubmit}
-        initialValues={recipe}
-        decorators={[focusOnError]}
-        subscription={{ submitting: true }}
-      >
-        {({ handleSubmit, submitting, pristine }) => (
-          <form noValidate onSubmit={handleSubmit}>
-            <FFFormSpy subscription={{ values: true }}>
-              {({ values }) => (
-                <h1>
-                  {values['title'] && values['title'].length > 0
-                    ? values['title']
-                    : '\u00A0'}
-                </h1>
-              )}
-            </FFFormSpy>
-            <hr />
-            <Container fluid>
-              <Row>
-                <Col xs={12} sm={8} md={6}>
-                  <FFField name="title" placeholder="Titel" validate={required}>
-                    {({ input, meta, ...rest }) => (
-                      <FormGroup controlId="title">
-                        <FormLabel>Titel</FormLabel>
-                        <Input
-                          {...input}
-                          {...rest}
-                          isInvalid={meta.error && meta.touched}
-                          required
-                        />
-                        {meta.error && meta.touched && (
-                          <FormControl.Feedback type="invalid">
-                            {meta.error}
-                          </FormControl.Feedback>
-                        )}
-                      </FormGroup>
-                    )}
-                  </FFField>
-                  <FFField name="subtitle" placeholder="Untertitel">
-                    {({ input, ...rest }) => (
-                      <FormGroup controlId="subtitle">
-                        <FormLabel>Untertitel</FormLabel>
-                        <Input {...input} {...rest} />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                  <FFField name="tags" placeholder="Suchwörter">
-                    {({ input }) => (
-                      <FormGroup controlId="tags">
-                        <FormLabel>Suchwörter</FormLabel>
-                        <CreatableSelect
-                          defaultValue={
-                            recipe.tags
-                              ? recipe.tags
-                                  .split(tagSeparator)
-                                  .sort((a, b) => a.localeCompare(b))
-                                  .map(tag => ({
-                                    value: tag.toLowerCase(),
-                                    label: tag,
-                                  }))
-                              : []
-                          }
-                          isMulti
-                          onChange={value => {
-                            if (value) {
-                              const values = value as SelectOption[]
-
-                              let newValue = ''
-                              values.forEach(option => {
-                                if (newValue.length > 0) {
-                                  newValue += tagSeparator
-                                }
-
-                                newValue += option.label
-                              })
-                              input.onChange(newValue)
-                            }
-                          }}
-                          options={tags.map(tag => ({
-                            value: tag.toLowerCase(),
-                            label: tag,
-                          }))}
-                        />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                  <FFField name="categoryId" placeholder="Kategorie">
-                    {({ input }) => (
-                      <FormGroup controlId="categoryId">
-                        <FormLabel>Kategorie</FormLabel>
-                        <Select
-                          defaultValue={categories
-                            .filter(
-                              category => category.id === recipe.categoryId
-                            )
-                            .map(category => ({
-                              value: category.id,
-                              label: category.name,
-                            }))}
-                          options={categories.map(category => ({
-                            value: category.id,
-                            label: category.name,
-                          }))}
-                          onChange={(value: ValueType<SelectOption>) => {
-                            if (value) {
-                              input.onChange((value as SelectOption).value)
-                            }
-                          }}
-                        />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                </Col>
-                <Col xs={12} sm={4} md={6}>
-                  <ImageContainer>
-                    <UploadButton>
-                      <label htmlFor="imageUpload">
-                        {image ? (
-                          <Image src={image} alt={recipe.title} rounded fluid />
-                        ) : (
-                          <FontAwesomeIcon
-                            icon={['fas', 'image']}
-                            color="#6c757d"
-                            size="10x"
-                          />
-                        )}
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        id="imageUpload"
-                        onChange={handleImageUpload}
-                      />
-                    </UploadButton>
-                  </ImageContainer>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={6}>
-                  <FFField
-                    name="preparationTime"
-                    placeholder="Vorbereitungszeit"
-                  >
-                    {({ input, ...rest }) => (
-                      <FormGroup controlId="preparationTime">
-                        <FormLabel>Vorbereitungszeit</FormLabel>
-                        <Input {...input} {...rest} />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                  <FFField name="cookingTime" placeholder="Back-/Kochzeit">
-                    {({ input, ...rest }) => (
-                      <FormGroup controlId="cookingTime">
-                        <FormLabel>Back-/Kochzeit</FormLabel>
-                        <Input {...input} {...rest} />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                  <FFField name="restTime" placeholder="Ruhezeit">
-                    {({ input, ...rest }) => (
-                      <FormGroup controlId="restTime">
-                        <FormLabel>Ruhezeit</FormLabel>
-                        <Input {...input} {...rest} />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                </Col>
-                <Col sm={6}>
-                  <FFField name="ranking" placeholder="Bewertung">
-                    {({ input }) => (
-                      <FormGroup controlId="ranking">
-                        <FormLabel>Bewertung</FormLabel>
-                        <RatingContainer>
-                          <Rating
-                            rating={input.value}
-                            onChange={(value: number) => input.onChange(value)}
-                          />
-                        </RatingContainer>
-                      </FormGroup>
-                    )}
-                  </FFField>
-                  <FFField name="difficulty">
-                    {({ input, ...rest }) => (
-                      <FormGroup controlId="ranking">
-                        <FormLabel>Schwierigkeit</FormLabel>
-                        <div>
-                          <ToggleButtonGroup
-                            type="radio"
-                            name="difficulty"
-                            value={input.value}
-                            onChange={(value: unknown) => input.onChange(value)}
-                            {...rest}
-                          >
-                            <ToggleButton value={0} variant="outline-secondary">
-                              Leicht
-                            </ToggleButton>
-                            <ToggleButton value={1} variant="outline-secondary">
-                              Mittel
-                            </ToggleButton>
-                            <ToggleButton value={2} variant="outline-secondary">
-                              Schwer
-                            </ToggleButton>
-                          </ToggleButtonGroup>
-                        </div>
-                      </FormGroup>
-                    )}
-                  </FFField>
-                  <FFField name="servings" placeholder="Anzahl der Portionen">
-                    {({ input, ...rest }) => (
-                      <FormGroup controlId="servings">
-                        <FormLabel>Anzahl der Portionen</FormLabel>
-                        <Input {...input} {...rest} />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col md={6}>
-                  <h5>Zutaten:</h5>
-                  <IngredientsEditor
-                    ingredients={ingredients}
-                    onAdd={handleIngredientAdd}
-                    onDelete={handleIngredientDelete}
-                    onChange={handleIngredientChange}
-                  />
-                </Col>
-                <Col md={6}>
-                  <FFField name="preparations">
-                    {({ input }) => (
-                      <FormGroup controlId="preparations">
-                        <h5>Zubereitung:</h5>
-                        <Editor
-                          value={input.value}
-                          onChange={value => input.onChange(value)}
-                        />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col>
-                  <FFField name="source" placeholder="Quelle">
-                    {({ input, ...rest }) => (
-                      <FormGroup controlId="source">
-                        <FormLabel>Quelle</FormLabel>
-                        <Input {...input} {...rest} />
-                      </FormGroup>
-                    )}
-                  </FFField>
-                </Col>
-              </Row>
-            </Container>
-            <hr />
-            <Container fluid>
-              <ActionBar>
-                <Button type="submit" disabled={submitting || pristine}>
-                  <FontAwesomeIcon icon={['fas', 'save']} /> Speichern
-                </Button>
-                <Button
-                  variant="outline-secondary"
-                  onClick={() => history.goBack()}
-                >
-                  <FontAwesomeIcon icon={['fas', 'times']} /> Abbrechen
-                </Button>
-              </ActionBar>
-            </Container>
-          </form>
-        )}
-      </FFForm>
+        recipe={recipe}
+        ingredients={ingredients}
+        image={image}
+      />
     </Layout>
   )
 }
