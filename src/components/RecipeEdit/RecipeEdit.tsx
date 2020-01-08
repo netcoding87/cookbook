@@ -18,7 +18,7 @@ const RecipeEdit: React.FC = () => {
     url => fetch(url).then(response => response.json())
   )
 
-  const { data: ingredients } = useSWR<IngredientData[]>(
+  const { data: dbIngredients } = useSWR<IngredientData[]>(
     `http://localhost:4000/recipes/${id}/ingredients`,
     url => fetch(url).then(response => response.json())
   )
@@ -47,7 +47,7 @@ const RecipeEdit: React.FC = () => {
     })
 
     // Delete all related ingredients
-    const ids = ingredients ? ingredients.map(item => item.id) : []
+    const ids = dbIngredients ? dbIngredients.map(item => item.id) : []
     const deleteAll = ids.map(id =>
       fetch(`http://localhost:4000/ingredients/${id}`, { method: 'DELETE' })
     )
@@ -95,7 +95,7 @@ const RecipeEdit: React.FC = () => {
 
   console.log(`ImageLoading: ${imageLoading}`)
 
-  if (!recipe || !ingredients) {
+  if (!recipe || !dbIngredients) {
     return <div>Loading...</div>
   }
 
@@ -104,7 +104,7 @@ const RecipeEdit: React.FC = () => {
       <RecipeEditForm
         onSubmit={handleSubmit}
         recipe={recipe}
-        ingredients={ingredients}
+        ingredients={dbIngredients}
         image={image}
       />
     </Layout>

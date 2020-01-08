@@ -20,15 +20,15 @@ import { useTags } from '../../hooks'
 import { IngredientData, RecipeData } from '../../interfaces'
 import { ActionBar } from '../ActionBar'
 import Rating from '../Rating'
-import Editor from '../RecipeEdit/Editor'
-import IngredientsEditor from '../RecipeEdit/IngredientsEditor'
+import Editor from './Editor'
+import { useStaticData } from '../StaticDataProvider'
+import IngredientsEditor from './IngredientsEditor'
 import {
   ImageContainer,
   Input,
   RatingContainer,
   UploadButton,
-} from '../RecipeEdit/RecipeEdit.styles'
-import { useStaticData } from '../StaticDataProvider'
+} from './RecipeEditForm.styles'
 
 const tagSeparator = ','
 

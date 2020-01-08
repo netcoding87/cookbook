@@ -8,7 +8,7 @@ import Select, { ValueType } from 'react-select'
 
 import { IngredientData } from '../../../interfaces'
 import { useStaticData } from '../../StaticDataProvider'
-import { Input } from '../RecipeEdit.styles'
+import { Input } from '../RecipeEditForm.styles'
 
 type addIngredient = (
   amount: string,
@@ -91,6 +91,17 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
     label: measure.name,
   }))
 
+  const handleIngredientAdd = () => {
+    onAdd(amount, measure, ingredient)
+    setAmount('')
+    setMeasure(0)
+    setIngredient('')
+  }
+
+  const handleIngredientDelete = (ingredient: IngredientData) => {
+    onDelete(ingredient)
+  }
+
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(event.target.value)
   }
@@ -101,21 +112,20 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
     setIngredient(event.target.value)
   }
 
+  const handleIngredientKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key.toLowerCase() === 'enter') {
+      event.stopPropagation()
+      event.preventDefault()
+      handleIngredientAdd()
+    }
+  }
+
   const handleMeasureChange = (value: ValueType<any>) => {
     if (value) {
       setMeasure(value.value)
     }
-  }
-
-  const handleIngredientAdd = () => {
-    onAdd(amount, measure, ingredient)
-    setAmount('')
-    setMeasure(0)
-    setIngredient('')
-  }
-
-  const handleIngredientDelete = (ingredient: IngredientData) => {
-    onDelete(ingredient)
   }
 
   return (
@@ -202,6 +212,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
                 placeholder="Zutat"
                 value={ingredient}
                 onChange={handleIngredientChange}
+                onKeyPress={handleIngredientKeyPress}
                 required
               />
               <InputGroup.Append>
