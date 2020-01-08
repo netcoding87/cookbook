@@ -1,10 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Suspense } from 'react'
+import React, { Suspense, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
+import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 
@@ -18,11 +19,36 @@ import PreparationView from './PreparationView'
 import { Gutter, ImageContainer, NonPrint } from './RecipeView.styles'
 
 const RecipeView: React.FC = () => {
+  const history = useHistory()
   const { id } = useParams()
   const { data } = useSWR<RecipeData>(
     `http://localhost:4000/recipes/${id}`,
     url => fetch(url).then(response => response.json())
   )
+
+  const [showModal, setShowModal] = useState(false)
+
+  const handleDelete = async () => {
+    const response = await fetch(`http://localhost:4000/recipes/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (response.ok) {
+      history.push('/')
+    }
+  }
+
+  const handleDialogOpen = () => {
+    setShowModal(true)
+  }
+
+  const handleDialogClose = () => {
+    setShowModal(false)
+  }
 
   if (!data) {
     return <div>Loading...</div>
@@ -89,12 +115,28 @@ const RecipeView: React.FC = () => {
                 <FontAwesomeIcon icon={['fas', 'edit']} /> Bearbeiten
               </Button>
             </Link>
-            <Button variant="outline-secondary">
+            <Button variant="outline-secondary" onClick={handleDialogOpen}>
               <FontAwesomeIcon icon={['fas', 'trash']} /> Löschen
             </Button>
           </ActionBar>
         </Container>
       </NonPrint>
+      <Modal size="sm" show={showModal} onHide={handleDialogClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Löschen</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Möchten Sie dieses Rezept wirklich löschen?</Modal.Body>
+        <Modal.Footer>
+          <ActionBar position="right">
+            <Button variant="primary" onClick={handleDelete}>
+              <FontAwesomeIcon icon={['fas', 'check']} /> Ja
+            </Button>
+            <Button variant="outline-secondary" onClick={handleDialogClose}>
+              <FontAwesomeIcon icon={['fas', 'times']} /> Nein
+            </Button>
+          </ActionBar>
+        </Modal.Footer>
+      </Modal>
     </Layout>
   )
 }
