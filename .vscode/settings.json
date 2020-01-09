@@ -29,7 +29,7 @@
   "eslint.options": {
     "configFile": ".eslintrc"
   },
-  "eslint.workingDirectories": ["."],
+  "eslint.workingDirectories": ["./packages/client"],
   // settings for git lens extension
   "gitlens.currentLine.enabled": false,
   "gitlens.mode.statusBar.enabled": true,
