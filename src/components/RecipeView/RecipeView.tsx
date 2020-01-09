@@ -31,10 +31,6 @@ const RecipeView: React.FC = () => {
   const handleDelete = async () => {
     const response = await fetch(`http://localhost:4000/recipes/${id}`, {
       method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
     })
 
     if (response.ok) {
