@@ -7,15 +7,9 @@
   "scripts": {
     "start": "run-p start-cra start-server",
     "start-cra": "cross-env PORT=3201 react-scripts start",
-    "start-server": "cross-env NODE_ENV=development node ../../electron/server.js",
+    "start-server": "cross-env NODE_ENV=development node server.js",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "electron": "electron .",
-    "electron-build": "run-s build electron",
-    "pack-win": "electron-packager . --out=out --overwrite --asar --platform=win32 --icon=./public/favicon.ico",
-    "pack-osx": "electron-packager . --out=out --overwrite --asar --platform=darwin --icon=./dist/assets/icon/logo.icns --ignore=/src",
-    "pack-linux": "electron-packager . --out=out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",
-    "pack-mas": "electron-packager . --out=out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json"
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -96,8 +90,6 @@
     "typescript": "3.7.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.2.0",
-    "@commitlint/config-conventional": "^8.2.0",
     "@types/final-form-focus": "^1.1.1",
     "@types/rc-slider": "^8.6.5",
     "@types/react-html-parser": "^2.0.1",
@@ -106,19 +98,10 @@
     "@types/styled-components": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
-    "cross-env": "^6.0.3",
-    "electron": "7.1.2",
-    "electron-packager": "^14.1.0",
-    "eslint": "^6.7.1",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
-    "eslint-plugin-react-hooks": "^2.3.0",
-    "husky": "^3.1.0",
-    "lerna": "^3.19.0",
-    "lint-staged": "^9.4.3",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^1.19.1"
+    "eslint-plugin-react-hooks": "^2.3.0"
   }
 }

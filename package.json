@@ -11,7 +11,7 @@
     "test": "lerna test",
     "electron": "electron .",
     "electron-build": "run-s build electron",
-    "pack-win": "electron-packager . --out=electron/out --overwrite --asar --platform=win32 --prune=true --ignore=\"(.vscode*|node_modules*|public*|src*)\"",
+    "pack-win": "electron-packager . --out=electron/out --overwrite --asar --platform=win32 --icon=./public/favicon.ico",
     "pack-osx": "electron-packager . --out=electron/out --overwrite --asar --platform=darwin --icon=./dist/assets/icon/logo.icns --ignore=/src",
     "pack-linux": "electron-packager . --out=electron/out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",
     "pack-mas": "electron-packager . --out=electron/out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json"
@@ -20,8 +20,16 @@
     "typescript": "3.7.2"
   },
   "devDependencies": {
-    "electron": "^7.1.2",
-    "electron-packager": "^14.1.0",
-    "lerna": "^3.19.0"
+    "@commitlint/cli": "^8.3.4",
+    "@commitlint/config-conventional": "^8.3.4",
+    "cross-env": "^6.0.3",
+    "electron": "^7.1.8",
+    "electron-packager": "^14.1.1",
+    "eslint": "^6.8.0",
+    "husky": "^4.0.5",
+    "lerna": "^3.19.0",
+    "lint-staged": "^9.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1"
   }
 }

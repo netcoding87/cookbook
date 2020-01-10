@@ -15,8 +15,8 @@ exports.Server = () => {
     }
 
     // setup database route
-    var dbfile = 'cookbook.json'
-    // dbfile = '.cookbook'
+    let dbfile = 'cookbook.json'
+    dbfile = '.cookbook'
     if (false && process.env.HOME !== '%HOMEDRIVE%%HOMEPATH%') {
       const userdir =
         process.env[process.platform == 'win32' ? 'USERPROFILE' : 'HOME']

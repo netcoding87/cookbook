@@ -1,6 +1,6 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
-const { Server } = require('./server')
+const { Server } = require('../packages/server/server')
 
 let server = Server()
 
