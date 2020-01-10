@@ -1,0 +1,53 @@
+scalar Date
+
+type VirtualMachine {
+  id: ID
+  name: String
+  status: String
+  created: Date
+}
+
+type RecipeData {
+  id: ID!
+  title: String!
+  subtitle: String
+  tags: String
+  ranking: Int!
+  servings: String
+  difficulty: Int!
+  preparationTime: String
+  cookingTime: String
+  restTime: String
+  preparations: String
+  source: String
+  categoryId: ID!
+}
+
+type CreateVirtualMachinePayload {
+  data: VirtualMachine!
+}
+
+type DeleteVirtualMachinePayload {
+  data: Boolean!
+}
+
+type Query {
+  recipes: [RecipeData!]!
+}
+
+type Mutation {
+  createVirtualMachine(
+    input: CreateVirtualMachineInput!
+  ): CreateVirtualMachinePayload!
+  deleteVirtualMachine(
+    input: DeleteVirtualMachineInput!
+  ): DeleteVirtualMachinePayload!
+}
+
+input CreateVirtualMachineInput {
+  name: String!
+}
+
+input DeleteVirtualMachineInput {
+  id: ID!
+}

@@ -1,0 +1,21 @@
+{
+  "name": "cb-schema",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "gql-gen",
+    "start": "gql-gen --watch"
+  },
+  "devDependencies": {
+    "@graphql-codegen/add": "1.11.2",
+    "@graphql-codegen/cli": "1.11.2",
+    "@graphql-codegen/typescript": "1.11.2",
+    "@graphql-codegen/typescript-operations": "1.11.2",
+    "@graphql-codegen/typescript-react-apollo": "1.11.2",
+    "@graphql-codegen/typescript-resolvers": "1.11.2",
+    "graphql-tag": "^2.10.1"
+  },
+  "dependencies": {
+    "@graphql-codegen/fragment-matcher": "1.11.2"
+  }
+}
