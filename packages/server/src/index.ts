@@ -1,9 +1,9 @@
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express'
 import express from 'express'
+
 import * as typeDefs from '../../schema/schema.graphql'
 import resolvers from './resolvers'
 import createContext from './utils/createContext'
-
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const PORT = process.env.PORT || 4321
