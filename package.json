@@ -5,7 +5,7 @@
   "private": true,
   "main": "./electron/main.js",
   "scripts": {
-    "start": "lerna run start",
+    "start": "lerna run start --parallel",
     "bootstrap": "lerna bootstrap",
     "build": "lerna build",
     "test": "lerna test",
