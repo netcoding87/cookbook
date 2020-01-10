@@ -1,12 +1,3 @@
-scalar Date
-
-type VirtualMachine {
-  id: ID
-  name: String
-  status: String
-  created: Date
-}
-
 type RecipeData {
   id: ID!
   title: String!
@@ -23,31 +14,6 @@ type RecipeData {
   categoryId: ID!
 }
 
-type CreateVirtualMachinePayload {
-  data: VirtualMachine!
-}
-
-type DeleteVirtualMachinePayload {
-  data: Boolean!
-}
-
 type Query {
   recipes: [RecipeData!]!
-}
-
-type Mutation {
-  createVirtualMachine(
-    input: CreateVirtualMachineInput!
-  ): CreateVirtualMachinePayload!
-  deleteVirtualMachine(
-    input: DeleteVirtualMachineInput!
-  ): DeleteVirtualMachinePayload!
-}
-
-input CreateVirtualMachineInput {
-  name: String!
-}
-
-input DeleteVirtualMachineInput {
-  id: ID!
 }
