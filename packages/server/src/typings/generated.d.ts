@@ -6,6 +6,7 @@
 import { GraphQLResolveInfo } from 'graphql';
 import { ContextType } from '../utils/createContext';
 export type Maybe<T> = T | null;
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -16,9 +17,42 @@ export type Scalars = {
   Float: number,
 };
 
+export type CategoryData = {
+   __typename?: 'CategoryData',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  parent: Scalars['ID'],
+};
+
+export type MeasureData = {
+   __typename?: 'MeasureData',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+};
+
 export type Query = {
    __typename?: 'Query',
+  categories: Array<CategoryData>,
+  category?: Maybe<CategoryData>,
+  measures: Array<MeasureData>,
+  measure?: Maybe<MeasureData>,
   recipes: Array<RecipeData>,
+  recipe?: Maybe<RecipeData>,
+};
+
+
+export type QueryCategoryArgs = {
+  id: Scalars['ID']
+};
+
+
+export type QueryMeasureArgs = {
+  id: Scalars['ID']
+};
+
+
+export type QueryRecipeArgs = {
+  id: Scalars['ID']
 };
 
 export type RecipeData = {
@@ -110,9 +144,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>,
-  RecipeData: ResolverTypeWrapper<RecipeData>,
+  CategoryData: ResolverTypeWrapper<CategoryData>,
   ID: ResolverTypeWrapper<Scalars['ID']>,
   String: ResolverTypeWrapper<Scalars['String']>,
+  MeasureData: ResolverTypeWrapper<MeasureData>,
+  RecipeData: ResolverTypeWrapper<RecipeData>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 };
@@ -120,15 +156,33 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Query: {},
-  RecipeData: RecipeData,
+  CategoryData: CategoryData,
   ID: Scalars['ID'],
   String: Scalars['String'],
+  MeasureData: MeasureData,
+  RecipeData: RecipeData,
   Int: Scalars['Int'],
   Boolean: Scalars['Boolean'],
 };
 
+export type CategoryDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CategoryData'] = ResolversParentTypes['CategoryData']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  parent?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+};
+
+export type MeasureDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['MeasureData'] = ResolversParentTypes['MeasureData']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
 export type QueryResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  categories?: Resolver<Array<ResolversTypes['CategoryData']>, ParentType, ContextType>,
+  category?: Resolver<Maybe<ResolversTypes['CategoryData']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>,
+  measures?: Resolver<Array<ResolversTypes['MeasureData']>, ParentType, ContextType>,
+  measure?: Resolver<Maybe<ResolversTypes['MeasureData']>, ParentType, ContextType, RequireFields<QueryMeasureArgs, 'id'>>,
   recipes?: Resolver<Array<ResolversTypes['RecipeData']>, ParentType, ContextType>,
+  recipe?: Resolver<Maybe<ResolversTypes['RecipeData']>, ParentType, ContextType, RequireFields<QueryRecipeArgs, 'id'>>,
 };
 
 export type RecipeDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['RecipeData'] = ResolversParentTypes['RecipeData']> = {
@@ -148,6 +202,8 @@ export type RecipeDataResolvers<ContextType = ContextType, ParentType extends Re
 };
 
 export type Resolvers<ContextType = ContextType> = {
+  CategoryData?: CategoryDataResolvers<ContextType>,
+  MeasureData?: MeasureDataResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   RecipeData?: RecipeDataResolvers<ContextType>,
 };

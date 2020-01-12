@@ -1,0 +1,12 @@
+{"_id":2,"name":"Hauptgerichte","parent":-1}
+{"_id":3,"name":"Suppen","parent":-1}
+{"_id":4,"name":"Salate","parent":-1}
+{"_id":5,"name":"Desserts","parent":-1}
+{"_id":6,"name":"Fingerfood / Snacks","parent":-1}
+{"_id":7,"name":"Kuchen","parent":-1}
+{"_id":8,"name":"Torte","parent":-1}
+{"_id":9,"name":"Kekse","parent":-1}
+{"_id":10,"name":"Getränke","parent":-1}
+{"_id":11,"name":"Sonstiges","parent":-1}
+{"_id":12,"name":"Dips","parent":12}
+{"_id":13,"name":"Saucen","parent":12}

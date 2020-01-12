@@ -1,3 +1,14 @@
+type CategoryData {
+  id: ID!
+  name: String!
+  parent: ID!
+}
+
+type MeasureData {
+  id: ID!
+  name: String!
+}
+
 type RecipeData {
   id: ID!
   title: String!
@@ -15,5 +26,12 @@ type RecipeData {
 }
 
 type Query {
+  categories: [CategoryData!]!
+  category(id: ID!): CategoryData
+
+  measures: [MeasureData!]!
+  measure(id: ID!): MeasureData
+
   recipes: [RecipeData!]!
+  recipe(id: ID!): RecipeData
 }
