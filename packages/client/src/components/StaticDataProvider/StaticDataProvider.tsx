@@ -1,7 +1,7 @@
 import React from 'react'
-import useSWR from 'swr'
-
 import { CategoryData, MeasureData } from '../../interfaces'
+import { useCategoriesQuery, useMeasuresQuery } from '../../typings/generated.d'
+
 
 interface StaticData {
   categories: CategoryData[]
@@ -14,15 +14,9 @@ const StaticDataContext = React.createContext<StaticData>({
 })
 
 const StaticDataProvider: React.FC = ({ children }) => {
-  const { data: measures } = useSWR<MeasureData[]>(
-    `http://localhost:4000/measures`,
-    url => fetch(url).then(response => response.json())
-  )
+  const { data: measures } = useMeasuresQuery()
 
-  const { data: categories } = useSWR<CategoryData[]>(
-    `http://localhost:4000/categories`,
-    url => fetch(url).then(response => response.json())
-  )
+  const { data: categories } = useCategoriesQuery()
 
   if (!measures || !categories) {
     return <div>Loading...</div>
@@ -30,7 +24,7 @@ const StaticDataProvider: React.FC = ({ children }) => {
 
   return (
     <StaticDataContext.Provider
-      value={{ categories: categories, measures: measures }}
+      value={{ categories: categories.categories, measures: measures.measures }}
     >
       {children}
     </StaticDataContext.Provider>

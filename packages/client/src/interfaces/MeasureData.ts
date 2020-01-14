@@ -1,4 +1,4 @@
 export interface MeasureData {
-  id: number
+  id: string
   name: string
 }

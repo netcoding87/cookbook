@@ -5,14 +5,14 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Table from 'react-bootstrap/Table'
 import Select, { ValueType } from 'react-select'
-
 import { IngredientData } from '../../../interfaces'
 import { useStaticData } from '../../StaticDataProvider'
 import { Input } from '../RecipeEditForm.styles'
 
+
 type addIngredient = (
   amount: string,
-  measureId: number,
+  measureId: string,
   ingredient: string
 ) => void
 
@@ -81,7 +81,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
   onChange,
 }) => {
   const [amount, setAmount] = useState('')
-  const [measure, setMeasure] = useState(0)
+  const [measure, setMeasure] = useState('')
   const [ingredient, setIngredient] = useState('')
 
   const { measures } = useStaticData()
@@ -94,7 +94,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
   const handleIngredientAdd = () => {
     onAdd(amount, measure, ingredient)
     setAmount('')
-    setMeasure(0)
+    setMeasure('')
     setIngredient('')
   }
 

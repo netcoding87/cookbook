@@ -2,6 +2,6 @@ export interface IngredientData {
   id: number
   amount?: string
   ingredient: string
-  measureId: number
+  measureId: string
   recipeId: number
 }

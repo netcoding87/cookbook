@@ -11,5 +11,5 @@ export interface RecipeData {
   restTime?: string
   preparations?: string
   source?: string
-  categoryId: number
+  categoryId: string
 }

@@ -15,20 +15,15 @@ import { Field, Form, FormSpy } from 'react-final-form'
 import { useHistory } from 'react-router-dom'
 import Select, { ValueType } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
-
 import { useTags } from '../../hooks'
 import { IngredientData, RecipeData } from '../../interfaces'
 import { ActionBar } from '../ActionBar'
 import Rating from '../Rating'
-import Editor from './Editor'
 import { useStaticData } from '../StaticDataProvider'
+import Editor from './Editor'
 import IngredientsEditor from './IngredientsEditor'
-import {
-  ImageContainer,
-  Input,
-  RatingContainer,
-  UploadButton,
-} from './RecipeEditForm.styles'
+import { ImageContainer, Input, RatingContainer, UploadButton } from './RecipeEditForm.styles'
+
 
 const tagSeparator = ','
 
@@ -119,7 +114,7 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
 
   const handleIngredientAdd = (
     amount: string,
-    measureId: number,
+    measureId: string,
     ingredient: string
   ) => {
     setIngredients(ingredients => {

@@ -1,15 +1,15 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-
 import { IngredientData, RecipeData } from '../../interfaces'
 import Layout from '../Layout'
 import RecipeEditForm from '../RecipeEditForm'
+
 
 const RecipeNew: React.FC = () => {
   const recipe: RecipeData = {
     id: -1,
     title: '',
-    categoryId: 2,
+    categoryId: '2',
     difficulty: 0,
     ranking: 3,
   }
