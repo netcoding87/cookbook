@@ -1,14 +1,13 @@
 import { getAll } from '../../database/measures'
+import { MeasureData } from '../../typings/generated'
 
-type Measure = { id: number; name: string }
-
-const listMeasures = async () => {
+const listMeasures = async (): Promise<MeasureData[]> => {
   const response = await getAll()
 
-  const entries: Measure[] = []
+  const entries: MeasureData[] = []
   response.map(item => {
     entries.push({
-      id: item._id,
+      id: item._id.toString(),
       name: item.name,
     })
   })
