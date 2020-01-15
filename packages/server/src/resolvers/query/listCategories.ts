@@ -1,16 +1,15 @@
 import { getAll } from '../../database/categories'
+import { CategoryData } from '../../typings/generated'
 
-type Category = { id: number; name: string; parent: number }
-
-const listCategories = async () => {
+const listCategories = async (): Promise<CategoryData[]> => {
   const response = await getAll()
 
-  const entries: Category[] = []
+  const entries: CategoryData[] = []
   response.map(item => {
     entries.push({
-      id: item._id,
+      id: item._id.toString(),
       name: item.name,
-      parent: item.parent,
+      parent: item.parent.toString(),
     })
   })
 

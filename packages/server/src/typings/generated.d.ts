@@ -24,16 +24,72 @@ export type CategoryData = {
   parent: Scalars['ID'],
 };
 
+export type CreateImageInput = {
+  image: Scalars['String'],
+  recipe: Scalars['ID'],
+};
+
+export type CreateImagePayload = {
+   __typename?: 'CreateImagePayload',
+  data: ImageData,
+};
+
+export type CreateRecipeInput = {
+  title?: Maybe<Scalars['String']>,
+  category: Scalars['ID'],
+};
+
+export type CreateRecipePayload = {
+   __typename?: 'CreateRecipePayload',
+  data: RecipeData,
+};
+
+export type ImageData = {
+   __typename?: 'ImageData',
+  id: Scalars['ID'],
+  image: Scalars['String'],
+  recipe: Scalars['ID'],
+};
+
 export type MeasureData = {
    __typename?: 'MeasureData',
   id: Scalars['ID'],
   name: Scalars['String'],
 };
 
+export type Mutation = {
+   __typename?: 'Mutation',
+  createImage: CreateImagePayload,
+  removeImage: RemoveImagePayload,
+  updateImage: UpdateImagePayload,
+  createRecipe: CreateRecipePayload,
+};
+
+
+export type MutationCreateImageArgs = {
+  input: CreateImageInput
+};
+
+
+export type MutationRemoveImageArgs = {
+  input: RemoveImageInput
+};
+
+
+export type MutationUpdateImageArgs = {
+  input: UpdateImageInput
+};
+
+
+export type MutationCreateRecipeArgs = {
+  input: CreateRecipeInput
+};
+
 export type Query = {
    __typename?: 'Query',
   categories: Array<CategoryData>,
   category?: Maybe<CategoryData>,
+  image?: Maybe<ImageData>,
   measures: Array<MeasureData>,
   measure?: Maybe<MeasureData>,
   recipes: Array<RecipeData>,
@@ -43,6 +99,11 @@ export type Query = {
 
 export type QueryCategoryArgs = {
   id: Scalars['ID']
+};
+
+
+export type QueryImageArgs = {
+  recipeId: Scalars['ID']
 };
 
 
@@ -69,7 +130,27 @@ export type RecipeData = {
   restTime?: Maybe<Scalars['String']>,
   preparations?: Maybe<Scalars['String']>,
   source?: Maybe<Scalars['String']>,
-  categoryId: Scalars['ID'],
+  category: CategoryData,
+};
+
+export type RemoveImageInput = {
+  id: Scalars['ID'],
+};
+
+export type RemoveImagePayload = {
+   __typename?: 'RemoveImagePayload',
+  data: Scalars['Boolean'],
+};
+
+export type UpdateImageInput = {
+  id: Scalars['ID'],
+  image: Scalars['String'],
+  recipe: Scalars['ID'],
+};
+
+export type UpdateImagePayload = {
+   __typename?: 'UpdateImagePayload',
+  data: Scalars['Boolean'],
 };
 
 
@@ -147,10 +228,20 @@ export type ResolversTypes = {
   CategoryData: ResolverTypeWrapper<CategoryData>,
   ID: ResolverTypeWrapper<Scalars['ID']>,
   String: ResolverTypeWrapper<Scalars['String']>,
+  ImageData: ResolverTypeWrapper<ImageData>,
   MeasureData: ResolverTypeWrapper<MeasureData>,
   RecipeData: ResolverTypeWrapper<RecipeData>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
+  Mutation: ResolverTypeWrapper<{}>,
+  CreateImageInput: CreateImageInput,
+  CreateImagePayload: ResolverTypeWrapper<CreateImagePayload>,
+  RemoveImageInput: RemoveImageInput,
+  RemoveImagePayload: ResolverTypeWrapper<RemoveImagePayload>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
+  UpdateImageInput: UpdateImageInput,
+  UpdateImagePayload: ResolverTypeWrapper<UpdateImagePayload>,
+  CreateRecipeInput: CreateRecipeInput,
+  CreateRecipePayload: ResolverTypeWrapper<CreateRecipePayload>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -159,10 +250,20 @@ export type ResolversParentTypes = {
   CategoryData: CategoryData,
   ID: Scalars['ID'],
   String: Scalars['String'],
+  ImageData: ImageData,
   MeasureData: MeasureData,
   RecipeData: RecipeData,
   Int: Scalars['Int'],
+  Mutation: {},
+  CreateImageInput: CreateImageInput,
+  CreateImagePayload: CreateImagePayload,
+  RemoveImageInput: RemoveImageInput,
+  RemoveImagePayload: RemoveImagePayload,
   Boolean: Scalars['Boolean'],
+  UpdateImageInput: UpdateImageInput,
+  UpdateImagePayload: UpdateImagePayload,
+  CreateRecipeInput: CreateRecipeInput,
+  CreateRecipePayload: CreateRecipePayload,
 };
 
 export type CategoryDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CategoryData'] = ResolversParentTypes['CategoryData']> = {
@@ -171,14 +272,36 @@ export type CategoryDataResolvers<ContextType = ContextType, ParentType extends 
   parent?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
 };
 
+export type CreateImagePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CreateImagePayload'] = ResolversParentTypes['CreateImagePayload']> = {
+  data?: Resolver<ResolversTypes['ImageData'], ParentType, ContextType>,
+};
+
+export type CreateRecipePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CreateRecipePayload'] = ResolversParentTypes['CreateRecipePayload']> = {
+  data?: Resolver<ResolversTypes['RecipeData'], ParentType, ContextType>,
+};
+
+export type ImageDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['ImageData'] = ResolversParentTypes['ImageData']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  recipe?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+};
+
 export type MeasureDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['MeasureData'] = ResolversParentTypes['MeasureData']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 };
 
+export type MutationResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createImage?: Resolver<ResolversTypes['CreateImagePayload'], ParentType, ContextType, RequireFields<MutationCreateImageArgs, 'input'>>,
+  removeImage?: Resolver<ResolversTypes['RemoveImagePayload'], ParentType, ContextType, RequireFields<MutationRemoveImageArgs, 'input'>>,
+  updateImage?: Resolver<ResolversTypes['UpdateImagePayload'], ParentType, ContextType, RequireFields<MutationUpdateImageArgs, 'input'>>,
+  createRecipe?: Resolver<ResolversTypes['CreateRecipePayload'], ParentType, ContextType, RequireFields<MutationCreateRecipeArgs, 'input'>>,
+};
+
 export type QueryResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   categories?: Resolver<Array<ResolversTypes['CategoryData']>, ParentType, ContextType>,
   category?: Resolver<Maybe<ResolversTypes['CategoryData']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>,
+  image?: Resolver<Maybe<ResolversTypes['ImageData']>, ParentType, ContextType, RequireFields<QueryImageArgs, 'recipeId'>>,
   measures?: Resolver<Array<ResolversTypes['MeasureData']>, ParentType, ContextType>,
   measure?: Resolver<Maybe<ResolversTypes['MeasureData']>, ParentType, ContextType, RequireFields<QueryMeasureArgs, 'id'>>,
   recipes?: Resolver<Array<ResolversTypes['RecipeData']>, ParentType, ContextType>,
@@ -198,14 +321,28 @@ export type RecipeDataResolvers<ContextType = ContextType, ParentType extends Re
   restTime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   preparations?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   source?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  categoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  category?: Resolver<ResolversTypes['CategoryData'], ParentType, ContextType>,
+};
+
+export type RemoveImagePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['RemoveImagePayload'] = ResolversParentTypes['RemoveImagePayload']> = {
+  data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+};
+
+export type UpdateImagePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['UpdateImagePayload'] = ResolversParentTypes['UpdateImagePayload']> = {
+  data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };
 
 export type Resolvers<ContextType = ContextType> = {
   CategoryData?: CategoryDataResolvers<ContextType>,
+  CreateImagePayload?: CreateImagePayloadResolvers<ContextType>,
+  CreateRecipePayload?: CreateRecipePayloadResolvers<ContextType>,
+  ImageData?: ImageDataResolvers<ContextType>,
   MeasureData?: MeasureDataResolvers<ContextType>,
+  Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   RecipeData?: RecipeDataResolvers<ContextType>,
+  RemoveImagePayload?: RemoveImagePayloadResolvers<ContextType>,
+  UpdateImagePayload?: UpdateImagePayloadResolvers<ContextType>,
 };
 
 

@@ -24,16 +24,72 @@ export type CategoryData = {
   parent: Scalars['ID'],
 };
 
+export type CreateImageInput = {
+  image: Scalars['String'],
+  recipe: Scalars['ID'],
+};
+
+export type CreateImagePayload = {
+   __typename?: 'CreateImagePayload',
+  data: ImageData,
+};
+
+export type CreateRecipeInput = {
+  title?: Maybe<Scalars['String']>,
+  category: Scalars['ID'],
+};
+
+export type CreateRecipePayload = {
+   __typename?: 'CreateRecipePayload',
+  data: RecipeData,
+};
+
+export type ImageData = {
+   __typename?: 'ImageData',
+  id: Scalars['ID'],
+  image: Scalars['String'],
+  recipe: Scalars['ID'],
+};
+
 export type MeasureData = {
    __typename?: 'MeasureData',
   id: Scalars['ID'],
   name: Scalars['String'],
 };
 
+export type Mutation = {
+   __typename?: 'Mutation',
+  createImage: CreateImagePayload,
+  removeImage: RemoveImagePayload,
+  updateImage: UpdateImagePayload,
+  createRecipe: CreateRecipePayload,
+};
+
+
+export type MutationCreateImageArgs = {
+  input: CreateImageInput
+};
+
+
+export type MutationRemoveImageArgs = {
+  input: RemoveImageInput
+};
+
+
+export type MutationUpdateImageArgs = {
+  input: UpdateImageInput
+};
+
+
+export type MutationCreateRecipeArgs = {
+  input: CreateRecipeInput
+};
+
 export type Query = {
    __typename?: 'Query',
   categories: Array<CategoryData>,
   category?: Maybe<CategoryData>,
+  image?: Maybe<ImageData>,
   measures: Array<MeasureData>,
   measure?: Maybe<MeasureData>,
   recipes: Array<RecipeData>,
@@ -43,6 +99,11 @@ export type Query = {
 
 export type QueryCategoryArgs = {
   id: Scalars['ID']
+};
+
+
+export type QueryImageArgs = {
+  recipeId: Scalars['ID']
 };
 
 
@@ -69,7 +130,27 @@ export type RecipeData = {
   restTime?: Maybe<Scalars['String']>,
   preparations?: Maybe<Scalars['String']>,
   source?: Maybe<Scalars['String']>,
-  categoryId: Scalars['ID'],
+  category: CategoryData,
+};
+
+export type RemoveImageInput = {
+  id: Scalars['ID'],
+};
+
+export type RemoveImagePayload = {
+   __typename?: 'RemoveImagePayload',
+  data: Scalars['Boolean'],
+};
+
+export type UpdateImageInput = {
+  id: Scalars['ID'],
+  image: Scalars['String'],
+  recipe: Scalars['ID'],
+};
+
+export type UpdateImagePayload = {
+   __typename?: 'UpdateImagePayload',
+  data: Scalars['Boolean'],
 };
 
 export type CategoriesQueryVariables = {};

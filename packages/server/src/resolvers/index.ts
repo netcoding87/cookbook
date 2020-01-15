@@ -1,17 +1,32 @@
+import createImage from './mutation/createImage'
+import createRecipe from './mutation/createRecipe'
+import removeImage from './mutation/removeImage'
+import updateImage from './mutation/updateImage'
 import listCategories from './query/listCategories'
+import listImage from './query/listImage'
 import listMeasures from './query/listMeasures'
-import listRecipes from './query/listRecipes'
+import { listRecipe, listRecipes } from './query/listRecipes'
 
 const resolvers = {
   Query: {
     categories: listCategories,
     category: listCategories,
 
+    image: listImage,
+
     measures: listMeasures,
     measure: listMeasures,
 
     recipes: listRecipes,
-    recipe: listRecipes,
+    recipe: listRecipe,
+  },
+
+  Mutation: {
+    createImage: createImage,
+    removeImage: removeImage,
+    updateImage: updateImage,
+
+    createRecipe: createRecipe,
   },
 }
 

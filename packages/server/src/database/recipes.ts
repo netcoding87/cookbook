@@ -8,28 +8,35 @@ const db = new Datastore({
   autoload: true,
 })
 
-export const addRecipe = () => {
-  const doc = {
-    hello: 'world',
-    n: 5,
-    today: new Date(),
-    nedbIsAwesome: true,
-    notthere: null,
-    notToBeSaved: undefined, // Will not be saved
-    fruits: ['apple', 'orange', 'pear'],
-    infos: { name: 'nedb' },
-  }
-
-  db.insert(doc)
+export interface Recipe {
+  _id: string
+  title: string
+  category: string
 }
 
-export const deleteRecipe = (id: string) => {
+export const add = (title: string, category: string): Promise<Recipe> => {
+  return new Promise(resolve => {
+    const tmp: Recipe = {
+      _id: '',
+      title,
+      category,
+    }
+
+    delete tmp['_id']
+
+    db.insert(tmp, (err, doc) => {
+      resolve(doc)
+    })
+  })
+}
+
+export const remove = (id: string) => {
   db.remove({ id: id }, {}, (err, number) => {
     console.log(`Removed ${number} entries from database`)
   })
 }
 
-export const getRecipes = fnc => {
+export const getAll = fnc => {
   // Get all recipes from the database
   db.find({}, function(err, docs) {
     // Execute the parameter function
@@ -37,8 +44,10 @@ export const getRecipes = fnc => {
   })
 }
 
-export const getRecipeById = (id: string, callback: (doc: any) => void) => {
-  db.findOne({ _id: id }, (err, doc) => {
-    callback(doc)
+export const getById = (id: number): Promise<Recipe | null> => {
+  return new Promise(resolve => {
+    db.findOne({ _id: id }, (err, doc) => {
+      resolve(doc)
+    })
   })
 }
