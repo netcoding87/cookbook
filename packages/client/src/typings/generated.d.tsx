@@ -63,6 +63,7 @@ export type Mutation = {
   removeImage: RemoveImagePayload,
   updateImage: UpdateImagePayload,
   createRecipe: CreateRecipePayload,
+  removeRecipe: RemoveRecipePayload,
 };
 
 
@@ -83,6 +84,11 @@ export type MutationUpdateImageArgs = {
 
 export type MutationCreateRecipeArgs = {
   input: CreateRecipeInput
+};
+
+
+export type MutationRemoveRecipeArgs = {
+  input: RemoveRecipeInput
 };
 
 export type Query = {
@@ -139,6 +145,15 @@ export type RemoveImageInput = {
 
 export type RemoveImagePayload = {
    __typename?: 'RemoveImagePayload',
+  data: Scalars['Boolean'],
+};
+
+export type RemoveRecipeInput = {
+  id: Scalars['ID'],
+};
+
+export type RemoveRecipePayload = {
+   __typename?: 'RemoveRecipePayload',
   data: Scalars['Boolean'],
 };
 

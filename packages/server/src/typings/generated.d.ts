@@ -63,6 +63,7 @@ export type Mutation = {
   removeImage: RemoveImagePayload,
   updateImage: UpdateImagePayload,
   createRecipe: CreateRecipePayload,
+  removeRecipe: RemoveRecipePayload,
 };
 
 
@@ -83,6 +84,11 @@ export type MutationUpdateImageArgs = {
 
 export type MutationCreateRecipeArgs = {
   input: CreateRecipeInput
+};
+
+
+export type MutationRemoveRecipeArgs = {
+  input: RemoveRecipeInput
 };
 
 export type Query = {
@@ -139,6 +145,15 @@ export type RemoveImageInput = {
 
 export type RemoveImagePayload = {
    __typename?: 'RemoveImagePayload',
+  data: Scalars['Boolean'],
+};
+
+export type RemoveRecipeInput = {
+  id: Scalars['ID'],
+};
+
+export type RemoveRecipePayload = {
+   __typename?: 'RemoveRecipePayload',
   data: Scalars['Boolean'],
 };
 
@@ -242,6 +257,8 @@ export type ResolversTypes = {
   UpdateImagePayload: ResolverTypeWrapper<UpdateImagePayload>,
   CreateRecipeInput: CreateRecipeInput,
   CreateRecipePayload: ResolverTypeWrapper<CreateRecipePayload>,
+  RemoveRecipeInput: RemoveRecipeInput,
+  RemoveRecipePayload: ResolverTypeWrapper<RemoveRecipePayload>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -264,6 +281,8 @@ export type ResolversParentTypes = {
   UpdateImagePayload: UpdateImagePayload,
   CreateRecipeInput: CreateRecipeInput,
   CreateRecipePayload: CreateRecipePayload,
+  RemoveRecipeInput: RemoveRecipeInput,
+  RemoveRecipePayload: RemoveRecipePayload,
 };
 
 export type CategoryDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CategoryData'] = ResolversParentTypes['CategoryData']> = {
@@ -296,6 +315,7 @@ export type MutationResolvers<ContextType = ContextType, ParentType extends Reso
   removeImage?: Resolver<ResolversTypes['RemoveImagePayload'], ParentType, ContextType, RequireFields<MutationRemoveImageArgs, 'input'>>,
   updateImage?: Resolver<ResolversTypes['UpdateImagePayload'], ParentType, ContextType, RequireFields<MutationUpdateImageArgs, 'input'>>,
   createRecipe?: Resolver<ResolversTypes['CreateRecipePayload'], ParentType, ContextType, RequireFields<MutationCreateRecipeArgs, 'input'>>,
+  removeRecipe?: Resolver<ResolversTypes['RemoveRecipePayload'], ParentType, ContextType, RequireFields<MutationRemoveRecipeArgs, 'input'>>,
 };
 
 export type QueryResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -328,6 +348,10 @@ export type RemoveImagePayloadResolvers<ContextType = ContextType, ParentType ex
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };
 
+export type RemoveRecipePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['RemoveRecipePayload'] = ResolversParentTypes['RemoveRecipePayload']> = {
+  data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+};
+
 export type UpdateImagePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['UpdateImagePayload'] = ResolversParentTypes['UpdateImagePayload']> = {
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };
@@ -342,6 +366,7 @@ export type Resolvers<ContextType = ContextType> = {
   Query?: QueryResolvers<ContextType>,
   RecipeData?: RecipeDataResolvers<ContextType>,
   RemoveImagePayload?: RemoveImagePayloadResolvers<ContextType>,
+  RemoveRecipePayload?: RemoveRecipePayloadResolvers<ContextType>,
   UpdateImagePayload?: UpdateImagePayloadResolvers<ContextType>,
 };
 

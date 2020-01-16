@@ -1,13 +1,33 @@
 import { getById as getCategoryById } from '../../database/categories'
-import { getById as getRecipeById } from '../../database/recipes'
+import { getAll, getById as getRecipeById } from '../../database/recipes'
 import { RecipeData } from '../../typings/generated'
 import { ContextType } from '../../utils/createContext'
 
-export const listRecipes: any = (root, { input }, ctx: ContextType) => {
-  return [
-    { id: 1, title: 'Recipe One' },
-    { id: 2, title: 'Recipe Two' },
-  ]
+export const listRecipes = async (
+  root,
+  { input },
+  ctx: ContextType
+): Promise<RecipeData[]> => {
+  const recipes = await getAll()
+  recipes.map(async recipe => {
+    const category = await getCategoryById(
+      recipe ? parseInt(recipe.category) : 0
+    )
+    console.log(`Category for Recipe ${recipe._id}: ${category?.name}`)
+  })
+
+  console.log('here')
+  return recipes.map(recipe => ({
+    id: recipe._id,
+    title: recipe.title,
+    ranking: 5,
+    difficulty: 0,
+    category: {
+      id: '',
+      name: '',
+      parent: '',
+    },
+  }))
 }
 
 export const listRecipe = async (

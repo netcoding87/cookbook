@@ -30,17 +30,11 @@ export const add = (title: string, category: string): Promise<Recipe> => {
   })
 }
 
-export const remove = (id: string) => {
-  db.remove({ id: id }, {}, (err, number) => {
-    console.log(`Removed ${number} entries from database`)
-  })
-}
-
-export const getAll = fnc => {
-  // Get all recipes from the database
-  db.find({}, function(err, docs) {
-    // Execute the parameter function
-    fnc(docs)
+export const getAll = (): Promise<Recipe[]> => {
+  return new Promise(resolve => {
+    db.find({}, (err, docs) => {
+      resolve(docs)
+    })
   })
 }
 
@@ -48,6 +42,14 @@ export const getById = (id: number): Promise<Recipe | null> => {
   return new Promise(resolve => {
     db.findOne({ _id: id }, (err, doc) => {
       resolve(doc)
+    })
+  })
+}
+
+export const remove = (id: string): Promise<number> => {
+  return new Promise(resolve => {
+    db.remove({ _id: id }, (err, number) => {
+      resolve(number)
     })
   })
 }
