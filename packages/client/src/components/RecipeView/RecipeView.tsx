@@ -20,7 +20,7 @@ import { Gutter, ImageContainer, NonPrint } from './RecipeView.styles'
 
 const RecipeView: React.FC = () => {
   const history = useHistory()
-  const { id } = useParams()
+  const { id, title } = useParams()
   const { data } = useSWR<RecipeData>(
     `http://localhost:4000/recipes/${id}`,
     url => fetch(url).then(response => response.json())
@@ -48,6 +48,11 @@ const RecipeView: React.FC = () => {
 
   if (!data) {
     return <div>Loading...</div>
+  }
+
+  if (data.title !== title) {
+    // TODO: Return NotFoundPage when implemented
+    return <div>Invalid!</div>
   }
 
   const difficulty =
@@ -106,7 +111,7 @@ const RecipeView: React.FC = () => {
             >
               <FontAwesomeIcon icon={['fas', 'print']} /> Drucken
             </Button>
-            <Link to={`/recipe/${id}/edit`}>
+            <Link to={`/recipe/${id}/${data.title}/edit`}>
               <Button variant="outline-secondary">
                 <FontAwesomeIcon icon={['fas', 'edit']} /> Bearbeiten
               </Button>

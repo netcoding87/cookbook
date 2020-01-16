@@ -9,7 +9,7 @@ import RecipeEditForm from '../RecipeEditForm'
 
 const RecipeEdit: React.FC = () => {
   const history = useHistory()
-  const { id } = useParams()
+  const { id, title } = useParams()
 
   const [image, setImage] = useState('')
 
@@ -90,13 +90,18 @@ const RecipeEdit: React.FC = () => {
     }
 
     // Redirect
-    history.push(`/recipe/${id}`)
+    history.push(`/recipe/${id}/${values.title}`)
   }
 
   console.log(`ImageLoading: ${imageLoading}`)
 
   if (!recipe || !dbIngredients) {
     return <div>Loading...</div>
+  }
+
+  if (recipe.title !== title) {
+    // TODO: Return NotFoundPage when implemented
+    return <div>Invalid!</div>
   }
 
   return (

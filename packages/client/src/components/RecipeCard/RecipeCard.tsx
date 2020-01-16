@@ -18,7 +18,7 @@ interface RecipeCardProps {
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, cardWidth }) => {
   return (
     <RecipeCardContainer width={cardWidth}>
-      <RecipeCardLink to={`/recipe/${recipe.id}`}>
+      <RecipeCardLink to={`/recipe/${recipe.id}/${recipe.title}`}>
         <ImageContainer>
           <RecipeCardImage id={recipe.id.toString()} title={recipe.title} />
         </ImageContainer>
