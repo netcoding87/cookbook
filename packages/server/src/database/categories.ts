@@ -9,9 +9,9 @@ const db = new Datastore({
 })
 
 export interface Category {
-  _id: number
+  _id: string
   name: string
-  parent: number
+  parent: string
 }
 
 export const getAll = (): Promise<Category[]> => {
