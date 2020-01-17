@@ -22,14 +22,10 @@ export const getAll = (): Promise<Category[]> => {
   })
 }
 
-export const getById = (id: number): Promise<Category | null> => {
+export const getById = (id: string): Promise<Category | null> => {
   return new Promise(resolve => {
-    setTimeout(
-      () =>
-        db.findOne({ _id: id }, (err, doc) => {
-          resolve(doc)
-        }),
-      5000
-    )
+    db.findOne({ _id: id }, (err, doc) => {
+      resolve(doc)
+    })
   })
 }

@@ -9,25 +9,24 @@ export const listRecipes = async (
   ctx: ContextType
 ): Promise<RecipeData[]> => {
   const recipes = await getAll()
-  recipes.map(async recipe => {
-    const category = await getCategoryById(
-      recipe ? parseInt(recipe.category) : 0
-    )
-    console.log(`Category for Recipe ${recipe._id}: ${category?.name}`)
-  })
 
-  console.log('here')
-  return recipes.map(recipe => ({
-    id: recipe._id,
-    title: recipe.title,
-    ranking: 5,
-    difficulty: 0,
-    category: {
-      id: '',
-      name: '',
-      parent: '',
-    },
-  }))
+  return await Promise.all(
+    recipes.map(async recipe => {
+      const category = await getCategoryById(recipe.category)
+
+      return {
+        id: recipe._id,
+        title: recipe.title,
+        ranking: 5,
+        difficulty: 0,
+        category: {
+          id: category ? category._id : '',
+          name: category ? category.name : '',
+          parent: category ? category.parent : '',
+        },
+      }
+    })
+  )
 }
 
 export const listRecipe = async (
@@ -36,7 +35,7 @@ export const listRecipe = async (
   ctx: ContextType
 ): Promise<RecipeData | null> => {
   const recipe = await getRecipeById(params.id)
-  const category = await getCategoryById(recipe ? parseInt(recipe.category) : 0)
+  const category = await getCategoryById(recipe ? recipe.category : '')
 
   return recipe
     ? {
@@ -45,9 +44,9 @@ export const listRecipe = async (
         ranking: 5,
         difficulty: 0,
         category: {
-          id: category ? category._id.toString() : '',
+          id: category ? category._id : '',
           name: category ? category.name : '',
-          parent: category ? category.parent.toString() : '',
+          parent: category ? category.parent : '',
         },
       }
     : null
