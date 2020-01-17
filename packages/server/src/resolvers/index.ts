@@ -3,6 +3,7 @@ import createRecipe from './mutation/createRecipe'
 import removeImage from './mutation/removeImage'
 import removeRecipe from './mutation/removeRecipe'
 import updateImage from './mutation/updateImage'
+import updateRecipe from './mutation/updateRecipe'
 import listCategories from './query/listCategories'
 import listImage from './query/listImage'
 import listMeasures from './query/listMeasures'
@@ -29,6 +30,7 @@ const resolvers = {
 
     createRecipe: createRecipe,
     removeRecipe: removeRecipe,
+    updateRecipe: updateRecipe,
   },
 }
 

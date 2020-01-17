@@ -35,7 +35,7 @@ export type CreateImagePayload = {
 };
 
 export type CreateRecipeInput = {
-  title?: Maybe<Scalars['String']>,
+  title: Scalars['String'],
   category: Scalars['ID'],
 };
 
@@ -64,6 +64,7 @@ export type Mutation = {
   updateImage: UpdateImagePayload,
   createRecipe: CreateRecipePayload,
   removeRecipe: RemoveRecipePayload,
+  updateRecipe: UpdateRecipePayload,
 };
 
 
@@ -89,6 +90,11 @@ export type MutationCreateRecipeArgs = {
 
 export type MutationRemoveRecipeArgs = {
   input: RemoveRecipeInput
+};
+
+
+export type MutationUpdateRecipeArgs = {
+  input: UpdateRecipeInput
 };
 
 export type Query = {
@@ -165,6 +171,17 @@ export type UpdateImageInput = {
 
 export type UpdateImagePayload = {
    __typename?: 'UpdateImagePayload',
+  data: Scalars['Boolean'],
+};
+
+export type UpdateRecipeInput = {
+  id: Scalars['ID'],
+  title: Scalars['String'],
+  category: Scalars['ID'],
+};
+
+export type UpdateRecipePayload = {
+   __typename?: 'UpdateRecipePayload',
   data: Scalars['Boolean'],
 };
 

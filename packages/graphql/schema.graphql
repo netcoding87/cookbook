@@ -51,6 +51,7 @@ type Mutation {
 
   createRecipe(input: CreateRecipeInput!): CreateRecipePayload!
   removeRecipe(input: RemoveRecipeInput!): RemoveRecipePayload!
+  updateRecipe(input: UpdateRecipeInput!): UpdateRecipePayload!
 }
 
 input CreateImageInput {
@@ -81,7 +82,7 @@ type UpdateImagePayload {
 }
 
 input CreateRecipeInput {
-  title: String
+  title: String!
   category: ID!
 }
 
@@ -89,10 +90,20 @@ input RemoveRecipeInput {
   id: ID!
 }
 
+input UpdateRecipeInput {
+  id: ID!
+  title: String!
+  category: ID!
+}
+
 type CreateRecipePayload {
   data: RecipeData!
 }
 
 type RemoveRecipePayload {
+  data: Boolean!
+}
+
+type UpdateRecipePayload {
   data: Boolean!
 }
