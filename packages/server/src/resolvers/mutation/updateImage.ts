@@ -1,6 +1,11 @@
 import { update } from '../../database/images'
+import { UpdateImagePayload } from '../../typings/generated'
 
-const updateImage = async (root, { input }, ctx) => {
+const updateImage = async (
+  root,
+  { input },
+  ctx
+): Promise<UpdateImagePayload> => {
   const number = await update({
     _id: input.id,
     image: input.image,
