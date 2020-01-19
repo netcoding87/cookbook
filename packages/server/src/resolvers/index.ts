@@ -12,13 +12,8 @@ import { listRecipe, listRecipes } from './query/listRecipes'
 const resolvers = {
   Query: {
     categories: listCategories,
-    category: listCategories,
-
     image: listImage,
-
     measures: listMeasures,
-    measure: listMeasures,
-
     recipes: listRecipes,
     recipe: listRecipe,
   },

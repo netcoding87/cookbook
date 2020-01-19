@@ -10,6 +10,13 @@ type ImageData {
   recipe: ID!
 }
 
+type IngredientData {
+  id: ID!
+  amount: String
+  ingredient: String!
+  measure: MeasureData!
+}
+
 type MeasureData {
   id: ID!
   name: String!
@@ -29,17 +36,13 @@ type RecipeData {
   preparations: String
   source: String
   category: CategoryData!
+  ingredients: [IngredientData!]!
 }
 
 type Query {
   categories: [CategoryData!]!
-  category(id: ID!): CategoryData
-
   image(recipeId: ID!): ImageData
-
   measures: [MeasureData!]!
-  measure(id: ID!): MeasureData
-
   recipes: [RecipeData!]!
   recipe(id: ID!): RecipeData
 }

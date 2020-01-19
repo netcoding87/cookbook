@@ -24,6 +24,17 @@ export const listRecipes = async (
           name: category ? category.name : '',
           parent: category ? category.parent : '',
         },
+        ingredients: [
+          {
+            id: '123',
+            amount: '200',
+            measure: {
+              id: '1',
+              name: 'g',
+            },
+            ingredient: 'Zucker',
+          },
+        ],
       }
     })
   )
@@ -48,6 +59,17 @@ export const listRecipe = async (
           name: category ? category.name : '',
           parent: category ? category.parent : '',
         },
+        ingredients: [
+          {
+            id: '123',
+            amount: '200',
+            measure: {
+              id: '1',
+              name: 'g',
+            },
+            ingredient: 'Zucker',
+          },
+        ],
       }
     : null
 }

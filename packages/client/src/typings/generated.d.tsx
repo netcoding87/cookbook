@@ -51,6 +51,14 @@ export type ImageData = {
   recipe: Scalars['ID'],
 };
 
+export type IngredientData = {
+   __typename?: 'IngredientData',
+  id: Scalars['ID'],
+  amount?: Maybe<Scalars['String']>,
+  ingredient: Scalars['String'],
+  measure: MeasureData,
+};
+
 export type MeasureData = {
    __typename?: 'MeasureData',
   id: Scalars['ID'],
@@ -100,27 +108,15 @@ export type MutationUpdateRecipeArgs = {
 export type Query = {
    __typename?: 'Query',
   categories: Array<CategoryData>,
-  category?: Maybe<CategoryData>,
   image?: Maybe<ImageData>,
   measures: Array<MeasureData>,
-  measure?: Maybe<MeasureData>,
   recipes: Array<RecipeData>,
   recipe?: Maybe<RecipeData>,
 };
 
 
-export type QueryCategoryArgs = {
-  id: Scalars['ID']
-};
-
-
 export type QueryImageArgs = {
   recipeId: Scalars['ID']
-};
-
-
-export type QueryMeasureArgs = {
-  id: Scalars['ID']
 };
 
 
@@ -143,6 +139,7 @@ export type RecipeData = {
   preparations?: Maybe<Scalars['String']>,
   source?: Maybe<Scalars['String']>,
   category: CategoryData,
+  ingredients: Array<IngredientData>,
 };
 
 export type RemoveImageInput = {
