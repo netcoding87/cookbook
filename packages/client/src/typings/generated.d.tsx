@@ -34,6 +34,17 @@ export type CreateImagePayload = {
   data: ImageData,
 };
 
+export type CreateIngredientInput = {
+  amount: Scalars['String'],
+  ingredient: Scalars['String'],
+  measure: Scalars['ID'],
+};
+
+export type CreateIngredientPayload = {
+   __typename?: 'CreateIngredientPayload',
+  data: IngredientData,
+};
+
 export type CreateRecipeInput = {
   title: Scalars['String'],
   category: Scalars['ID'],
@@ -73,6 +84,7 @@ export type Mutation = {
   createRecipe: CreateRecipePayload,
   removeRecipe: RemoveRecipePayload,
   updateRecipe: UpdateRecipePayload,
+  createIngredient: CreateIngredientPayload,
 };
 
 
@@ -103,6 +115,11 @@ export type MutationRemoveRecipeArgs = {
 
 export type MutationUpdateRecipeArgs = {
   input: UpdateRecipeInput
+};
+
+
+export type MutationCreateIngredientArgs = {
+  input: CreateIngredientInput
 };
 
 export type Query = {
