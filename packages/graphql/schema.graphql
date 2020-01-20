@@ -58,6 +58,7 @@ type Mutation {
 
   createIngredient(input: CreateIngredientInput!): CreateIngredientPayload!
   removeIngredient(input: RemoveIngredientInput!): RemoveIngredientPayload!
+  updateIngredient(input: UpdateIngredientInput!): UpdateIngredientPayload!
 }
 
 input CreateImageInput {
@@ -97,11 +98,22 @@ input RemoveIngredientInput {
   id: ID!
 }
 
+input UpdateIngredientInput {
+  id: ID!
+  amount: String!
+  ingredient: String!
+  measure: ID!
+}
+
 type CreateIngredientPayload {
   data: IngredientData!
 }
 
 type RemoveIngredientPayload {
+  data: Boolean!
+}
+
+type UpdateIngredientPayload {
   data: Boolean!
 }
 

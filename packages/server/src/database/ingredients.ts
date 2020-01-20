@@ -43,3 +43,11 @@ export const remove = (id: string): Promise<number> => {
     })
   })
 }
+
+export const update = (ingredient: Ingredient): Promise<number> => {
+  return new Promise(resolve => {
+    db.update({ _id: ingredient._id }, ingredient, {}, (err, number) => {
+      resolve(number)
+    })
+  })
+}
