@@ -2,6 +2,7 @@ import createImage from './mutation/createImage'
 import createIngredient from './mutation/createIngredient'
 import createRecipe from './mutation/createRecipe'
 import removeImage from './mutation/removeImage'
+import removeIngredient from './mutation/removeIngredient'
 import removeRecipe from './mutation/removeRecipe'
 import updateImage from './mutation/updateImage'
 import updateRecipe from './mutation/updateRecipe'
@@ -29,6 +30,7 @@ const resolvers = {
     updateRecipe: updateRecipe,
 
     createIngredient: createIngredient,
+    removeIngredient: removeIngredient,
   },
 }
 

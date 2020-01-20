@@ -35,3 +35,11 @@ export const add = (
     })
   })
 }
+
+export const remove = (id: string): Promise<number> => {
+  return new Promise(resolve => {
+    db.remove({ _id: id }, (err, number) => {
+      resolve(number)
+    })
+  })
+}

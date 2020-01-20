@@ -57,6 +57,7 @@ type Mutation {
   updateRecipe(input: UpdateRecipeInput!): UpdateRecipePayload!
 
   createIngredient(input: CreateIngredientInput!): CreateIngredientPayload!
+  removeIngredient(input: RemoveIngredientInput!): RemoveIngredientPayload!
 }
 
 input CreateImageInput {
@@ -92,8 +93,16 @@ input CreateIngredientInput {
   measure: ID!
 }
 
+input RemoveIngredientInput {
+  id: ID!
+}
+
 type CreateIngredientPayload {
   data: IngredientData!
+}
+
+type RemoveIngredientPayload {
+  data: Boolean!
 }
 
 input CreateRecipeInput {
