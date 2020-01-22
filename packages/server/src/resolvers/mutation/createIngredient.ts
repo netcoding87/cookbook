@@ -15,7 +15,12 @@ const createIngredient: CreateIngredientResolver = async (
   { input },
   ctx
 ): Promise<CreateIngredientPayload> => {
-  const ingredient = await add(input.amount, input.ingredient, input.measure)
+  const ingredient = await add(
+    input.amount,
+    input.ingredient,
+    input.measure,
+    input.recipe
+  )
   const measure = await getById(parseInt(ingredient.measure))
   return {
     data: {

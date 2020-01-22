@@ -13,12 +13,14 @@ export interface Ingredient {
   amount: string
   ingredient: string
   measure: string
+  recipe: string
 }
 
 export const add = (
   amount: string,
   ingredient: string,
-  measure: string
+  measure: string,
+  recipe: string
 ): Promise<Ingredient> => {
   return new Promise(resolve => {
     const tmp: Ingredient = {
@@ -26,6 +28,7 @@ export const add = (
       amount: amount,
       ingredient: ingredient,
       measure: measure,
+      recipe: recipe,
     }
 
     delete tmp['_id']

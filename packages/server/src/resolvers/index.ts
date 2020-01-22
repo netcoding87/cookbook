@@ -1,5 +1,6 @@
-import { getById } from '../database/categories'
+import { getById as getCategoryById } from '../database/categories'
 import { getForRecipe } from '../database/ingredients'
+import { getById as getMeasureById } from '../database/measures'
 import { CategoryData, IngredientData } from '../typings/generated'
 import createImage from './mutation/createImage'
 import createIngredient from './mutation/createIngredient'
@@ -42,7 +43,7 @@ const resolvers = {
     category: async (
       root: RecipeDataWithoutNestedData
     ): Promise<CategoryData> => {
-      const category = await getById(root.category)
+      const category = await getCategoryById(root.category)
       return {
         id: category ? category._id : '',
         name: category ? category.name : '',
@@ -52,6 +53,7 @@ const resolvers = {
     ingredients: async (
       root: RecipeDataWithoutNestedData
     ): Promise<IngredientData[]> => {
+      console.log('here')
       const ingredients = await getForRecipe(root.id)
       return ingredients.map(ingredient => {
         return {
@@ -64,6 +66,16 @@ const resolvers = {
           },
         }
       })
+    },
+  },
+  IngredientData: {
+    measure: async root => {
+      console.log('measure')
+      const measure = await getMeasureById(root.measure)
+      return {
+        id: measure ? measure._id : '',
+        name: measure ? measure.name : '',
+      }
     },
   },
 }

@@ -92,6 +92,7 @@ input CreateIngredientInput {
   amount: String!
   ingredient: String!
   measure: ID!
+  recipe: ID!
 }
 
 input RemoveIngredientInput {
