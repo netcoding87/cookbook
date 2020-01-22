@@ -1,7 +1,15 @@
 import { update } from '../../database/images'
-import { UpdateImagePayload } from '../../typings/generated'
+import { MutationUpdateImageArgs, ResolverFn, UpdateImagePayload } from '../../typings/generated'
+import { ContextType } from '../../utils/createContext'
 
-const updateImage = async (
+type UpdateImageResolver = ResolverFn<
+  UpdateImagePayload,
+  {},
+  ContextType,
+  MutationUpdateImageArgs
+>
+
+const updateImage: UpdateImageResolver = async (
   root,
   { input },
   ctx

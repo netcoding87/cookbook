@@ -1,7 +1,15 @@
 import { update } from '../../database/ingredients'
-import { UpdateIngredientPayload } from '../../typings/generated'
+import { MutationUpdateIngredientArgs, ResolverFn, UpdateIngredientPayload } from '../../typings/generated'
+import { ContextType } from '../../utils/createContext'
 
-const updateIngredient = async (
+type UpdateIngredientResolver = ResolverFn<
+  UpdateIngredientPayload,
+  {},
+  ContextType,
+  MutationUpdateIngredientArgs
+>
+
+const updateIngredient: UpdateIngredientResolver = async (
   root,
   { input },
   ctx

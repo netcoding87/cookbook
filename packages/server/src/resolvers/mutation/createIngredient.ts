@@ -1,8 +1,16 @@
 import { add } from '../../database/ingredients'
 import { getById } from '../../database/measures'
-import { CreateIngredientPayload } from '../../typings/generated'
+import { CreateIngredientPayload, MutationCreateIngredientArgs, ResolverFn } from '../../typings/generated'
+import { ContextType } from '../../utils/createContext'
 
-const createIngredient = async (
+type CreateIngredientResolver = ResolverFn<
+  CreateIngredientPayload,
+  {},
+  ContextType,
+  MutationCreateIngredientArgs
+>
+
+const createIngredient: CreateIngredientResolver = async (
   root,
   { input },
   ctx
