@@ -36,6 +36,14 @@ export const add = (
   })
 }
 
+export const getForRecipe = (recipeId: string): Promise<Ingredient[]> => {
+  return new Promise(resolve => {
+    db.find({ recipe: recipeId }, (err, docs) => {
+      resolve(docs)
+    })
+  })
+}
+
 export const remove = (id: string): Promise<number> => {
   return new Promise(resolve => {
     db.remove({ _id: id }, (err, number) => {

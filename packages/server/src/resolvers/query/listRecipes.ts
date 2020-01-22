@@ -1,65 +1,64 @@
-import { getById as getCategoryById } from '../../database/categories'
 import { getAll, getById as getRecipeById } from '../../database/recipes'
 import { RecipeData } from '../../typings/generated'
 import { ContextType } from '../../utils/createContext'
 
-export const listRecipes = async (
-  root,
-  { input },
-  ctx: ContextType,
-  info
-): Promise<RecipeData[]> => {
+export type RecipeDataWithoutNestedData = Omit<RecipeData, 'category'> & {
+  category: string
+}
+
+export const listRecipes = async (): Promise<RecipeDataWithoutNestedData[]> => {
   const recipes = await getAll()
 
-  return await Promise.all(
-    recipes.map(async recipe => {
-      const category = await getCategoryById(recipe.category)
-
-      return {
-        id: recipe._id,
-        title: recipe.title,
-        ranking: 5,
-        difficulty: 0,
-        category: {
-          id: category ? category._id : '',
-          name: category ? category.name : '',
-          parent: category ? category.parent : '',
+  return recipes.map(recipe => ({
+    id: recipe._id,
+    title: recipe.title,
+    subtitle: recipe.subtitle,
+    tags: recipe.tags,
+    ranking: recipe.ranking,
+    servings: recipe.servings,
+    difficulty: recipe.difficulty,
+    preparationTime: recipe.preparationTime,
+    cookingTime: recipe.cookingTime,
+    restTime: recipe.restTime,
+    preparations: recipe.preparations,
+    source: recipe.source,
+    category: recipe.category,
+    ingredients: [
+      {
+        id: '123',
+        amount: '200',
+        measure: {
+          id: '1',
+          name: 'g',
         },
-        ingredients: [
-          {
-            id: '123',
-            amount: '200',
-            measure: {
-              id: '1',
-              name: 'g',
-            },
-            ingredient: 'Zucker',
-          },
-        ],
-      }
-    })
-  )
+        ingredient: 'Zucker',
+      },
+    ],
+  }))
 }
 
 export const listRecipe = async (
   root,
   params,
   ctx: ContextType
-): Promise<RecipeData | null> => {
+): Promise<RecipeDataWithoutNestedData | null> => {
   const recipe = await getRecipeById(params.id)
-  const category = await getCategoryById(recipe ? recipe.category : '')
 
   return recipe
     ? {
         id: recipe._id,
         title: recipe.title,
-        ranking: 5,
-        difficulty: 0,
-        category: {
-          id: category ? category._id : '',
-          name: category ? category.name : '',
-          parent: category ? category.parent : '',
-        },
+        subtitle: recipe.subtitle,
+        tags: recipe.tags,
+        ranking: recipe.ranking,
+        servings: recipe.servings,
+        difficulty: recipe.difficulty,
+        preparationTime: recipe.preparationTime,
+        cookingTime: recipe.cookingTime,
+        restTime: recipe.restTime,
+        preparations: recipe.preparations,
+        source: recipe.source,
+        category: recipe.category,
         ingredients: [
           {
             id: '123',
