@@ -119,6 +119,16 @@ type UpdateIngredientPayload {
 
 input CreateRecipeInput {
   title: String!
+  subtitle: String
+  tags: String
+  ranking: Int!
+  servings: String
+  difficulty: Int!
+  preparationTime: String
+  cookingTime: String
+  restTime: String
+  preparations: String
+  source: String
   category: ID!
 }
 
@@ -129,6 +139,16 @@ input RemoveRecipeInput {
 input UpdateRecipeInput {
   id: ID!
   title: String!
+  subtitle: String
+  tags: String
+  ranking: Int!
+  servings: String
+  difficulty: Int!
+  preparationTime: String
+  cookingTime: String
+  restTime: String
+  preparations: String
+  source: String
   category: ID!
 }
 

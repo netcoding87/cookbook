@@ -6,7 +6,8 @@ import { ContextType } from '../../utils/createContext'
 export const listRecipes = async (
   root,
   { input },
-  ctx: ContextType
+  ctx: ContextType,
+  info
 ): Promise<RecipeData[]> => {
   const recipes = await getAll()
 

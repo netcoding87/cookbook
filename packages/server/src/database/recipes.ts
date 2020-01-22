@@ -11,14 +11,47 @@ const db = new Datastore({
 export interface Recipe {
   _id: string
   title: string
+  subtitle?: string
+  tags?: string
+  ranking: number
+  servings?: string
+  difficulty: number
+  preparationTime?: string
+  cookingTime?: string
+  restTime?: string
+  preparations?: string
+  source?: string
   category: string
 }
 
-export const add = (title: string, category: string): Promise<Recipe> => {
+export const add = (
+  title: string,
+  ranking: number,
+  difficulty: number,
+  category: string,
+  subtitle?: string,
+  tags?: string,
+  servings?: string,
+  preparationTime?: string,
+  cookingTime?: string,
+  restTime?: string,
+  preparations?: string,
+  source?: string
+): Promise<Recipe> => {
   return new Promise(resolve => {
     const tmp: Recipe = {
       _id: '',
       title,
+      subtitle,
+      tags,
+      ranking,
+      servings,
+      difficulty,
+      preparationTime,
+      cookingTime,
+      restTime,
+      preparations,
+      source,
       category,
     }
 

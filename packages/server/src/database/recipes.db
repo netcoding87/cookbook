@@ -1,7 +1,11 @@
-{"title":"Test","category":"2","_id":"0w9jLD7B6CEh5gwB"}
-{"title":"Test","category":"2","_id":"5GnU0wpGCfZy9c8r"}
-{"title":"Test","category":"2","_id":"BpzJ5ar1CSok6n3o"}
-{"title":"Test","category":"2","_id":"Z5zY27y5eu9sZm2F"}
-{"title":"Test","category":"2","_id":"Zw5p0qp6rgqqViyh"}
+{"title":"My Recipe","category":"2","_id":"2eEOwL3mEInz0kgJ"}
+{"title":"Fully typed","ranking":3,"difficulty":0,"category":"2","_id":"LvLpZEw8DgDJKWOR"}
 {"title":"Test","category":"2","_id":"oNZP6eJSaGZFhXCl"}
-{"_id":"0w9jLD7B6CEh5gwB","title":"New Title","category":"3"}
+{"title":"My Recipe","category":"2","_id":"sI69srfaKAH2WhCj"}
+{"$$deleted":true,"_id":"2eEOwL3mEInz0kgJ"}
+{"$$deleted":true,"_id":"LvLpZEw8DgDJKWOR"}
+{"$$deleted":true,"_id":"oNZP6eJSaGZFhXCl"}
+{"$$deleted":true,"_id":"sI69srfaKAH2WhCj"}
+{"title":"Fully typed","ranking":3,"difficulty":0,"source":"Top Secret!","category":"2","_id":"iRdGXrOKhmJRLaVb"}
+{"$$deleted":true,"_id":"iRdGXrOKhmJRLaVb"}
+{"title":"Fully typed","ranking":3,"difficulty":0,"source":"Top Secret!","category":"2","_id":"9ejXm3DPdI2YM0To"}

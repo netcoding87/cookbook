@@ -47,6 +47,16 @@ export type CreateIngredientPayload = {
 
 export type CreateRecipeInput = {
   title: Scalars['String'],
+  subtitle?: Maybe<Scalars['String']>,
+  tags?: Maybe<Scalars['String']>,
+  ranking: Scalars['Int'],
+  servings?: Maybe<Scalars['String']>,
+  difficulty: Scalars['Int'],
+  preparationTime?: Maybe<Scalars['String']>,
+  cookingTime?: Maybe<Scalars['String']>,
+  restTime?: Maybe<Scalars['String']>,
+  preparations?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
   category: Scalars['ID'],
 };
 
@@ -224,6 +234,16 @@ export type UpdateIngredientPayload = {
 export type UpdateRecipeInput = {
   id: Scalars['ID'],
   title: Scalars['String'],
+  subtitle?: Maybe<Scalars['String']>,
+  tags?: Maybe<Scalars['String']>,
+  ranking: Scalars['Int'],
+  servings?: Maybe<Scalars['String']>,
+  difficulty: Scalars['Int'],
+  preparationTime?: Maybe<Scalars['String']>,
+  cookingTime?: Maybe<Scalars['String']>,
+  restTime?: Maybe<Scalars['String']>,
+  preparations?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
   category: Scalars['ID'],
 };
 
