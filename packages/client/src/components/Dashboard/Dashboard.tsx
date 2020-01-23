@@ -2,24 +2,21 @@ import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import React, { Fragment, useState } from 'react'
 import Container from 'react-bootstrap/Container'
-import useSWR from 'swr'
 
-import { RecipeData } from '../../interfaces'
+import { useRecipesQuery } from '../../typings/generated.d'
 import Layout from '../Layout'
 import RecipeCard from '../RecipeCard'
 import { useStaticData } from '../StaticDataProvider'
 import { Box, CategoryTitle, SliderContainer } from './Dashboard.styles'
 
 interface CategoryRecipeMap {
-  [id: string]: RecipeData[]
+  [id: string]: any[]
 }
 
 const Dashboard: React.FC = () => {
   const [cardWidth, setCardWidth] = useState(200)
 
-  const { data } = useSWR<RecipeData[]>('http://localhost:4000/recipes', url =>
-    fetch(url).then(response => response.json())
-  )
+  const { data } = useRecipesQuery()
 
   const { categories } = useStaticData()
 
@@ -29,8 +26,8 @@ const Dashboard: React.FC = () => {
 
   const dict: CategoryRecipeMap = {}
 
-  data.forEach(recipe => {
-    const catId = recipe.categoryId
+  data.recipes.forEach(recipe => {
+    const catId = recipe.category.id
 
     if (dict[catId]) {
       const recipes = dict[catId]

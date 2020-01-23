@@ -254,6 +254,21 @@ export type UpdateRecipePayload = {
   data: Scalars['Boolean'],
 };
 
+export type RecipesQueryVariables = {};
+
+
+export type RecipesQuery = (
+  { __typename?: 'Query' }
+  & { recipes: Array<(
+    { __typename?: 'RecipeData' }
+    & Pick<RecipeData, 'id' | 'title'>
+    & { category: (
+      { __typename?: 'CategoryData' }
+      & Pick<CategoryData, 'id' | 'name'>
+    ) }
+  )> }
+);
+
 export type CategoriesQueryVariables = {};
 
 
@@ -277,6 +292,43 @@ export type MeasuresQuery = (
 );
 
 
+export const RecipesDocument = gql`
+    query recipes {
+  recipes {
+    id
+    title
+    category {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useRecipesQuery__
+ *
+ * To run a query within a React component, call `useRecipesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecipesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecipesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRecipesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<RecipesQuery, RecipesQueryVariables>) {
+        return ApolloReactHooks.useQuery<RecipesQuery, RecipesQueryVariables>(RecipesDocument, baseOptions);
+      }
+export function useRecipesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RecipesQuery, RecipesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<RecipesQuery, RecipesQueryVariables>(RecipesDocument, baseOptions);
+        }
+export type RecipesQueryHookResult = ReturnType<typeof useRecipesQuery>;
+export type RecipesLazyQueryHookResult = ReturnType<typeof useRecipesLazyQuery>;
+export type RecipesQueryResult = ApolloReactCommon.QueryResult<RecipesQuery, RecipesQueryVariables>;
 export const CategoriesDocument = gql`
     query categories {
   categories {
