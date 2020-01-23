@@ -1,7 +1,8 @@
 import { getById as getCategoryById } from '../database/categories'
 import { getForRecipe } from '../database/ingredients'
 import { getById as getMeasureById } from '../database/measures'
-import { CategoryData, IngredientData } from '../typings/generated'
+import { CategoryData, MeasureData } from '../typings/generated'
+import { PlainIngredientData, PlainRecipeData } from '../typings/plaintypes'
 import createImage from './mutation/createImage'
 import createIngredient from './mutation/createIngredient'
 import createRecipe from './mutation/createRecipe'
@@ -14,7 +15,7 @@ import updateRecipe from './mutation/updateRecipe'
 import listCategories from './query/listCategories'
 import listImage from './query/listImage'
 import listMeasures from './query/listMeasures'
-import { listRecipe, listRecipes, RecipeDataWithoutNestedData } from './query/listRecipes'
+import { listRecipe, listRecipes } from './query/listRecipes'
 
 const resolvers = {
   Query: {
@@ -40,9 +41,7 @@ const resolvers = {
   },
 
   RecipeData: {
-    category: async (
-      root: RecipeDataWithoutNestedData
-    ): Promise<CategoryData> => {
+    category: async (root: PlainRecipeData): Promise<CategoryData> => {
       const category = await getCategoryById(root.category)
       return {
         id: category ? category._id : '',
@@ -51,25 +50,22 @@ const resolvers = {
       }
     },
     ingredients: async (
-      root: RecipeDataWithoutNestedData
-    ): Promise<IngredientData[]> => {
-      console.log('here')
+      root: PlainRecipeData
+    ): Promise<PlainIngredientData[]> => {
       const ingredients = await getForRecipe(root.id)
       return ingredients.map(ingredient => {
         return {
           id: ingredient._id,
           amount: ingredient.amount,
           ingredient: ingredient.ingredient,
-          measure: {
-            id: '2',
-            name: 'Test',
-          },
+          measure: ingredient.measure,
         }
       })
     },
   },
+
   IngredientData: {
-    measure: async root => {
+    measure: async (root: PlainIngredientData): Promise<MeasureData> => {
       console.log('measure')
       const measure = await getMeasureById(root.measure)
       return {

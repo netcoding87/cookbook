@@ -1,13 +1,13 @@
 import { getForRecipe } from '../../database/images'
-import { ImageData } from '../../typings/generated'
-import { ContextType } from '../../utils/createContext'
+import { ImageData, QueryResolvers } from '../../typings/generated'
 
-const listImage = async (
+type QueryImageResolver = QueryResolvers['image']
+
+const listImage: QueryImageResolver = async (
   root,
-  params,
-  ctx: ContextType
+  { recipeId }
 ): Promise<ImageData | null> => {
-  const image = await getForRecipe(params.recipeId)
+  const image = await getForRecipe(recipeId)
   return image
     ? {
         id: image._id,

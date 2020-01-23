@@ -9,82 +9,82 @@ const db = new Datastore({
 })
 
 export interface Measure {
-  _id: number
+  _id: string
   name: string
 }
 
 export const init = () => {
   const defaults = [
     {
-      _id: 1,
+      _id: '1',
       name: ' ',
     },
     {
-      _id: 2,
+      _id: '2',
       name: 'B',
     },
     {
-      _id: 3,
+      _id: '3',
       name: 'Bl',
     },
     {
-      _id: 4,
+      _id: '4',
       name: 'Bd',
     },
     {
-      _id: 5,
+      _id: '5',
       name: 'Dose',
     },
     {
-      _id: 6,
+      _id: '6',
       name: 'EL',
     },
     {
-      _id: 7,
+      _id: '7',
       name: 'g',
     },
     {
-      _id: 8,
+      _id: '8',
       name: 'kg',
     },
     {
-      _id: 9,
+      _id: '9',
       name: 'l',
     },
     {
-      _id: 10,
+      _id: '10',
       name: 'ml',
     },
     {
-      _id: 11,
+      _id: '11',
       name: 'Msp',
     },
     {
-      _id: 12,
+      _id: '12',
       name: 'Pk',
     },
     {
-      _id: 13,
+      _id: '13',
       name: 'Prise',
     },
     {
-      _id: 14,
+      _id: '14',
       name: 'St',
     },
     {
-      _id: 15,
+      _id: '15',
       name: 'Stange',
     },
     {
-      _id: 16,
+      _id: '16',
       name: 'Tas',
     },
     {
-      _id: 17,
+      _id: '17',
       name: 'TL',
     },
     {
-      _id: 18,
+      _id: '18',
       name: 'Würfel',
     },
   ]
@@ -100,9 +100,9 @@ export const getAll = (): Promise<Measure[]> => {
   })
 }
 
-export const getById = (id: number): Promise<Measure | null> => {
+export const getById = (id: string): Promise<Measure | null> => {
   return new Promise(resolve => {
-    db.findOne({ __id: id }, (err, doc) => {
+    db.findOne({ _id: id }, (err, doc) => {
       resolve(doc)
     })
   })

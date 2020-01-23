@@ -7,7 +7,7 @@ const listMeasures = async (): Promise<MeasureData[]> => {
   const entries: MeasureData[] = []
   response.map(item => {
     entries.push({
-      id: item._id.toString(),
+      id: item._id,
       name: item.name,
     })
   })

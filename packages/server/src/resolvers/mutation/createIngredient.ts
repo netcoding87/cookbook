@@ -1,10 +1,10 @@
 import { add } from '../../database/ingredients'
-import { getById } from '../../database/measures'
-import { CreateIngredientPayload, MutationCreateIngredientArgs, ResolverFn } from '../../typings/generated'
+import { MutationCreateIngredientArgs, ResolverFn } from '../../typings/generated'
+import { PlainCreateIngredientPayload } from '../../typings/plaintypes'
 import { ContextType } from '../../utils/createContext'
 
 type CreateIngredientResolver = ResolverFn<
-  CreateIngredientPayload,
+  PlainCreateIngredientPayload,
   {},
   ContextType,
   MutationCreateIngredientArgs
@@ -12,25 +12,21 @@ type CreateIngredientResolver = ResolverFn<
 
 const createIngredient: CreateIngredientResolver = async (
   root,
-  { input },
-  ctx
-): Promise<CreateIngredientPayload> => {
+  { input }
+): Promise<PlainCreateIngredientPayload> => {
   const ingredient = await add(
     input.amount,
     input.ingredient,
     input.measure,
     input.recipe
   )
-  const measure = await getById(parseInt(ingredient.measure))
+
   return {
     data: {
       id: ingredient._id,
       amount: ingredient.amount,
       ingredient: ingredient.ingredient,
-      measure: {
-        id: measure ? measure._id.toString() : '',
-        name: measure ? measure.name : '',
-      },
+      measure: ingredient.measure,
     },
   }
 }

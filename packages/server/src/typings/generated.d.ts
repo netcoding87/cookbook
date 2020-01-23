@@ -225,6 +225,7 @@ export type UpdateIngredientInput = {
   amount: Scalars['String'],
   ingredient: Scalars['String'],
   measure: Scalars['ID'],
+  recipe: Scalars['ID'],
 };
 
 export type UpdateIngredientPayload = {

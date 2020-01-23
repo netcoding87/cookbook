@@ -19,6 +19,7 @@ const updateIngredient: UpdateIngredientResolver = async (
     amount: input.amount,
     ingredient: input.ingredient,
     measure: input.measure,
+    recipe: input.recipe,
   })
   return {
     data: number > 0,

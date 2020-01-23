@@ -1,15 +1,8 @@
 import { getAll, getById as getRecipeById } from '../../database/recipes'
-import { RecipeData } from '../../typings/generated'
-import { ContextType } from '../../utils/createContext'
+import { QueryRecipeArgs } from '../../typings/generated'
+import { PlainRecipeData } from '../../typings/plaintypes'
 
-export type RecipeDataWithoutNestedData = Omit<
-  Omit<RecipeData, 'category'>,
-  'ingredients'
-> & {
-  category: string
-}
-
-export const listRecipes = async (): Promise<RecipeDataWithoutNestedData[]> => {
+export const listRecipes = async (): Promise<PlainRecipeData[]> => {
   const recipes = await getAll()
 
   return recipes.map(recipe => ({
@@ -31,10 +24,9 @@ export const listRecipes = async (): Promise<RecipeDataWithoutNestedData[]> => {
 
 export const listRecipe = async (
   root,
-  params,
-  ctx: ContextType
-): Promise<RecipeDataWithoutNestedData | null> => {
-  const recipe = await getRecipeById(params.id)
+  { id }: QueryRecipeArgs
+): Promise<PlainRecipeData | null> => {
+  const recipe = await getRecipeById(id)
 
   return recipe
     ? {

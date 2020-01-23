@@ -71,7 +71,7 @@ export const getAll = (): Promise<Recipe[]> => {
   })
 }
 
-export const getById = (id: number): Promise<Recipe | null> => {
+export const getById = (id: string): Promise<Recipe | null> => {
   return new Promise(resolve => {
     db.findOne({ _id: id }, (err, doc) => {
       resolve(doc)

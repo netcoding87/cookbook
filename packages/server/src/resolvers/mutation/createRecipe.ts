@@ -1,10 +1,10 @@
-import { getById } from '../../database/categories'
 import { add } from '../../database/recipes'
-import { CreateRecipePayload, MutationCreateRecipeArgs, ResolverFn } from '../../typings/generated'
+import { MutationCreateRecipeArgs, ResolverFn } from '../../typings/generated'
+import { PlainCreateRecipePayload } from '../../typings/plaintypes'
 import { ContextType } from '../../utils/createContext'
 
 type CreateRecipeResolver = ResolverFn<
-  CreateRecipePayload,
+  PlainCreateRecipePayload,
   {},
   ContextType,
   MutationCreateRecipeArgs
@@ -12,9 +12,8 @@ type CreateRecipeResolver = ResolverFn<
 
 const createRecipe: CreateRecipeResolver = async (
   root,
-  { input },
-  ctx
-): Promise<CreateRecipePayload> => {
+  { input }
+): Promise<PlainCreateRecipePayload> => {
   const recipe = await add(
     input.title,
     input.ranking,
@@ -29,7 +28,6 @@ const createRecipe: CreateRecipeResolver = async (
     input.preparations ? input.preparations : undefined,
     input.source ? input.source : undefined
   )
-  const category = await getById(recipe.category)
 
   return {
     data: {
@@ -45,12 +43,7 @@ const createRecipe: CreateRecipeResolver = async (
       restTime: recipe.restTime,
       preparations: recipe.preparations,
       source: recipe.source,
-      category: {
-        id: category ? category._id : '',
-        name: category ? category.name : '',
-        parent: category ? category.parent : '',
-      },
-      ingredients: [],
+      category: recipe.category,
     },
   }
 }
