@@ -269,6 +269,19 @@ export type RecipesQuery = (
   )> }
 );
 
+export type ImageQueryVariables = {
+  id: Scalars['ID']
+};
+
+
+export type ImageQuery = (
+  { __typename?: 'Query' }
+  & { image: Maybe<(
+    { __typename?: 'ImageData' }
+    & Pick<ImageData, 'image'>
+  )> }
+);
+
 export type CategoriesQueryVariables = {};
 
 
@@ -329,6 +342,39 @@ export function useRecipesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type RecipesQueryHookResult = ReturnType<typeof useRecipesQuery>;
 export type RecipesLazyQueryHookResult = ReturnType<typeof useRecipesLazyQuery>;
 export type RecipesQueryResult = ApolloReactCommon.QueryResult<RecipesQuery, RecipesQueryVariables>;
+export const ImageDocument = gql`
+    query image($id: ID!) {
+  image(recipeId: $id) {
+    image
+  }
+}
+    `;
+
+/**
+ * __useImageQuery__
+ *
+ * To run a query within a React component, call `useImageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useImageQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useImageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useImageQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ImageQuery, ImageQueryVariables>) {
+        return ApolloReactHooks.useQuery<ImageQuery, ImageQueryVariables>(ImageDocument, baseOptions);
+      }
+export function useImageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ImageQuery, ImageQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ImageQuery, ImageQueryVariables>(ImageDocument, baseOptions);
+        }
+export type ImageQueryHookResult = ReturnType<typeof useImageQuery>;
+export type ImageLazyQueryHookResult = ReturnType<typeof useImageLazyQuery>;
+export type ImageQueryResult = ApolloReactCommon.QueryResult<ImageQuery, ImageQueryVariables>;
 export const CategoriesDocument = gql`
     query categories {
   categories {

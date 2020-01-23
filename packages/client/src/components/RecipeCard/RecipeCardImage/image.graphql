@@ -1,0 +1,5 @@
+query image($id: ID!) {
+  image(recipeId: $id) {
+    image
+  }
+}
