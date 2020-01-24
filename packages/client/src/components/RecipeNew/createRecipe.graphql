@@ -1,0 +1,35 @@
+mutation createRecipe(
+  $title: String!
+  $subtitle: String
+  $tags: String
+  $ranking: Int!
+  $servings: String
+  $difficulty: Int!
+  $preparationTime: String
+  $cookingTime: String
+  $restTime: String
+  $preparations: String
+  $source: String
+  $category: ID!
+) {
+  createRecipe(
+    input: {
+      title: $title
+      subtitle: $subtitle
+      tags: $tags
+      ranking: $ranking
+      servings: $servings
+      difficulty: $difficulty
+      preparationTime: $preparationTime
+      cookingTime: $cookingTime
+      restTime: $restTime
+      preparations: $preparations
+      source: $source
+      category: $category
+    }
+  ) {
+    data {
+      id
+    }
+  }
+}

@@ -282,6 +282,33 @@ export type ImageQuery = (
   )> }
 );
 
+export type CreateRecipeMutationVariables = {
+  title: Scalars['String'],
+  subtitle?: Maybe<Scalars['String']>,
+  tags?: Maybe<Scalars['String']>,
+  ranking: Scalars['Int'],
+  servings?: Maybe<Scalars['String']>,
+  difficulty: Scalars['Int'],
+  preparationTime?: Maybe<Scalars['String']>,
+  cookingTime?: Maybe<Scalars['String']>,
+  restTime?: Maybe<Scalars['String']>,
+  preparations?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
+  category: Scalars['ID']
+};
+
+
+export type CreateRecipeMutation = (
+  { __typename?: 'Mutation' }
+  & { createRecipe: (
+    { __typename?: 'CreateRecipePayload' }
+    & { data: (
+      { __typename?: 'RecipeData' }
+      & Pick<RecipeData, 'id'>
+    ) }
+  ) }
+);
+
 export type CategoriesQueryVariables = {};
 
 
@@ -375,6 +402,51 @@ export function useImageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type ImageQueryHookResult = ReturnType<typeof useImageQuery>;
 export type ImageLazyQueryHookResult = ReturnType<typeof useImageLazyQuery>;
 export type ImageQueryResult = ApolloReactCommon.QueryResult<ImageQuery, ImageQueryVariables>;
+export const CreateRecipeDocument = gql`
+    mutation createRecipe($title: String!, $subtitle: String, $tags: String, $ranking: Int!, $servings: String, $difficulty: Int!, $preparationTime: String, $cookingTime: String, $restTime: String, $preparations: String, $source: String, $category: ID!) {
+  createRecipe(input: {title: $title, subtitle: $subtitle, tags: $tags, ranking: $ranking, servings: $servings, difficulty: $difficulty, preparationTime: $preparationTime, cookingTime: $cookingTime, restTime: $restTime, preparations: $preparations, source: $source, category: $category}) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export type CreateRecipeMutationFn = ApolloReactCommon.MutationFunction<CreateRecipeMutation, CreateRecipeMutationVariables>;
+
+/**
+ * __useCreateRecipeMutation__
+ *
+ * To run a mutation, you first call `useCreateRecipeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRecipeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRecipeMutation, { data, loading, error }] = useCreateRecipeMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      subtitle: // value for 'subtitle'
+ *      tags: // value for 'tags'
+ *      ranking: // value for 'ranking'
+ *      servings: // value for 'servings'
+ *      difficulty: // value for 'difficulty'
+ *      preparationTime: // value for 'preparationTime'
+ *      cookingTime: // value for 'cookingTime'
+ *      restTime: // value for 'restTime'
+ *      preparations: // value for 'preparations'
+ *      source: // value for 'source'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useCreateRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateRecipeMutation, CreateRecipeMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateRecipeMutation, CreateRecipeMutationVariables>(CreateRecipeDocument, baseOptions);
+      }
+export type CreateRecipeMutationHookResult = ReturnType<typeof useCreateRecipeMutation>;
+export type CreateRecipeMutationResult = ApolloReactCommon.MutationResult<CreateRecipeMutation>;
+export type CreateRecipeMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateRecipeMutation, CreateRecipeMutationVariables>;
 export const CategoriesDocument = gql`
     query categories {
   categories {
