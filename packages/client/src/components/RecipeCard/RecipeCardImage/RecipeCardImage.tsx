@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 
-import { useImage } from '../../../hooks'
+import { useImageQuery } from '../../../typings/generated.d'
 import { Image } from './RecipeCardImage.styles'
 
 interface RecipeCardImageProps {
@@ -10,10 +10,10 @@ interface RecipeCardImageProps {
 }
 
 const RecipeCardImage: React.FC<RecipeCardImageProps> = ({ id, title }) => {
-  const { image } = useImage(id)
+  const { data } = useImageQuery({ variables: { id } })
 
-  return image ? (
-    <Image src={image.image} alt={title} title={title} />
+  return data?.image ? (
+    <Image src={data.image.image} alt={title} title={title} />
   ) : (
     <FontAwesomeIcon icon={['fas', 'image']} color="#6c757d" size="5x" />
   )
