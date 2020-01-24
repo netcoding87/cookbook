@@ -2,7 +2,10 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { IngredientData, RecipeData } from '../../interfaces'
-import { useCreateRecipeMutation } from '../../typings/generated.d'
+import {
+  useCreateIngredientMutation,
+  useCreateRecipeMutation,
+} from '../../typings/generated.d'
 import Layout from '../Layout'
 import RecipeEditForm from '../RecipeEditForm'
 
@@ -18,13 +21,15 @@ const RecipeNew: React.FC = () => {
   const history = useHistory()
 
   const [createRecipeMutation] = useCreateRecipeMutation()
+  const [createIngredientMutation] = useCreateIngredientMutation()
 
   const handleSubmit = async (
     recipe: RecipeData,
     ingredients: IngredientData[],
     image: string | null
   ) => {
-    await createRecipeMutation({
+    // Create recipe
+    const { data } = await createRecipeMutation({
       variables: {
         title: recipe.title,
         subtitle: recipe.subtitle,
@@ -39,6 +44,18 @@ const RecipeNew: React.FC = () => {
         source: recipe.source,
         category: recipe.categoryId,
       },
+    })
+
+    // Create ingredients
+    ingredients.forEach(async ingredient => {
+      await createIngredientMutation({
+        variables: {
+          amount: ingredient.amount,
+          ingredient: ingredient.ingredient,
+          measure: ingredient.measureId,
+          recipe: data!.createRecipe!.data!.id!,
+        },
+      })
     })
 
     // Remove id from recipe

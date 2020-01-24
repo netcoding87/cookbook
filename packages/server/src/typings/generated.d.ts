@@ -35,7 +35,7 @@ export type CreateImagePayload = {
 };
 
 export type CreateIngredientInput = {
-  amount: Scalars['String'],
+  amount?: Maybe<Scalars['String']>,
   ingredient: Scalars['String'],
   measure: Scalars['ID'],
   recipe: Scalars['ID'],

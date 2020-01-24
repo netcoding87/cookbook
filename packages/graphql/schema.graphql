@@ -89,7 +89,7 @@ type UpdateImagePayload {
 }
 
 input CreateIngredientInput {
-  amount: String!
+  amount: String
   ingredient: String!
   measure: ID!
   recipe: ID!
