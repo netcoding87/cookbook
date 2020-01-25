@@ -1,4 +1,5 @@
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express'
+import bodyParser from 'body-parser'
 import express from 'express'
 import * as typeDefs from '../../graphql/schema.graphql'
 import resolvers from './resolvers'
@@ -27,6 +28,11 @@ const server = new ApolloServer({
 })
 
 const app = express()
+app.use(
+  bodyParser.json({
+    limit: '25mb',
+  })
+)
 server.applyMiddleware({ app })
 
 app.listen({ port: PORT }, () =>
