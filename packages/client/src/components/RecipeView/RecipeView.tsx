@@ -8,8 +8,8 @@ import Row from 'react-bootstrap/Row'
 import { useHistory, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import useSWR from 'swr'
-
 import { RecipeData } from '../../interfaces'
+import { useRecipeViewQuery } from '../../typings/generated.d'
 import { ActionBar } from '../ActionBar'
 import Layout from '../Layout'
 import Rating from '../Rating'
@@ -18,6 +18,7 @@ import IngredientsView from './IngredientsView'
 import PreparationView from './PreparationView'
 import { Gutter, ImageContainer, NonPrint } from './RecipeView.styles'
 
+
 const RecipeView: React.FC = () => {
   const history = useHistory()
   const { id, title } = useParams()
@@ -25,6 +26,14 @@ const RecipeView: React.FC = () => {
     `http://localhost:4000/recipes/${id}`,
     url => fetch(url).then(response => response.json())
   )
+
+  const { data: recipeData } = useRecipeViewQuery({
+    variables: {
+      id: id!,
+    },
+  })
+
+  console.log(recipeData)
 
   const [showModal, setShowModal] = useState(false)
 
@@ -52,7 +61,7 @@ const RecipeView: React.FC = () => {
 
   if (data.title !== title) {
     // TODO: Return NotFoundPage when implemented
-    return <div>Invalid!</div>
+    return <Layout>Invalid!</Layout>
   }
 
   const difficulty =

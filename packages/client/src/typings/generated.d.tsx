@@ -345,6 +345,27 @@ export type CreateRecipeMutation = (
   ) }
 );
 
+export type RecipeViewQueryVariables = {
+  id: Scalars['ID']
+};
+
+
+export type RecipeViewQuery = (
+  { __typename?: 'Query' }
+  & { recipe: Maybe<(
+    { __typename?: 'RecipeData' }
+    & Pick<RecipeData, 'id' | 'title' | 'subtitle' | 'tags' | 'ranking' | 'servings' | 'difficulty' | 'preparationTime' | 'cookingTime' | 'restTime' | 'preparations' | 'source'>
+    & { ingredients: Array<(
+      { __typename?: 'IngredientData' }
+      & Pick<IngredientData, 'amount' | 'ingredient'>
+      & { measure: (
+        { __typename?: 'MeasureData' }
+        & Pick<MeasureData, 'name'>
+      ) }
+    )> }
+  )> }
+);
+
 export type CategoriesQueryVariables = {};
 
 
@@ -555,6 +576,57 @@ export function useCreateRecipeMutation(baseOptions?: ApolloReactHooks.MutationH
 export type CreateRecipeMutationHookResult = ReturnType<typeof useCreateRecipeMutation>;
 export type CreateRecipeMutationResult = ApolloReactCommon.MutationResult<CreateRecipeMutation>;
 export type CreateRecipeMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateRecipeMutation, CreateRecipeMutationVariables>;
+export const RecipeViewDocument = gql`
+    query recipeView($id: ID!) {
+  recipe(id: $id) {
+    id
+    title
+    subtitle
+    tags
+    ranking
+    servings
+    difficulty
+    preparationTime
+    cookingTime
+    restTime
+    preparations
+    source
+    ingredients {
+      amount
+      ingredient
+      measure {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useRecipeViewQuery__
+ *
+ * To run a query within a React component, call `useRecipeViewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecipeViewQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecipeViewQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRecipeViewQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<RecipeViewQuery, RecipeViewQueryVariables>) {
+        return ApolloReactHooks.useQuery<RecipeViewQuery, RecipeViewQueryVariables>(RecipeViewDocument, baseOptions);
+      }
+export function useRecipeViewLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RecipeViewQuery, RecipeViewQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<RecipeViewQuery, RecipeViewQueryVariables>(RecipeViewDocument, baseOptions);
+        }
+export type RecipeViewQueryHookResult = ReturnType<typeof useRecipeViewQuery>;
+export type RecipeViewLazyQueryHookResult = ReturnType<typeof useRecipeViewLazyQuery>;
+export type RecipeViewQueryResult = ApolloReactCommon.QueryResult<RecipeViewQuery, RecipeViewQueryVariables>;
 export const CategoriesDocument = gql`
     query categories {
   categories {
