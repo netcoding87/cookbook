@@ -21,3 +21,9 @@ query recipeView($id: ID!) {
     }
   }
 }
+
+mutation deleteRecipe($id: ID!) {
+  removeRecipe(input: { id: $id }) {
+    data
+  }
+}
