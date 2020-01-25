@@ -1,13 +1,10 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-
 import { IngredientData, RecipeData } from '../../interfaces'
-import {
-  useCreateIngredientMutation,
-  useCreateRecipeMutation,
-} from '../../typings/generated.d'
+import { useCreateImageMutation, useCreateIngredientMutation, useCreateRecipeMutation } from '../../typings/generated.d'
 import Layout from '../Layout'
 import RecipeEditForm from '../RecipeEditForm'
+
 
 const RecipeNew: React.FC = () => {
   const recipe: RecipeData = {
@@ -22,6 +19,7 @@ const RecipeNew: React.FC = () => {
 
   const [createRecipeMutation] = useCreateRecipeMutation()
   const [createIngredientMutation] = useCreateIngredientMutation()
+  const [createImageMutation] = useCreateImageMutation()
 
   const handleSubmit = async (
     recipe: RecipeData,
@@ -58,59 +56,17 @@ const RecipeNew: React.FC = () => {
       })
     })
 
-    // Remove id from recipe
-    delete recipe['id']
-
-    // Add recipe data
-    const response = await fetch(`http://localhost:4000/recipes`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(recipe),
-    })
-
-    if (response.ok) {
-      const result = await response.json()
-      const recipeId = result.id
-
-      // Create new ingredients
-      const promises = ingredients.map(ingredient => {
-        delete ingredient['id']
-        ingredient.recipeId = recipeId
-
-        return fetch(`http://localhost:4000/ingredients`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(ingredient),
-        })
+    if (image) {
+      // Create image
+      await createImageMutation({
+        variables: {
+          image: image,
+          recipe: data!.createRecipe!.data!.id!,
+        },
       })
-
-      await Promise.all(promises)
-
-      // Upload image
-      if (image) {
-        await fetch('http://localhost:4000/images', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ image: image, recipeId: recipeId }),
-        })
-      }
-
-      history.push(`/recipe/${recipeId}`)
-      console.log(`${recipeId}`)
     }
 
-    if (!response.ok) {
-      console.log('An error occurred!')
-    }
+    history.push(`/recipe/${data!.createRecipe!.data!.id!}/${recipe.title}`)
   }
 
   return (

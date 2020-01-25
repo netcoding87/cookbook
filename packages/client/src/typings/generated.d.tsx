@@ -282,6 +282,23 @@ export type ImageQuery = (
   )> }
 );
 
+export type CreateImageMutationVariables = {
+  image: Scalars['String'],
+  recipe: Scalars['ID']
+};
+
+
+export type CreateImageMutation = (
+  { __typename?: 'Mutation' }
+  & { createImage: (
+    { __typename?: 'CreateImagePayload' }
+    & { data: (
+      { __typename?: 'ImageData' }
+      & Pick<ImageData, 'id'>
+    ) }
+  ) }
+);
+
 export type CreateIngredientMutationVariables = {
   amount?: Maybe<Scalars['String']>,
   ingredient: Scalars['String'],
@@ -421,6 +438,41 @@ export function useImageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type ImageQueryHookResult = ReturnType<typeof useImageQuery>;
 export type ImageLazyQueryHookResult = ReturnType<typeof useImageLazyQuery>;
 export type ImageQueryResult = ApolloReactCommon.QueryResult<ImageQuery, ImageQueryVariables>;
+export const CreateImageDocument = gql`
+    mutation createImage($image: String!, $recipe: ID!) {
+  createImage(input: {image: $image, recipe: $recipe}) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export type CreateImageMutationFn = ApolloReactCommon.MutationFunction<CreateImageMutation, CreateImageMutationVariables>;
+
+/**
+ * __useCreateImageMutation__
+ *
+ * To run a mutation, you first call `useCreateImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createImageMutation, { data, loading, error }] = useCreateImageMutation({
+ *   variables: {
+ *      image: // value for 'image'
+ *      recipe: // value for 'recipe'
+ *   },
+ * });
+ */
+export function useCreateImageMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateImageMutation, CreateImageMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateImageMutation, CreateImageMutationVariables>(CreateImageDocument, baseOptions);
+      }
+export type CreateImageMutationHookResult = ReturnType<typeof useCreateImageMutation>;
+export type CreateImageMutationResult = ApolloReactCommon.MutationResult<CreateImageMutation>;
+export type CreateImageMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateImageMutation, CreateImageMutationVariables>;
 export const CreateIngredientDocument = gql`
     mutation createIngredient($amount: String, $ingredient: String!, $measure: ID!, $recipe: ID!) {
   createIngredient(input: {amount: $amount, ingredient: $ingredient, measure: $measure, recipe: $recipe}) {
