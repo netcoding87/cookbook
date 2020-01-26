@@ -1,33 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import useSWR from 'swr'
 
-import { IngredientData, RecipeData } from '../../../interfaces'
-import { useStaticData } from '../../StaticDataProvider'
+import { IngredientData, MeasureData } from '../../../typings/generated.d'
 import { HeadlineContainer } from './IngredientsView.styles'
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+type IngredientsViewData = Array<
+  Pick<IngredientData, 'id' | 'amount' | 'ingredient'> & {
+    measure: Pick<MeasureData, 'name'>
+  }
+>
 
 interface IngredientsViewProps {
-  recipe: RecipeData
+  ingredients: IngredientsViewData
 }
 
-const IngredientsView: React.FC<IngredientsViewProps> = ({ recipe }) => {
-  const { data } = useSWR<IngredientData[]>(
-    `http://localhost:4000/recipes/${recipe.id}/ingredients`,
-    async url => {
-      await sleep(30)
-      return fetch(url).then(response => response.json())
-    },
-    { suspense: true }
-  )
-
-  const { measures } = useStaticData()
-
-  if (data === undefined || data.length === 0) {
-    return null
-  }
-
+const IngredientsView: React.FC<IngredientsViewProps> = ({ ingredients }) => {
   return (
     <>
       <HeadlineContainer>
@@ -35,12 +22,11 @@ const IngredientsView: React.FC<IngredientsViewProps> = ({ recipe }) => {
           <FontAwesomeIcon icon={['fas', 'balance-scale']} /> Zutaten
         </h5>
       </HeadlineContainer>
-      {data.map(ingredient => {
-        const measure = measures.find(item => item.id === ingredient.measureId)
-
+      {ingredients.map(ingredient => {
         return (
           <div key={ingredient.id}>
-            {ingredient.amount} {measure && measure.name}{' '}
+            {ingredient.amount}{' '}
+            {ingredient.measure.name && ingredient.measure.name}{' '}
             {ingredient.ingredient}
           </div>
         )

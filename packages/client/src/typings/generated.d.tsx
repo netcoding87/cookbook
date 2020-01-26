@@ -357,7 +357,7 @@ export type RecipeViewQuery = (
     & Pick<RecipeData, 'id' | 'title' | 'subtitle' | 'tags' | 'ranking' | 'servings' | 'difficulty' | 'preparationTime' | 'cookingTime' | 'restTime' | 'preparations' | 'source'>
     & { ingredients: Array<(
       { __typename?: 'IngredientData' }
-      & Pick<IngredientData, 'amount' | 'ingredient'>
+      & Pick<IngredientData, 'id' | 'amount' | 'ingredient'>
       & { measure: (
         { __typename?: 'MeasureData' }
         & Pick<MeasureData, 'name'>
@@ -605,6 +605,7 @@ export const RecipeViewDocument = gql`
     preparations
     source
     ingredients {
+      id
       amount
       ingredient
       measure {

@@ -7,9 +7,7 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import { useHistory, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
-import useSWR from 'swr'
-import { RecipeData } from '../../interfaces'
-import { useRecipeViewQuery } from '../../typings/generated.d'
+import { useDeleteRecipeMutation, useRecipeViewQuery } from '../../typings/generated.d'
 import { ActionBar } from '../ActionBar'
 import Layout from '../Layout'
 import Rating from '../Rating'
@@ -22,27 +20,20 @@ import { Gutter, ImageContainer, NonPrint } from './RecipeView.styles'
 const RecipeView: React.FC = () => {
   const history = useHistory()
   const { id, title } = useParams()
-  const { data } = useSWR<RecipeData>(
-    `http://localhost:4000/recipes/${id}`,
-    url => fetch(url).then(response => response.json())
-  )
 
-  const { data: recipeData } = useRecipeViewQuery({
+  const { data } = useRecipeViewQuery({
     variables: {
       id: id!,
     },
   })
-
-  console.log(recipeData)
+  const [deleteRecipeMutation] = useDeleteRecipeMutation()
 
   const [showModal, setShowModal] = useState(false)
 
   const handleDelete = async () => {
-    const response = await fetch(`http://localhost:4000/recipes/${id}`, {
-      method: 'DELETE',
-    })
+    const response = await deleteRecipeMutation({ variables: { id: id! } })
 
-    if (response.ok) {
+    if (response.data) {
       history.push('/')
     }
   }
@@ -55,50 +46,50 @@ const RecipeView: React.FC = () => {
     setShowModal(false)
   }
 
-  if (!data) {
+  if (!data || !data.recipe) {
     return <div>Loading...</div>
   }
 
-  if (data.title !== title) {
+  if (data.recipe.title !== title) {
     // TODO: Return NotFoundPage when implemented
     return <Layout>Invalid!</Layout>
   }
 
   const difficulty =
-    data.difficulty === 0
+    data.recipe.difficulty === 0
       ? 'Leicht'
-      : data.difficulty === 1
+      : data.recipe.difficulty === 1
       ? 'Mittel'
       : 'Schwer'
 
   return (
     <Layout>
       <Container fluid>
-        <h1>{data.title}</h1>
-        {data.subtitle && <div>{data.subtitle}</div>}
+        <h1>{data.recipe.title}</h1>
+        {data.recipe.subtitle && <div>{data.recipe.subtitle}</div>}
       </Container>
       <hr />
       <Container fluid>
-        {data.servings && <div>Portionen: {data.servings}</div>}
-        {data.preparationTime && (
-          <div>Vorbereitungszeit: {data.preparationTime}</div>
+        {data.recipe.servings && <div>Portionen: {data.recipe.servings}</div>}
+        {data.recipe.preparationTime && (
+          <div>Vorbereitungszeit: {data.recipe.preparationTime}</div>
         )}
-        <div>Back- / Kochzeit: {data.cookingTime}</div>
-        {data.restTime && <div>Ruhezeit: {data.restTime}</div>}
+        <div>Back- / Kochzeit: {data.recipe.cookingTime}</div>
+        {data.recipe.restTime && <div>Ruhezeit: {data.recipe.restTime}</div>}
       </Container>
       <hr />
       <Container fluid>
         <Row>
           <Col>
             <Suspense fallback={<div>Loading recipe data...</div>}>
-              <IngredientsView recipe={data} />
+              <IngredientsView ingredients={data.recipe.ingredients} />
               <Gutter />
-              <PreparationView preparations={data.preparations} />
+              <PreparationView preparations={data.recipe.preparations} />
             </Suspense>
           </Col>
           <Col sm={6}>
             <ImageContainer>
-              <RecipeImage id={id!} title={data.title} fluid />
+              <RecipeImage id={id!} title={data.recipe.title} fluid />
             </ImageContainer>
           </Col>
         </Row>
@@ -106,7 +97,7 @@ const RecipeView: React.FC = () => {
       <NonPrint>
         <hr />
         <Container fluid>
-          <Rating rating={data.ranking} readonly /> | Schwierigkeit:{' '}
+          <Rating rating={data.recipe.ranking} readonly /> | Schwierigkeit:{' '}
           {difficulty}
         </Container>
         <hr />
@@ -120,7 +111,7 @@ const RecipeView: React.FC = () => {
             >
               <FontAwesomeIcon icon={['fas', 'print']} /> Drucken
             </Button>
-            <Link to={`/recipe/${id}/${data.title}/edit`}>
+            <Link to={`/recipe/${id}/${data.recipe.title}/edit`}>
               <Button variant="outline-secondary">
                 <FontAwesomeIcon icon={['fas', 'edit']} /> Bearbeiten
               </Button>

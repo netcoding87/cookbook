@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import ReactHtmlParser from 'react-html-parser'
-
 import { HeadlineContainer } from './PreparationView.styles'
 
+
 interface PreparationViewProps {
-  preparations: string | undefined
+  preparations: string | null | undefined
 }
 
 const PreparationView: React.FC<PreparationViewProps> = ({
