@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { RecipeData } from '../../interfaces'
+import RecipeImage from '../RecipeImage'
 import {
   ContentContainer,
   ImageContainer,
@@ -8,7 +9,6 @@ import {
   RecipeCardLink,
   RecipeTitle,
 } from './RecipeCard.styles'
-import RecipeCardImage from './RecipeCardImage'
 
 interface RecipeCardProps {
   recipe: RecipeData
@@ -20,7 +20,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, cardWidth }) => {
     <RecipeCardContainer width={cardWidth}>
       <RecipeCardLink to={`/recipe/${recipe.id}/${recipe.title}`}>
         <ImageContainer>
-          <RecipeCardImage id={recipe.id.toString()} title={recipe.title} />
+          <RecipeImage
+            id={recipe.id.toString()}
+            title={recipe.title}
+            size="small"
+          />
         </ImageContainer>
         <ContentContainer>
           {/* <Rating rating={recipe.ranking} size="xs" readonly /> */}

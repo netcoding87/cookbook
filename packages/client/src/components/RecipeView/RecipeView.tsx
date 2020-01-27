@@ -92,7 +92,7 @@ const RecipeView: React.FC = () => {
           </Col>
           <Col sm={6}>
             <ImageContainer>
-              <RecipeImage id={id!} title={data.recipe.title} fluid />
+              <RecipeImage id={id!} title={data.recipe.title} />
             </ImageContainer>
           </Col>
         </Row>

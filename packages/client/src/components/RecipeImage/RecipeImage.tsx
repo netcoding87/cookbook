@@ -1,41 +1,30 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import Image from 'react-bootstrap/Image'
 
-import { useImage } from '../../hooks'
+import { useImageQuery } from '../../typings/generated.d'
+import { Image } from './RecipeImage.styles'
 
 interface RecipeImageProps {
   id: string
   title: string
-  fluid?: boolean
-  height?: string
+  size?: 'large' | 'small'
 }
 
 const RecipeImage: React.FC<RecipeImageProps> = ({
   id,
   title,
-  fluid = false,
-  height = '',
+  size = 'large',
 }) => {
-  const { image } = useImage(id)
+  const { data } = useImageQuery({ variables: { id } })
 
-  if (height && fluid) {
-    console.warn(
-      'You passed `height` and `fluid` in combination. This is not intended. `fluid` prop will be ignored when passing a `height`!'
-    )
-  }
-
-  return image ? (
-    <Image
-      src={image.image}
-      alt={title}
-      title={title}
-      rounded
-      height={height}
-      fluid={!height && fluid}
-    />
+  return data?.image ? (
+    <Image src={data.image.image} alt={title} title={title} />
   ) : (
-    <FontAwesomeIcon icon={['fas', 'image']} color="#6c757d" size="10x" />
+    <FontAwesomeIcon
+      icon={['fas', 'image']}
+      color="#6c757d"
+      size={size === 'large' ? '10x' : '5x'}
+    />
   )
 }
 
