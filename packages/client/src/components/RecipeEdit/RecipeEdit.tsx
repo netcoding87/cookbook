@@ -93,8 +93,6 @@ const RecipeEdit: React.FC = () => {
     history.push(`/recipe/${id}/${values.title}`)
   }
 
-  console.log(`ImageLoading: ${imageLoading}`)
-
   if (!recipe || !dbIngredients) {
     return <div>Loading...</div>
   }
