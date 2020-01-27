@@ -20,7 +20,7 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write",
-      "jest --bail --findRelatedTests",
+      "cross-env CI=true react-scripts test --bail --findRelatedTests",
       "git add"
     ]
   },
