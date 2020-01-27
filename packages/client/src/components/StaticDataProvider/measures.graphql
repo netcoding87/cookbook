@@ -1,6 +1,0 @@
-query measures {
-  measures {
-    id
-    name
-  }
-}

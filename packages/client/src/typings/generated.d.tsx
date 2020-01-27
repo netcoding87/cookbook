@@ -269,6 +269,27 @@ export type RecipesQuery = (
   )> }
 );
 
+export type RecipeEditQueryVariables = {
+  id: Scalars['ID']
+};
+
+
+export type RecipeEditQuery = (
+  { __typename?: 'Query' }
+  & { recipe: Maybe<(
+    { __typename?: 'RecipeData' }
+    & Pick<RecipeData, 'id' | 'title' | 'subtitle' | 'tags' | 'ranking' | 'servings' | 'difficulty' | 'preparationTime' | 'cookingTime' | 'restTime' | 'preparations' | 'source'>
+    & { ingredients: Array<(
+      { __typename?: 'IngredientData' }
+      & Pick<IngredientData, 'id' | 'amount' | 'ingredient'>
+      & { measure: (
+        { __typename?: 'MeasureData' }
+        & Pick<MeasureData, 'name'>
+      ) }
+    )> }
+  )> }
+);
+
 export type ImageQueryVariables = {
   id: Scalars['ID']
 };
@@ -379,17 +400,6 @@ export type DeleteRecipeMutation = (
   ) }
 );
 
-export type CategoriesQueryVariables = {};
-
-
-export type CategoriesQuery = (
-  { __typename?: 'Query' }
-  & { categories: Array<(
-    { __typename?: 'CategoryData' }
-    & Pick<CategoryData, 'id' | 'name' | 'parent'>
-  )> }
-);
-
 export type MeasuresQueryVariables = {};
 
 
@@ -398,6 +408,17 @@ export type MeasuresQuery = (
   & { measures: Array<(
     { __typename?: 'MeasureData' }
     & Pick<MeasureData, 'id' | 'name'>
+  )> }
+);
+
+export type CategoriesQueryVariables = {};
+
+
+export type CategoriesQuery = (
+  { __typename?: 'Query' }
+  & { categories: Array<(
+    { __typename?: 'CategoryData' }
+    & Pick<CategoryData, 'id' | 'name' | 'parent'>
   )> }
 );
 
@@ -439,6 +460,58 @@ export function useRecipesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type RecipesQueryHookResult = ReturnType<typeof useRecipesQuery>;
 export type RecipesLazyQueryHookResult = ReturnType<typeof useRecipesLazyQuery>;
 export type RecipesQueryResult = ApolloReactCommon.QueryResult<RecipesQuery, RecipesQueryVariables>;
+export const RecipeEditDocument = gql`
+    query recipeEdit($id: ID!) {
+  recipe(id: $id) {
+    id
+    title
+    subtitle
+    tags
+    ranking
+    servings
+    difficulty
+    preparationTime
+    cookingTime
+    restTime
+    preparations
+    source
+    ingredients {
+      id
+      amount
+      ingredient
+      measure {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useRecipeEditQuery__
+ *
+ * To run a query within a React component, call `useRecipeEditQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecipeEditQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecipeEditQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRecipeEditQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<RecipeEditQuery, RecipeEditQueryVariables>) {
+        return ApolloReactHooks.useQuery<RecipeEditQuery, RecipeEditQueryVariables>(RecipeEditDocument, baseOptions);
+      }
+export function useRecipeEditLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RecipeEditQuery, RecipeEditQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<RecipeEditQuery, RecipeEditQueryVariables>(RecipeEditDocument, baseOptions);
+        }
+export type RecipeEditQueryHookResult = ReturnType<typeof useRecipeEditQuery>;
+export type RecipeEditLazyQueryHookResult = ReturnType<typeof useRecipeEditLazyQuery>;
+export type RecipeEditQueryResult = ApolloReactCommon.QueryResult<RecipeEditQuery, RecipeEditQueryVariables>;
 export const ImageDocument = gql`
     query image($id: ID!) {
   image(recipeId: $id) {
@@ -673,6 +746,39 @@ export function useDeleteRecipeMutation(baseOptions?: ApolloReactHooks.MutationH
 export type DeleteRecipeMutationHookResult = ReturnType<typeof useDeleteRecipeMutation>;
 export type DeleteRecipeMutationResult = ApolloReactCommon.MutationResult<DeleteRecipeMutation>;
 export type DeleteRecipeMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteRecipeMutation, DeleteRecipeMutationVariables>;
+export const MeasuresDocument = gql`
+    query measures {
+  measures {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useMeasuresQuery__
+ *
+ * To run a query within a React component, call `useMeasuresQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeasuresQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeasuresQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeasuresQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MeasuresQuery, MeasuresQueryVariables>) {
+        return ApolloReactHooks.useQuery<MeasuresQuery, MeasuresQueryVariables>(MeasuresDocument, baseOptions);
+      }
+export function useMeasuresLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeasuresQuery, MeasuresQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MeasuresQuery, MeasuresQueryVariables>(MeasuresDocument, baseOptions);
+        }
+export type MeasuresQueryHookResult = ReturnType<typeof useMeasuresQuery>;
+export type MeasuresLazyQueryHookResult = ReturnType<typeof useMeasuresLazyQuery>;
+export type MeasuresQueryResult = ApolloReactCommon.QueryResult<MeasuresQuery, MeasuresQueryVariables>;
 export const CategoriesDocument = gql`
     query categories {
   categories {
@@ -707,36 +813,3 @@ export function useCategoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesQueryResult = ApolloReactCommon.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
-export const MeasuresDocument = gql`
-    query measures {
-  measures {
-    id
-    name
-  }
-}
-    `;
-
-/**
- * __useMeasuresQuery__
- *
- * To run a query within a React component, call `useMeasuresQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeasuresQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeasuresQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeasuresQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MeasuresQuery, MeasuresQueryVariables>) {
-        return ApolloReactHooks.useQuery<MeasuresQuery, MeasuresQueryVariables>(MeasuresDocument, baseOptions);
-      }
-export function useMeasuresLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeasuresQuery, MeasuresQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<MeasuresQuery, MeasuresQueryVariables>(MeasuresDocument, baseOptions);
-        }
-export type MeasuresQueryHookResult = ReturnType<typeof useMeasuresQuery>;
-export type MeasuresLazyQueryHookResult = ReturnType<typeof useMeasuresLazyQuery>;
-export type MeasuresQueryResult = ApolloReactCommon.QueryResult<MeasuresQuery, MeasuresQueryVariables>;
