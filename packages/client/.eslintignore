@@ -1,1 +1,3 @@
-electron
+src/react-app-env.d.ts
+src/serviceWorker.ts
+src/typings/generated.d.tsx
