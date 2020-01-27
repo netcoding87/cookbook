@@ -9,28 +9,19 @@
     "start-cra": "cross-env PORT=3201 react-scripts start",
     "start-server": "cross-env NODE_ENV=development node server.js",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "lint": "eslint --ext .js --ext .jsx --ext .ts --ext .tsx src --color",
+    "precommit": "lint-staged"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "lint-staged": {
-    "*.{js,tsx}": [
+    "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write",
       "jest --bail --findRelatedTests",
       "git add"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
     ]
   },
   "jest": {
