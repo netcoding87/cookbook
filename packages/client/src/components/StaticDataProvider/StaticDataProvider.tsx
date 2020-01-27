@@ -1,7 +1,7 @@
 import React from 'react'
+
 import { CategoryData, MeasureData } from '../../interfaces'
 import { useCategoriesQuery, useMeasuresQuery } from '../../typings/generated.d'
-
 
 interface StaticData {
   categories: CategoryData[]

@@ -7,7 +7,11 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import { useHistory, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
-import { useDeleteRecipeMutation, useRecipeViewQuery } from '../../typings/generated.d'
+
+import {
+  useDeleteRecipeMutation,
+  useRecipeViewQuery,
+} from '../../typings/generated.d'
 import { ActionBar } from '../ActionBar'
 import Layout from '../Layout'
 import Rating from '../Rating'
@@ -15,7 +19,6 @@ import RecipeImage from '../RecipeImage'
 import IngredientsView from './IngredientsView'
 import PreparationView from './PreparationView'
 import { Gutter, ImageContainer, NonPrint } from './RecipeView.styles'
-
 
 const RecipeView: React.FC = () => {
   const history = useHistory()

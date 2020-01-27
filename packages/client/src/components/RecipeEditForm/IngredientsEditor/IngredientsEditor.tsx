@@ -5,10 +5,10 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Table from 'react-bootstrap/Table'
 import Select, { ValueType } from 'react-select'
+
 import { IngredientData } from '../../../interfaces'
 import { useStaticData } from '../../StaticDataProvider'
 import { Input } from '../RecipeEditForm.styles'
-
 
 type addIngredient = (
   amount: string,

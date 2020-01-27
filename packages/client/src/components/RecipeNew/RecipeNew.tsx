@@ -1,10 +1,14 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { IngredientData, RecipeData } from '../../interfaces'
-import { useCreateImageMutation, useCreateIngredientMutation, useCreateRecipeMutation } from '../../typings/generated.d'
+import {
+  useCreateImageMutation,
+  useCreateIngredientMutation,
+  useCreateRecipeMutation,
+} from '../../typings/generated.d'
 import Layout from '../Layout'
 import RecipeEditForm from '../RecipeEditForm'
-
 
 const RecipeNew: React.FC = () => {
   const recipe: RecipeData = {
