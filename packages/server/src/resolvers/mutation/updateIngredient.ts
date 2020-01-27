@@ -1,5 +1,9 @@
 import { update } from '../../database/ingredients'
-import { MutationUpdateIngredientArgs, ResolverFn, UpdateIngredientPayload } from '../../typings/generated'
+import {
+  MutationUpdateIngredientArgs,
+  ResolverFn,
+  UpdateIngredientPayload,
+} from '../../typings/generated'
 import { ContextType } from '../../utils/createContext'
 
 type UpdateIngredientResolver = ResolverFn<
@@ -11,8 +15,7 @@ type UpdateIngredientResolver = ResolverFn<
 
 const updateIngredient: UpdateIngredientResolver = async (
   root,
-  { input },
-  ctx
+  { input }
 ): Promise<UpdateIngredientPayload> => {
   const number = await update({
     _id: input.id,

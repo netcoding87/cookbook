@@ -66,7 +66,6 @@ const resolvers = {
 
   IngredientData: {
     measure: async (root: PlainIngredientData): Promise<MeasureData> => {
-      console.log('measure')
       const measure = await getMeasureById(root.measure)
       return {
         id: measure ? measure._id : '',

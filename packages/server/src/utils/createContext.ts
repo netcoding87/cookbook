@@ -11,7 +11,7 @@ export interface ContextType {
   }
 }
 
-const createContext = (params: ContextCallbackParams): ContextType => {
+const createContext = (): ContextType => {
   return {
     dbConnection: { query: () => 'db content' },
   }

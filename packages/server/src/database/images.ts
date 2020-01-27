@@ -1,7 +1,7 @@
 import Datastore from 'nedb'
 import path from 'path'
-import { DB_IMAGES, ROOT } from '../utils/config'
 
+import { DB_IMAGES, ROOT } from '../utils/config'
 
 const db = new Datastore({
   filename: `${ROOT}${path.sep}${DB_IMAGES}`,

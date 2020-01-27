@@ -1,3 +1,4 @@
 webpack.config.js
 src/typings/filetypes.d.ts
 src/typings/generated.d.ts
+src/typings/plaintypes.d.ts

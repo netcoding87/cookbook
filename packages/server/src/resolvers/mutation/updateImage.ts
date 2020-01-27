@@ -1,5 +1,9 @@
 import { update } from '../../database/images'
-import { MutationUpdateImageArgs, ResolverFn, UpdateImagePayload } from '../../typings/generated'
+import {
+  MutationUpdateImageArgs,
+  ResolverFn,
+  UpdateImagePayload,
+} from '../../typings/generated'
 import { ContextType } from '../../utils/createContext'
 
 type UpdateImageResolver = ResolverFn<
@@ -11,8 +15,7 @@ type UpdateImageResolver = ResolverFn<
 
 const updateImage: UpdateImageResolver = async (
   root,
-  { input },
-  ctx
+  { input }
 ): Promise<UpdateImagePayload> => {
   const number = await update({
     _id: input.id,

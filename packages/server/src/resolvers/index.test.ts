@@ -2,7 +2,6 @@ import resolvers from '.'
 
 test('query machines should return a machine', () => {
   const data = resolvers.Query.machines()
-  console.log(data)
   expect(data[0]['name']).toBe('Azure VM')
   expect(data[0]['status']).toBe('running')
 })

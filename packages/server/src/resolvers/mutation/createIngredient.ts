@@ -1,5 +1,8 @@
 import { add } from '../../database/ingredients'
-import { MutationCreateIngredientArgs, ResolverFn } from '../../typings/generated'
+import {
+  MutationCreateIngredientArgs,
+  ResolverFn,
+} from '../../typings/generated'
 import { PlainCreateIngredientPayload } from '../../typings/plaintypes'
 import { ContextType } from '../../utils/createContext'
 

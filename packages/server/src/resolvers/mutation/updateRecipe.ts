@@ -1,5 +1,9 @@
 import { update } from '../../database/recipes'
-import { MutationUpdateRecipeArgs, ResolverFn, UpdateRecipePayload } from '../../typings/generated'
+import {
+  MutationUpdateRecipeArgs,
+  ResolverFn,
+  UpdateRecipePayload,
+} from '../../typings/generated'
 import { ContextType } from '../../utils/createContext'
 
 type UpdateRecipeResolver = ResolverFn<
@@ -11,8 +15,7 @@ type UpdateRecipeResolver = ResolverFn<
 
 const updateRecipe: UpdateRecipeResolver = async (
   root,
-  { input },
-  ctx
+  { input }
 ): Promise<UpdateRecipePayload> => {
   const number = await update({
     _id: input.id,

@@ -1,5 +1,9 @@
 import { remove } from '../../database/recipes'
-import { MutationRemoveRecipeArgs, RemoveRecipePayload, ResolverFn } from '../../typings/generated'
+import {
+  MutationRemoveRecipeArgs,
+  RemoveRecipePayload,
+  ResolverFn,
+} from '../../typings/generated'
 import { ContextType } from '../../utils/createContext'
 
 type RemoveRecipeResolver = ResolverFn<
@@ -9,7 +13,7 @@ type RemoveRecipeResolver = ResolverFn<
   MutationRemoveRecipeArgs
 >
 
-const removeRecipe: RemoveRecipeResolver = async (root, { input }, ctx) => {
+const removeRecipe: RemoveRecipeResolver = async (root, { input }) => {
   const number = await remove(input.id)
   return {
     data: number > 0,
