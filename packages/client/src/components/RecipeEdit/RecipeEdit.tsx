@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import useSWR from 'swr'
 
-import { useImage } from '../../hooks'
-import { IngredientData, RecipeData } from '../../interfaces'
+import {
+  useCreateImageMutation,
+  useCreateIngredientMutation,
+  useImageQuery,
+  useRecipeEditQuery,
+  useRemoveIngredientMutation,
+  useUpdateImageMutation,
+  useUpdateRecipeMutation,
+} from '../../typings/generated.d'
 import Layout from '../Layout'
 import RecipeEditForm from '../RecipeEditForm'
+import {
+  RecipeEditFormIngredientData,
+  RecipeEditFormRecipeData,
+} from '../RecipeEditForm/RecipeEditForm'
 
 const RecipeEdit: React.FC = () => {
   const history = useHistory()
@@ -13,101 +23,116 @@ const RecipeEdit: React.FC = () => {
 
   const [image, setImage] = useState('')
 
-  const { data: recipe } = useSWR<RecipeData>(
-    `http://localhost:4000/recipes/${id}`,
-    url => fetch(url).then(response => response.json())
-  )
+  const { data } = useRecipeEditQuery({ variables: { id: id! } })
+  const { data: dbImage } = useImageQuery({ variables: { recipe: id! } })
 
-  const { data: dbIngredients } = useSWR<IngredientData[]>(
-    `http://localhost:4000/recipes/${id}/ingredients`,
-    url => fetch(url).then(response => response.json())
-  )
+  const [updateRecipeMutation] = useUpdateRecipeMutation()
 
-  const { loading: imageLoading, image: dbImage } = useImage(id!)
+  const [createImageMutation] = useCreateImageMutation()
+  const [updateImageMutation] = useUpdateImageMutation()
+
+  const [createIngredientMutation] = useCreateIngredientMutation()
+  const [removeIngredientMutation] = useRemoveIngredientMutation()
 
   useEffect(() => {
-    if (dbImage) {
-      setImage(dbImage.image)
+    if (dbImage && dbImage.image) {
+      setImage(dbImage.image.image)
     }
   }, [dbImage])
 
   const handleSubmit = async (
-    values: RecipeData,
-    ingredients: IngredientData[],
+    values: RecipeEditFormRecipeData,
+    ingredients: RecipeEditFormIngredientData[],
     image: string | null
   ) => {
-    // Update recipe data
-    await fetch(`http://localhost:4000/recipes/${values.id}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+    const updateRecipe = updateRecipeMutation({
+      variables: {
+        id: values.id,
+        title: values.title,
+        subtitle: values.subtitle,
+        tags: values.tags,
+        ranking: values.ranking,
+        servings: values.servings,
+        difficulty: values.difficulty,
+        preparationTime: values.preparationTime,
+        cookingTime: values.cookingTime,
+        restTime: values.restTime,
+        preparations: values.preparations,
+        source: values.source,
+        category: values.category.id,
       },
-      body: JSON.stringify(values),
     })
 
     // Delete all related ingredients
-    const ids = dbIngredients ? dbIngredients.map(item => item.id) : []
-    const deleteAll = ids.map(id =>
-      fetch(`http://localhost:4000/ingredients/${id}`, { method: 'DELETE' })
+    const ids = data?.recipe?.ingredients
+      ? data?.recipe.ingredients.map(item => item.id)
+      : []
+    const deleteIngredients = ids.map(id =>
+      // fetch(`http://localhost:4000/ingredients/${id}`, { method: 'DELETE' })
+      removeIngredientMutation({
+        variables: {
+          id: id,
+        },
+      })
     )
 
-    await Promise.all(deleteAll)
-
     // Create new ingredients
-    const promises = ingredients.map(ingredient => {
-      delete ingredient['id']
-      return fetch(`http://localhost:4000/ingredients`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+    const createIngredients = ingredients.reverse().map(ingredient => {
+      createIngredientMutation({
+        variables: {
+          amount: ingredient.amount,
+          ingredient: ingredient.ingredient,
+          measure: ingredient.measure.id,
+          recipe: data!.recipe!.id!,
         },
-        body: JSON.stringify(ingredient),
       })
     })
 
-    await Promise.all(promises)
+    let updateImage = new Promise(() => {})
 
-    // Update / upload image
     if (image) {
-      let imageUploadURL = `http://localhost:4000/images`
-      let imageUploadMethod = `POST`
-
-      if (dbImage) {
-        imageUploadURL = `http://localhost:4000/images/${dbImage.id}`
-        imageUploadMethod = `PUT`
-      }
-
-      await fetch(imageUploadURL, {
-        method: imageUploadMethod,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ image: image, recipeId: values.id }),
-      })
+      updateImage = dbImage?.image
+        ? updateImageMutation({
+            variables: {
+              id: dbImage.image!.id,
+              image: image,
+              recipe: data!.recipe!.id,
+            },
+          })
+        : createImageMutation({
+            variables: {
+              image: image,
+              recipe: data!.recipe!.id,
+            },
+          })
     }
+
+    await Promise.all([
+      updateRecipe,
+      deleteIngredients,
+      createIngredients,
+      updateImage,
+    ])
 
     // Redirect
     history.push(`/recipe/${id}/${values.title}`)
   }
 
-  if (!recipe || !dbIngredients) {
-    return <div>Loading...</div>
+  if (!data) {
+    return <Layout>Loading...</Layout>
   }
 
-  if (recipe.title !== title) {
+  if (data.recipe?.title !== title) {
     // TODO: Return NotFoundPage when implemented
-    return <div>Invalid!</div>
+    return <Layout>Invalid!</Layout>
   }
 
   return (
     <Layout>
       <RecipeEditForm
         onSubmit={handleSubmit}
-        recipe={recipe}
-        ingredients={dbIngredients}
+        recipe={data.recipe!}
+        ingredients={data.recipe?.ingredients}
         image={image}
       />
     </Layout>

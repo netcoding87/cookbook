@@ -6,8 +6,8 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Table from 'react-bootstrap/Table'
 import Select, { ValueType } from 'react-select'
 
-import { IngredientData } from '../../../interfaces'
 import { useStaticData } from '../../StaticDataProvider'
+import { RecipeEditFormIngredientData } from '../RecipeEditForm'
 import { Input } from '../RecipeEditForm.styles'
 
 type addIngredient = (
@@ -16,18 +16,18 @@ type addIngredient = (
   ingredient: string
 ) => void
 
-type deleteIngredient = (ingredient: IngredientData) => void
+type deleteIngredient = (ingredient: RecipeEditFormIngredientData) => void
 type updateIngredient = (
-  ingredient: IngredientData,
+  ingredient: RecipeEditFormIngredientData,
   field: string,
   value: unknown
 ) => void
 
 interface EditableCellProps {
-  value: string | undefined
+  value: string | null | undefined
   placeholder: string
   field: string
-  ingredient: IngredientData
+  ingredient: RecipeEditFormIngredientData
   updateIngredient: updateIngredient
   required?: boolean
 }
@@ -68,7 +68,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 }
 
 interface IngredientsEditorProps {
-  ingredients: IngredientData[]
+  ingredients: RecipeEditFormIngredientData[]
   onAdd: addIngredient
   onDelete: deleteIngredient
   onChange: updateIngredient
@@ -86,10 +86,12 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
 
   const { measures } = useStaticData()
 
-  const measureOptions = measures.map(measure => ({
-    value: measure.id,
-    label: measure.name,
-  }))
+  const measureOptions = measures
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(measure => ({
+      value: measure.id,
+      label: measure.name,
+    }))
 
   const handleIngredientAdd = () => {
     onAdd(amount, measure, ingredient)
@@ -98,7 +100,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
     setIngredient('')
   }
 
-  const handleIngredientDelete = (ingredient: IngredientData) => {
+  const handleIngredientDelete = (ingredient: RecipeEditFormIngredientData) => {
     onDelete(ingredient)
   }
 
@@ -133,7 +135,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
       <tbody>
         {ingredients.map(ingredient => {
           const measure = measures.find(
-            item => item.id === ingredient.measureId
+            item => item.id === ingredient.measure.id
           )
 
           return (

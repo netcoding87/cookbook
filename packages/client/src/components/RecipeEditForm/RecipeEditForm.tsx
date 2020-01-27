@@ -17,7 +17,12 @@ import Select, { ValueType } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 
 import { useTags } from '../../hooks'
-import { IngredientData, RecipeData } from '../../interfaces'
+import {
+  CategoryData,
+  IngredientData,
+  MeasureData,
+  RecipeData,
+} from '../../typings/generated.d'
 import { ActionBar } from '../ActionBar'
 import Rating from '../Rating'
 import { useStaticData } from '../StaticDataProvider'
@@ -30,9 +35,30 @@ import {
   UploadButton,
 } from './RecipeEditForm.styles'
 
+export type RecipeEditFormRecipeData = Pick<
+  RecipeData,
+  | 'id'
+  | 'title'
+  | 'subtitle'
+  | 'tags'
+  | 'ranking'
+  | 'servings'
+  | 'difficulty'
+  | 'preparationTime'
+  | 'cookingTime'
+  | 'restTime'
+  | 'preparations'
+  | 'source'
+> & { category: Pick<CategoryData, 'id'> }
+
+export type RecipeEditFormIngredientData = Pick<
+  IngredientData,
+  'id' | 'amount' | 'ingredient'
+> & { measure: Pick<MeasureData, 'id'> }
+
 const tagSeparator = ','
 
-const focusOnError = createDecorator<RecipeData>()
+const focusOnError = createDecorator<RecipeEditFormRecipeData>()
 
 const required = (value: unknown) =>
   value ? undefined : 'Diese Angabe ist erforderlich'
@@ -65,12 +91,12 @@ interface SelectOption {
 }
 
 interface RecipeEditFormProps {
-  recipe: RecipeData
-  ingredients?: IngredientData[]
+  recipe: RecipeEditFormRecipeData
+  ingredients?: RecipeEditFormIngredientData[]
   image?: string
   onSubmit: (
-    recipe: RecipeData,
-    ingredients: IngredientData[],
+    recipe: RecipeEditFormRecipeData,
+    ingredients: RecipeEditFormIngredientData[],
     image: string | null
   ) => void
 }
@@ -81,9 +107,9 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
   ...rest
 }) => {
   const [image, setImage] = useState<string | null>(null)
-  const [ingredients, setIngredients] = useState<IngredientData[]>(
-    rest.ingredients ? rest.ingredients : []
-  )
+  const [ingredients, setIngredients] = useState<
+    RecipeEditFormIngredientData[]
+  >(rest.ingredients ? rest.ingredients : [])
 
   useEffect(() => {
     rest.image && setImage(rest.image)
@@ -98,7 +124,7 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
 
   const history = useHistory()
 
-  const handleSubmit = async (values: RecipeData) => {
+  const handleSubmit = async (values: RecipeEditFormRecipeData) => {
     onSubmit(values, ingredients, image)
   }
 
@@ -119,27 +145,28 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
 
   const handleIngredientAdd = (
     amount: string,
-    measureId: string,
+    measure: string,
     ingredient: string
   ) => {
     setIngredients(ingredients => {
       ingredients.push({
-        id: Math.floor(Math.random() * 999999),
-        measureId: measureId,
+        id: Math.random()
+          .toString(36)
+          .slice(2),
         amount: amount,
         ingredient: ingredient,
-        recipeId: recipe ? recipe.id : -1,
+        measure: { id: measure },
       })
       return ingredients
     })
   }
 
-  const handleIngredientDelete = (ingredient: IngredientData) => {
+  const handleIngredientDelete = (ingredient: RecipeEditFormIngredientData) => {
     setIngredients(ingredients.filter(item => item.id !== ingredient.id))
   }
 
   const handleIngredientChange = (
-    ingredient: IngredientData,
+    ingredient: RecipeEditFormIngredientData,
     field: string,
     value: unknown
   ) => {
@@ -246,21 +273,25 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
                     </FormGroup>
                   )}
                 </Field>
-                <Field name="categoryId" placeholder="Kategorie">
+                <Field name="category.id" placeholder="Kategorie">
                   {({ input }) => (
                     <FormGroup controlId="categoryId">
                       <FormLabel>Kategorie</FormLabel>
                       <Select
                         defaultValue={categories
-                          .filter(category => category.id === recipe.categoryId)
+                          .filter(
+                            category => category.id === recipe.category.id
+                          )
                           .map(category => ({
                             value: category.id,
                             label: category.name,
                           }))}
-                        options={categories.map(category => ({
-                          value: category.id,
-                          label: category.name,
-                        }))}
+                        options={categories
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map(category => ({
+                            value: category.id,
+                            label: category.name,
+                          }))}
                         onChange={(value: ValueType<SelectOption>) => {
                           if (value) {
                             input.onChange((value as SelectOption).value)

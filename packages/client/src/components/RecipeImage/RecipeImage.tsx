@@ -15,7 +15,7 @@ const RecipeImage: React.FC<RecipeImageProps> = ({
   title,
   size = 'large',
 }) => {
-  const { data } = useImageQuery({ variables: { id } })
+  const { data } = useImageQuery({ variables: { recipe: id } })
 
   return data?.image ? (
     <Image src={data.image.image} alt={title} title={title} />
