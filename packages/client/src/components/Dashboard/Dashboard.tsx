@@ -3,14 +3,22 @@ import 'rc-slider/assets/index.css'
 import React, { Fragment, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 
-import { useRecipesQuery } from '../../typings/generated.d'
+import {
+  CategoryData,
+  RecipeData,
+  useRecipesQuery,
+} from '../../typings/generated.d'
 import Layout from '../Layout'
 import RecipeCard from '../RecipeCard'
 import { useStaticData } from '../StaticDataProvider'
 import { Box, CategoryTitle, SliderContainer } from './Dashboard.styles'
 
+type DashboardRecipeData = Pick<RecipeData, 'id' | 'title'> & {
+  category: Pick<CategoryData, 'id' | 'name'>
+}
+
 interface CategoryRecipeMap {
-  [id: string]: any[]
+  [id: string]: DashboardRecipeData[]
 }
 
 const Dashboard: React.FC = () => {
@@ -50,15 +58,17 @@ const Dashboard: React.FC = () => {
             <Fragment key={key}>
               <CategoryTitle>{category && category.name}</CategoryTitle>
               <Box>
-                {recipes.map(recipe => {
-                  return (
-                    <RecipeCard
-                      key={recipe.id}
-                      recipe={recipe}
-                      cardWidth={cardWidth}
-                    />
-                  )
-                })}
+                {recipes
+                  .sort((a, b) => a.title.localeCompare(b.title))
+                  .map(recipe => {
+                    return (
+                      <RecipeCard
+                        key={recipe.id}
+                        recipe={recipe}
+                        cardWidth={cardWidth}
+                      />
+                    )
+                  })}
               </Box>
             </Fragment>
           )
