@@ -16,7 +16,6 @@ query recipeEdit($id: ID!) {
       id
     }
     ingredients {
-      id
       amount
       ingredient
       measure {
@@ -40,6 +39,7 @@ mutation updateRecipe(
   $preparations: String
   $source: String
   $category: ID!
+  $ingredients: [IngredientDataInput!]!
 ) {
   updateRecipe(
     input: {
@@ -56,14 +56,9 @@ mutation updateRecipe(
       preparations: $preparations
       source: $source
       category: $category
+      ingredients: $ingredients
     }
   ) {
-    data
-  }
-}
-
-mutation removeIngredient($id: ID!) {
-  removeIngredient(input: { id: $id }) {
     data
   }
 }

@@ -5,7 +5,7 @@ import { IngredientData, MeasureData } from '../../../typings/generated.d'
 import { HeadlineContainer } from './IngredientsView.styles'
 
 type IngredientsViewData = Array<
-  Pick<IngredientData, 'id' | 'amount' | 'ingredient'> & {
+  Pick<IngredientData, 'amount' | 'ingredient'> & {
     measure: Pick<MeasureData, 'name'>
   }
 >
@@ -22,9 +22,9 @@ const IngredientsView: React.FC<IngredientsViewProps> = ({ ingredients }) => {
           <FontAwesomeIcon icon={['fas', 'balance-scale']} /> Zutaten
         </h5>
       </HeadlineContainer>
-      {ingredients.map(ingredient => {
+      {ingredients.map((ingredient, index) => {
         return (
-          <div key={ingredient.id}>
+          <div key={index}>
             {ingredient.amount}{' '}
             {ingredient.measure.name && ingredient.measure.name}{' '}
             {ingredient.ingredient}

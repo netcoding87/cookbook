@@ -34,18 +34,6 @@ export type CreateImagePayload = {
   data: ImageData,
 };
 
-export type CreateIngredientInput = {
-  amount?: Maybe<Scalars['String']>,
-  ingredient: Scalars['String'],
-  measure: Scalars['ID'],
-  recipe: Scalars['ID'],
-};
-
-export type CreateIngredientPayload = {
-   __typename?: 'CreateIngredientPayload',
-  data: IngredientData,
-};
-
 export type CreateRecipeInput = {
   title: Scalars['String'],
   subtitle?: Maybe<Scalars['String']>,
@@ -59,6 +47,7 @@ export type CreateRecipeInput = {
   preparations?: Maybe<Scalars['String']>,
   source?: Maybe<Scalars['String']>,
   category: Scalars['ID'],
+  ingredients: Array<IngredientDataInput>,
 };
 
 export type CreateRecipePayload = {
@@ -75,10 +64,15 @@ export type ImageData = {
 
 export type IngredientData = {
    __typename?: 'IngredientData',
-  id: Scalars['ID'],
   amount?: Maybe<Scalars['String']>,
   ingredient: Scalars['String'],
   measure: MeasureData,
+};
+
+export type IngredientDataInput = {
+  amount?: Maybe<Scalars['String']>,
+  ingredient: Scalars['String'],
+  measure: Scalars['ID'],
 };
 
 export type MeasureData = {
@@ -95,9 +89,6 @@ export type Mutation = {
   createRecipe: CreateRecipePayload,
   removeRecipe: RemoveRecipePayload,
   updateRecipe: UpdateRecipePayload,
-  createIngredient: CreateIngredientPayload,
-  removeIngredient: RemoveIngredientPayload,
-  updateIngredient: UpdateIngredientPayload,
 };
 
 
@@ -128,21 +119,6 @@ export type MutationRemoveRecipeArgs = {
 
 export type MutationUpdateRecipeArgs = {
   input: UpdateRecipeInput
-};
-
-
-export type MutationCreateIngredientArgs = {
-  input: CreateIngredientInput
-};
-
-
-export type MutationRemoveIngredientArgs = {
-  input: RemoveIngredientInput
-};
-
-
-export type MutationUpdateIngredientArgs = {
-  input: UpdateIngredientInput
 };
 
 export type Query = {
@@ -191,15 +167,6 @@ export type RemoveImagePayload = {
   data: Scalars['Boolean'],
 };
 
-export type RemoveIngredientInput = {
-  id: Scalars['ID'],
-};
-
-export type RemoveIngredientPayload = {
-   __typename?: 'RemoveIngredientPayload',
-  data: Scalars['Boolean'],
-};
-
 export type RemoveRecipeInput = {
   id: Scalars['ID'],
 };
@@ -220,19 +187,6 @@ export type UpdateImagePayload = {
   data: Scalars['Boolean'],
 };
 
-export type UpdateIngredientInput = {
-  id: Scalars['ID'],
-  amount: Scalars['String'],
-  ingredient: Scalars['String'],
-  measure: Scalars['ID'],
-  recipe: Scalars['ID'],
-};
-
-export type UpdateIngredientPayload = {
-   __typename?: 'UpdateIngredientPayload',
-  data: Scalars['Boolean'],
-};
-
 export type UpdateRecipeInput = {
   id: Scalars['ID'],
   title: Scalars['String'],
@@ -247,6 +201,7 @@ export type UpdateRecipeInput = {
   preparations?: Maybe<Scalars['String']>,
   source?: Maybe<Scalars['String']>,
   category: Scalars['ID'],
+  ingredients: Array<IngredientDataInput>,
 };
 
 export type UpdateRecipePayload = {
@@ -343,17 +298,12 @@ export type ResolversTypes = {
   UpdateImageInput: UpdateImageInput,
   UpdateImagePayload: ResolverTypeWrapper<UpdateImagePayload>,
   CreateRecipeInput: CreateRecipeInput,
+  IngredientDataInput: IngredientDataInput,
   CreateRecipePayload: ResolverTypeWrapper<CreateRecipePayload>,
   RemoveRecipeInput: RemoveRecipeInput,
   RemoveRecipePayload: ResolverTypeWrapper<RemoveRecipePayload>,
   UpdateRecipeInput: UpdateRecipeInput,
   UpdateRecipePayload: ResolverTypeWrapper<UpdateRecipePayload>,
-  CreateIngredientInput: CreateIngredientInput,
-  CreateIngredientPayload: ResolverTypeWrapper<CreateIngredientPayload>,
-  RemoveIngredientInput: RemoveIngredientInput,
-  RemoveIngredientPayload: ResolverTypeWrapper<RemoveIngredientPayload>,
-  UpdateIngredientInput: UpdateIngredientInput,
-  UpdateIngredientPayload: ResolverTypeWrapper<UpdateIngredientPayload>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -376,17 +326,12 @@ export type ResolversParentTypes = {
   UpdateImageInput: UpdateImageInput,
   UpdateImagePayload: UpdateImagePayload,
   CreateRecipeInput: CreateRecipeInput,
+  IngredientDataInput: IngredientDataInput,
   CreateRecipePayload: CreateRecipePayload,
   RemoveRecipeInput: RemoveRecipeInput,
   RemoveRecipePayload: RemoveRecipePayload,
   UpdateRecipeInput: UpdateRecipeInput,
   UpdateRecipePayload: UpdateRecipePayload,
-  CreateIngredientInput: CreateIngredientInput,
-  CreateIngredientPayload: CreateIngredientPayload,
-  RemoveIngredientInput: RemoveIngredientInput,
-  RemoveIngredientPayload: RemoveIngredientPayload,
-  UpdateIngredientInput: UpdateIngredientInput,
-  UpdateIngredientPayload: UpdateIngredientPayload,
 };
 
 export type CategoryDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CategoryData'] = ResolversParentTypes['CategoryData']> = {
@@ -397,10 +342,6 @@ export type CategoryDataResolvers<ContextType = ContextType, ParentType extends 
 
 export type CreateImagePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CreateImagePayload'] = ResolversParentTypes['CreateImagePayload']> = {
   data?: Resolver<ResolversTypes['ImageData'], ParentType, ContextType>,
-};
-
-export type CreateIngredientPayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CreateIngredientPayload'] = ResolversParentTypes['CreateIngredientPayload']> = {
-  data?: Resolver<ResolversTypes['IngredientData'], ParentType, ContextType>,
 };
 
 export type CreateRecipePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['CreateRecipePayload'] = ResolversParentTypes['CreateRecipePayload']> = {
@@ -414,7 +355,6 @@ export type ImageDataResolvers<ContextType = ContextType, ParentType extends Res
 };
 
 export type IngredientDataResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['IngredientData'] = ResolversParentTypes['IngredientData']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   amount?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   ingredient?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   measure?: Resolver<ResolversTypes['MeasureData'], ParentType, ContextType>,
@@ -432,9 +372,6 @@ export type MutationResolvers<ContextType = ContextType, ParentType extends Reso
   createRecipe?: Resolver<ResolversTypes['CreateRecipePayload'], ParentType, ContextType, RequireFields<MutationCreateRecipeArgs, 'input'>>,
   removeRecipe?: Resolver<ResolversTypes['RemoveRecipePayload'], ParentType, ContextType, RequireFields<MutationRemoveRecipeArgs, 'input'>>,
   updateRecipe?: Resolver<ResolversTypes['UpdateRecipePayload'], ParentType, ContextType, RequireFields<MutationUpdateRecipeArgs, 'input'>>,
-  createIngredient?: Resolver<ResolversTypes['CreateIngredientPayload'], ParentType, ContextType, RequireFields<MutationCreateIngredientArgs, 'input'>>,
-  removeIngredient?: Resolver<ResolversTypes['RemoveIngredientPayload'], ParentType, ContextType, RequireFields<MutationRemoveIngredientArgs, 'input'>>,
-  updateIngredient?: Resolver<ResolversTypes['UpdateIngredientPayload'], ParentType, ContextType, RequireFields<MutationUpdateIngredientArgs, 'input'>>,
 };
 
 export type QueryResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -466,19 +403,11 @@ export type RemoveImagePayloadResolvers<ContextType = ContextType, ParentType ex
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };
 
-export type RemoveIngredientPayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['RemoveIngredientPayload'] = ResolversParentTypes['RemoveIngredientPayload']> = {
-  data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
-};
-
 export type RemoveRecipePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['RemoveRecipePayload'] = ResolversParentTypes['RemoveRecipePayload']> = {
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };
 
 export type UpdateImagePayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['UpdateImagePayload'] = ResolversParentTypes['UpdateImagePayload']> = {
-  data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
-};
-
-export type UpdateIngredientPayloadResolvers<ContextType = ContextType, ParentType extends ResolversParentTypes['UpdateIngredientPayload'] = ResolversParentTypes['UpdateIngredientPayload']> = {
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };
 
@@ -489,7 +418,6 @@ export type UpdateRecipePayloadResolvers<ContextType = ContextType, ParentType e
 export type Resolvers<ContextType = ContextType> = {
   CategoryData?: CategoryDataResolvers<ContextType>,
   CreateImagePayload?: CreateImagePayloadResolvers<ContextType>,
-  CreateIngredientPayload?: CreateIngredientPayloadResolvers<ContextType>,
   CreateRecipePayload?: CreateRecipePayloadResolvers<ContextType>,
   ImageData?: ImageDataResolvers<ContextType>,
   IngredientData?: IngredientDataResolvers<ContextType>,
@@ -498,10 +426,8 @@ export type Resolvers<ContextType = ContextType> = {
   Query?: QueryResolvers<ContextType>,
   RecipeData?: RecipeDataResolvers<ContextType>,
   RemoveImagePayload?: RemoveImagePayloadResolvers<ContextType>,
-  RemoveIngredientPayload?: RemoveIngredientPayloadResolvers<ContextType>,
   RemoveRecipePayload?: RemoveRecipePayloadResolvers<ContextType>,
   UpdateImagePayload?: UpdateImagePayloadResolvers<ContextType>,
-  UpdateIngredientPayload?: UpdateIngredientPayloadResolvers<ContextType>,
   UpdateRecipePayload?: UpdateRecipePayloadResolvers<ContextType>,
 };
 

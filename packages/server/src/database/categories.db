@@ -1,12 +1,13 @@
-{"_id":"10","name":"Getränke","parent":"-1"}
-{"_id":"11","name":"Sonstiges","parent":"-1"}
-{"_id":"12","name":"Dips","parent":"12"}
-{"_id":"13","name":"Saucen","parent":"12"}
-{"_id":"2","name":"Hauptgerichte","parent":"-1"}
-{"_id":"3","name":"Suppen","parent":"-1"}
-{"_id":"4","name":"Salate","parent":"-1"}
-{"_id":"5","name":"Desserts","parent":"-1"}
-{"_id":"6","name":"Fingerfood / Snacks","parent":"-1"}
-{"_id":"7","name":"Kuchen","parent":"-1"}
-{"_id":"8","name":"Torte","parent":"-1"}
-{"_id":"9","name":"Kekse","parent":"-1"}
+{"parent":"0","name":"Hauptgerichte","_id":"1"}
+{"parent":"0","name":"Sonstiges","_id":"10"}
+{"parent":"10","name":"Dips","_id":"11"}
+{"parent":"10","name":"Marmeladen","_id":"12"}
+{"parent":"10","name":"Saucen","_id":"13"}
+{"parent":"0","name":"Suppen","_id":"2"}
+{"parent":"0","name":"Salate","_id":"3"}
+{"parent":"0","name":"Desserts","_id":"4"}
+{"parent":"0","name":"Fingerfood / Snacks","_id":"5"}
+{"parent":"0","name":"Kuchen","_id":"6"}
+{"parent":"0","name":"Torte","_id":"7"}
+{"parent":"0","name":"Kekse","_id":"8"}
+{"parent":"0","name":"Getränke","_id":"9"}

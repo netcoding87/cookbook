@@ -133,13 +133,13 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
   return (
     <Table hover size="sm">
       <tbody>
-        {ingredients.map(ingredient => {
+        {ingredients.map((ingredient, index) => {
           const measure = measures.find(
             item => item.id === ingredient.measure.id
           )
 
           return (
-            <tr key={ingredient.id}>
+            <tr key={index}>
               <td>
                 <EditableCell
                   field="amount"

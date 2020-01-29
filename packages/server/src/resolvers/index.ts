@@ -1,16 +1,12 @@
 import { getById as getCategoryById } from '../database/categories'
-import { getForRecipe } from '../database/ingredients'
 import { getById as getMeasureById } from '../database/measures'
 import { CategoryData, MeasureData } from '../typings/generated'
 import { PlainIngredientData, PlainRecipeData } from '../typings/plaintypes'
 import createImage from './mutation/createImage'
-import createIngredient from './mutation/createIngredient'
 import createRecipe from './mutation/createRecipe'
 import removeImage from './mutation/removeImage'
-import removeIngredient from './mutation/removeIngredient'
 import removeRecipe from './mutation/removeRecipe'
 import updateImage from './mutation/updateImage'
-import updateIngredient from './mutation/updateIngredient'
 import updateRecipe from './mutation/updateRecipe'
 import listCategories from './query/listCategories'
 import listImage from './query/listImage'
@@ -34,10 +30,6 @@ const resolvers = {
     createRecipe: createRecipe,
     removeRecipe: removeRecipe,
     updateRecipe: updateRecipe,
-
-    createIngredient: createIngredient,
-    removeIngredient: removeIngredient,
-    updateIngredient: updateIngredient,
   },
 
   RecipeData: {
@@ -48,19 +40,6 @@ const resolvers = {
         name: category ? category.name : '',
         parent: category ? category.parent : '',
       }
-    },
-    ingredients: async (
-      root: PlainRecipeData
-    ): Promise<PlainIngredientData[]> => {
-      const ingredients = await getForRecipe(root.id)
-      return ingredients.map(ingredient => {
-        return {
-          id: ingredient._id,
-          amount: ingredient.amount,
-          ingredient: ingredient.ingredient,
-          measure: ingredient.measure,
-        }
-      })
     },
   },
 

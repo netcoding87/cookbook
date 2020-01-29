@@ -1,14 +1,20 @@
 import Datastore from 'nedb'
 import path from 'path'
-
 import { DB_RECIPES, ROOT } from '../utils/config'
+
 
 const db = new Datastore({
   filename: `${ROOT}${path.sep}${DB_RECIPES}`,
   autoload: true,
 })
 
-export interface Recipe {
+export type Ingredient = {
+  amount?: string | null
+  ingredient: string
+  measure: string
+}
+
+export type Recipe = {
   _id: string
   title: string
   subtitle?: string
@@ -22,6 +28,7 @@ export interface Recipe {
   preparations?: string
   source?: string
   category: string
+  ingredients?: Ingredient[]
 }
 
 export const add = (
@@ -36,7 +43,8 @@ export const add = (
   cookingTime?: string,
   restTime?: string,
   preparations?: string,
-  source?: string
+  source?: string,
+  ingredients?: Ingredient[]
 ): Promise<Recipe> => {
   return new Promise(resolve => {
     const tmp: Recipe = {
@@ -53,6 +61,7 @@ export const add = (
       preparations,
       source,
       category,
+      ingredients,
     }
 
     delete tmp['_id']

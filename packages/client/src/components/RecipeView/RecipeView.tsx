@@ -58,6 +58,8 @@ const RecipeView: React.FC = () => {
     return <Layout>Invalid!</Layout>
   }
 
+  console.log(data.recipe.ingredients)
+
   const difficulty =
     data.recipe.difficulty === 0
       ? 'Leicht'

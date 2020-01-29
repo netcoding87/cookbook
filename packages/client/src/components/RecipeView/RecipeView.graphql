@@ -13,7 +13,6 @@ query recipeView($id: ID!) {
     preparations
     source
     ingredients {
-      id
       amount
       ingredient
       measure {

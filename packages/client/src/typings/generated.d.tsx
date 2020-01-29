@@ -34,18 +34,6 @@ export type CreateImagePayload = {
   data: ImageData
 }
 
-export type CreateIngredientInput = {
-  amount?: Maybe<Scalars['String']>
-  ingredient: Scalars['String']
-  measure: Scalars['ID']
-  recipe: Scalars['ID']
-}
-
-export type CreateIngredientPayload = {
-  __typename?: 'CreateIngredientPayload'
-  data: IngredientData
-}
-
 export type CreateRecipeInput = {
   title: Scalars['String']
   subtitle?: Maybe<Scalars['String']>
@@ -59,6 +47,7 @@ export type CreateRecipeInput = {
   preparations?: Maybe<Scalars['String']>
   source?: Maybe<Scalars['String']>
   category: Scalars['ID']
+  ingredients: Array<IngredientDataInput>
 }
 
 export type CreateRecipePayload = {
@@ -75,10 +64,15 @@ export type ImageData = {
 
 export type IngredientData = {
   __typename?: 'IngredientData'
-  id: Scalars['ID']
   amount?: Maybe<Scalars['String']>
   ingredient: Scalars['String']
   measure: MeasureData
+}
+
+export type IngredientDataInput = {
+  amount?: Maybe<Scalars['String']>
+  ingredient: Scalars['String']
+  measure: Scalars['ID']
 }
 
 export type MeasureData = {
@@ -95,9 +89,6 @@ export type Mutation = {
   createRecipe: CreateRecipePayload
   removeRecipe: RemoveRecipePayload
   updateRecipe: UpdateRecipePayload
-  createIngredient: CreateIngredientPayload
-  removeIngredient: RemoveIngredientPayload
-  updateIngredient: UpdateIngredientPayload
 }
 
 export type MutationCreateImageArgs = {
@@ -122,18 +113,6 @@ export type MutationRemoveRecipeArgs = {
 
 export type MutationUpdateRecipeArgs = {
   input: UpdateRecipeInput
-}
-
-export type MutationCreateIngredientArgs = {
-  input: CreateIngredientInput
-}
-
-export type MutationRemoveIngredientArgs = {
-  input: RemoveIngredientInput
-}
-
-export type MutationUpdateIngredientArgs = {
-  input: UpdateIngredientInput
 }
 
 export type Query = {
@@ -180,15 +159,6 @@ export type RemoveImagePayload = {
   data: Scalars['Boolean']
 }
 
-export type RemoveIngredientInput = {
-  id: Scalars['ID']
-}
-
-export type RemoveIngredientPayload = {
-  __typename?: 'RemoveIngredientPayload'
-  data: Scalars['Boolean']
-}
-
 export type RemoveRecipeInput = {
   id: Scalars['ID']
 }
@@ -209,19 +179,6 @@ export type UpdateImagePayload = {
   data: Scalars['Boolean']
 }
 
-export type UpdateIngredientInput = {
-  id: Scalars['ID']
-  amount: Scalars['String']
-  ingredient: Scalars['String']
-  measure: Scalars['ID']
-  recipe: Scalars['ID']
-}
-
-export type UpdateIngredientPayload = {
-  __typename?: 'UpdateIngredientPayload'
-  data: Scalars['Boolean']
-}
-
 export type UpdateRecipeInput = {
   id: Scalars['ID']
   title: Scalars['String']
@@ -236,6 +193,7 @@ export type UpdateRecipeInput = {
   preparations?: Maybe<Scalars['String']>
   source?: Maybe<Scalars['String']>
   category: Scalars['ID']
+  ingredients: Array<IngredientDataInput>
 }
 
 export type UpdateRecipePayload = {
@@ -281,7 +239,7 @@ export type RecipeEditQuery = { __typename?: 'Query' } & {
         ingredients: Array<
           { __typename?: 'IngredientData' } & Pick<
             IngredientData,
-            'id' | 'amount' | 'ingredient'
+            'amount' | 'ingredient'
           > & {
               measure: { __typename?: 'MeasureData' } & Pick<MeasureData, 'id'>
             }
@@ -304,22 +262,12 @@ export type UpdateRecipeMutationVariables = {
   preparations?: Maybe<Scalars['String']>
   source?: Maybe<Scalars['String']>
   category: Scalars['ID']
+  ingredients: Array<IngredientDataInput>
 }
 
 export type UpdateRecipeMutation = { __typename?: 'Mutation' } & {
   updateRecipe: { __typename?: 'UpdateRecipePayload' } & Pick<
     UpdateRecipePayload,
-    'data'
-  >
-}
-
-export type RemoveIngredientMutationVariables = {
-  id: Scalars['ID']
-}
-
-export type RemoveIngredientMutation = { __typename?: 'Mutation' } & {
-  removeIngredient: { __typename?: 'RemoveIngredientPayload' } & Pick<
-    RemoveIngredientPayload,
     'data'
   >
 }
@@ -350,6 +298,7 @@ export type CreateRecipeMutationVariables = {
   preparations?: Maybe<Scalars['String']>
   source?: Maybe<Scalars['String']>
   category: Scalars['ID']
+  ingredients: Array<IngredientDataInput>
 }
 
 export type CreateRecipeMutation = { __typename?: 'Mutation' } & {
@@ -382,7 +331,7 @@ export type RecipeViewQuery = { __typename?: 'Query' } & {
         ingredients: Array<
           { __typename?: 'IngredientData' } & Pick<
             IngredientData,
-            'id' | 'amount' | 'ingredient'
+            'amount' | 'ingredient'
           > & {
               measure: { __typename?: 'MeasureData' } & Pick<
                 MeasureData,
@@ -432,19 +381,6 @@ export type CreateImageMutationVariables = {
 export type CreateImageMutation = { __typename?: 'Mutation' } & {
   createImage: { __typename?: 'CreateImagePayload' } & {
     data: { __typename?: 'ImageData' } & Pick<ImageData, 'id'>
-  }
-}
-
-export type CreateIngredientMutationVariables = {
-  amount?: Maybe<Scalars['String']>
-  ingredient: Scalars['String']
-  measure: Scalars['ID']
-  recipe: Scalars['ID']
-}
-
-export type CreateIngredientMutation = { __typename?: 'Mutation' } & {
-  createIngredient: { __typename?: 'CreateIngredientPayload' } & {
-    data: { __typename?: 'IngredientData' } & Pick<IngredientData, 'id'>
   }
 }
 
@@ -531,7 +467,6 @@ export const RecipeEditDocument = gql`
         id
       }
       ingredients {
-        id
         amount
         ingredient
         measure {
@@ -603,6 +538,7 @@ export const UpdateRecipeDocument = gql`
     $preparations: String
     $source: String
     $category: ID!
+    $ingredients: [IngredientDataInput!]!
   ) {
     updateRecipe(
       input: {
@@ -619,6 +555,7 @@ export const UpdateRecipeDocument = gql`
         preparations: $preparations
         source: $source
         category: $category
+        ingredients: $ingredients
       }
     ) {
       data
@@ -656,6 +593,7 @@ export type UpdateRecipeMutationFn = ApolloReactCommon.MutationFunction<
  *      preparations: // value for 'preparations'
  *      source: // value for 'source'
  *      category: // value for 'category'
+ *      ingredients: // value for 'ingredients'
  *   },
  * });
  */
@@ -679,56 +617,6 @@ export type UpdateRecipeMutationResult = ApolloReactCommon.MutationResult<
 export type UpdateRecipeMutationOptions = ApolloReactCommon.BaseMutationOptions<
   UpdateRecipeMutation,
   UpdateRecipeMutationVariables
->
-export const RemoveIngredientDocument = gql`
-  mutation removeIngredient($id: ID!) {
-    removeIngredient(input: { id: $id }) {
-      data
-    }
-  }
-`
-export type RemoveIngredientMutationFn = ApolloReactCommon.MutationFunction<
-  RemoveIngredientMutation,
-  RemoveIngredientMutationVariables
->
-
-/**
- * __useRemoveIngredientMutation__
- *
- * To run a mutation, you first call `useRemoveIngredientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRemoveIngredientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [removeIngredientMutation, { data, loading, error }] = useRemoveIngredientMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useRemoveIngredientMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    RemoveIngredientMutation,
-    RemoveIngredientMutationVariables
-  >
-) {
-  return ApolloReactHooks.useMutation<
-    RemoveIngredientMutation,
-    RemoveIngredientMutationVariables
-  >(RemoveIngredientDocument, baseOptions)
-}
-export type RemoveIngredientMutationHookResult = ReturnType<
-  typeof useRemoveIngredientMutation
->
-export type RemoveIngredientMutationResult = ApolloReactCommon.MutationResult<
-  RemoveIngredientMutation
->
-export type RemoveIngredientMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  RemoveIngredientMutation,
-  RemoveIngredientMutationVariables
 >
 export const UpdateImageDocument = gql`
   mutation updateImage($id: ID!, $image: String!, $recipe: ID!) {
@@ -796,6 +684,7 @@ export const CreateRecipeDocument = gql`
     $preparations: String
     $source: String
     $category: ID!
+    $ingredients: [IngredientDataInput!]!
   ) {
     createRecipe(
       input: {
@@ -811,6 +700,7 @@ export const CreateRecipeDocument = gql`
         preparations: $preparations
         source: $source
         category: $category
+        ingredients: $ingredients
       }
     ) {
       data {
@@ -849,6 +739,7 @@ export type CreateRecipeMutationFn = ApolloReactCommon.MutationFunction<
  *      preparations: // value for 'preparations'
  *      source: // value for 'source'
  *      category: // value for 'category'
+ *      ingredients: // value for 'ingredients'
  *   },
  * });
  */
@@ -889,7 +780,6 @@ export const RecipeViewDocument = gql`
       preparations
       source
       ingredients {
-        id
         amount
         ingredient
         measure {
@@ -1157,73 +1047,6 @@ export type CreateImageMutationResult = ApolloReactCommon.MutationResult<
 export type CreateImageMutationOptions = ApolloReactCommon.BaseMutationOptions<
   CreateImageMutation,
   CreateImageMutationVariables
->
-export const CreateIngredientDocument = gql`
-  mutation createIngredient(
-    $amount: String
-    $ingredient: String!
-    $measure: ID!
-    $recipe: ID!
-  ) {
-    createIngredient(
-      input: {
-        amount: $amount
-        ingredient: $ingredient
-        measure: $measure
-        recipe: $recipe
-      }
-    ) {
-      data {
-        id
-      }
-    }
-  }
-`
-export type CreateIngredientMutationFn = ApolloReactCommon.MutationFunction<
-  CreateIngredientMutation,
-  CreateIngredientMutationVariables
->
-
-/**
- * __useCreateIngredientMutation__
- *
- * To run a mutation, you first call `useCreateIngredientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateIngredientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createIngredientMutation, { data, loading, error }] = useCreateIngredientMutation({
- *   variables: {
- *      amount: // value for 'amount'
- *      ingredient: // value for 'ingredient'
- *      measure: // value for 'measure'
- *      recipe: // value for 'recipe'
- *   },
- * });
- */
-export function useCreateIngredientMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    CreateIngredientMutation,
-    CreateIngredientMutationVariables
-  >
-) {
-  return ApolloReactHooks.useMutation<
-    CreateIngredientMutation,
-    CreateIngredientMutationVariables
-  >(CreateIngredientDocument, baseOptions)
-}
-export type CreateIngredientMutationHookResult = ReturnType<
-  typeof useCreateIngredientMutation
->
-export type CreateIngredientMutationResult = ApolloReactCommon.MutationResult<
-  CreateIngredientMutation
->
-export type CreateIngredientMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  CreateIngredientMutation,
-  CreateIngredientMutationVariables
 >
 export const ImageDocument = gql`
   query image($recipe: ID!) {

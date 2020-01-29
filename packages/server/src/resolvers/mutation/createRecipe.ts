@@ -26,7 +26,8 @@ const createRecipe: CreateRecipeResolver = async (
     input.cookingTime ? input.cookingTime : undefined,
     input.restTime ? input.restTime : undefined,
     input.preparations ? input.preparations : undefined,
-    input.source ? input.source : undefined
+    input.source ? input.source : undefined,
+    input.ingredients ? input.ingredients : undefined
   )
 
   return {
@@ -44,6 +45,13 @@ const createRecipe: CreateRecipeResolver = async (
       preparations: recipe.preparations,
       source: recipe.source,
       category: recipe.category,
+      ingredients: recipe.ingredients
+        ? recipe.ingredients.map(ingredient => ({
+            amount: ingredient.amount,
+            ingredient: ingredient.ingredient,
+            measure: ingredient.measure,
+          }))
+        : [],
     },
   }
 }

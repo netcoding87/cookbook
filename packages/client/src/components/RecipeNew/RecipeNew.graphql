@@ -11,6 +11,7 @@ mutation createRecipe(
   $preparations: String
   $source: String
   $category: ID!
+  $ingredients: [IngredientDataInput!]!
 ) {
   createRecipe(
     input: {
@@ -26,6 +27,7 @@ mutation createRecipe(
       preparations: $preparations
       source: $source
       category: $category
+      ingredients: $ingredients
     }
   ) {
     data {

@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 
 import {
   useCreateImageMutation,
-  useCreateIngredientMutation,
   useCreateRecipeMutation,
 } from '../../typings/generated.d'
 import Layout from '../Layout'
@@ -25,7 +24,6 @@ const RecipeNew: React.FC = () => {
   const history = useHistory()
 
   const [createRecipeMutation] = useCreateRecipeMutation()
-  const [createIngredientMutation] = useCreateIngredientMutation()
   const [createImageMutation] = useCreateImageMutation()
 
   const handleSubmit = async (
@@ -34,6 +32,7 @@ const RecipeNew: React.FC = () => {
     image: string | null
   ) => {
     // Create recipe
+    console.log(ingredients)
     const { data } = await createRecipeMutation({
       variables: {
         title: recipe.title,
@@ -48,19 +47,12 @@ const RecipeNew: React.FC = () => {
         preparations: recipe.preparations,
         source: recipe.source,
         category: recipe.category.id,
-      },
-    })
-
-    // Create ingredients
-    ingredients.forEach(async ingredient => {
-      await createIngredientMutation({
-        variables: {
+        ingredients: ingredients.map(ingredient => ({
           amount: ingredient.amount,
           ingredient: ingredient.ingredient,
           measure: ingredient.measure.id,
-          recipe: data!.createRecipe!.data!.id!,
-        },
-      })
+        })),
+      },
     })
 
     if (image) {

@@ -19,6 +19,13 @@ export const listRecipes = async (): Promise<PlainRecipeData[]> => {
     preparations: recipe.preparations,
     source: recipe.source,
     category: recipe.category,
+    ingredients: recipe.ingredients
+      ? recipe.ingredients.map(ingredient => ({
+          amount: ingredient.amount,
+          ingredient: ingredient.ingredient,
+          measure: ingredient.measure,
+        }))
+      : [],
   }))
 }
 
@@ -43,6 +50,13 @@ export const listRecipe = async (
         preparations: recipe.preparations,
         source: recipe.source,
         category: recipe.category,
+        ingredients: recipe.ingredients
+          ? recipe.ingredients.map(ingredient => ({
+              amount: ingredient.amount,
+              ingredient: ingredient.ingredient,
+              measure: ingredient.measure,
+            }))
+          : [],
       }
     : null
 }

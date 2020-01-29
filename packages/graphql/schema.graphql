@@ -11,7 +11,6 @@ type ImageData {
 }
 
 type IngredientData {
-  id: ID!
   amount: String
   ingredient: String!
   measure: MeasureData!
@@ -55,10 +54,6 @@ type Mutation {
   createRecipe(input: CreateRecipeInput!): CreateRecipePayload!
   removeRecipe(input: RemoveRecipeInput!): RemoveRecipePayload!
   updateRecipe(input: UpdateRecipeInput!): UpdateRecipePayload!
-
-  createIngredient(input: CreateIngredientInput!): CreateIngredientPayload!
-  removeIngredient(input: RemoveIngredientInput!): RemoveIngredientPayload!
-  updateIngredient(input: UpdateIngredientInput!): UpdateIngredientPayload!
 }
 
 input CreateImageInput {
@@ -88,35 +83,10 @@ type UpdateImagePayload {
   data: Boolean!
 }
 
-input CreateIngredientInput {
+input IngredientDataInput {
   amount: String
   ingredient: String!
   measure: ID!
-  recipe: ID!
-}
-
-input RemoveIngredientInput {
-  id: ID!
-}
-
-input UpdateIngredientInput {
-  id: ID!
-  amount: String!
-  ingredient: String!
-  measure: ID!
-  recipe: ID!
-}
-
-type CreateIngredientPayload {
-  data: IngredientData!
-}
-
-type RemoveIngredientPayload {
-  data: Boolean!
-}
-
-type UpdateIngredientPayload {
-  data: Boolean!
 }
 
 input CreateRecipeInput {
@@ -132,6 +102,7 @@ input CreateRecipeInput {
   preparations: String
   source: String
   category: ID!
+  ingredients: [IngredientDataInput!]!
 }
 
 input RemoveRecipeInput {
@@ -152,6 +123,7 @@ input UpdateRecipeInput {
   preparations: String
   source: String
   category: ID!
+  ingredients: [IngredientDataInput!]!
 }
 
 type CreateRecipePayload {

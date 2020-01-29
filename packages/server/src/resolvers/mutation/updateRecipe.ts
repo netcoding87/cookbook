@@ -1,9 +1,5 @@
 import { update } from '../../database/recipes'
-import {
-  MutationUpdateRecipeArgs,
-  ResolverFn,
-  UpdateRecipePayload,
-} from '../../typings/generated'
+import { MutationUpdateRecipeArgs, ResolverFn, UpdateRecipePayload } from '../../typings/generated'
 import { ContextType } from '../../utils/createContext'
 
 type UpdateRecipeResolver = ResolverFn<
@@ -31,6 +27,7 @@ const updateRecipe: UpdateRecipeResolver = async (
     preparations: input.preparations ? input.preparations : undefined,
     source: input.source ? input.source : undefined,
     category: input.category,
+    ingredients: input.ingredients,
   })
   return {
     data: number > 0,

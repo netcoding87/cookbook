@@ -53,7 +53,7 @@ export type RecipeEditFormRecipeData = Pick<
 
 export type RecipeEditFormIngredientData = Pick<
   IngredientData,
-  'id' | 'amount' | 'ingredient'
+  'amount' | 'ingredient'
 > & { measure: Pick<MeasureData, 'id'> }
 
 const tagSeparator = ','
@@ -150,9 +150,6 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
   ) => {
     setIngredients(ingredients => {
       ingredients.push({
-        id: Math.random()
-          .toString(36)
-          .slice(2),
         amount: amount,
         ingredient: ingredient,
         measure: { id: measure },
@@ -162,7 +159,7 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
   }
 
   const handleIngredientDelete = (ingredient: RecipeEditFormIngredientData) => {
-    setIngredients(ingredients.filter(item => item.id !== ingredient.id))
+    setIngredients(ingredients.filter(item => item !== ingredient))
   }
 
   const handleIngredientChange = (
@@ -172,7 +169,7 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
   ) => {
     setIngredients(ingredients =>
       ingredients.map(item => {
-        if (item.id === ingredient.id) {
+        if (item === ingredient) {
           return {
             ...item,
             [field]: value,

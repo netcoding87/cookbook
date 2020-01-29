@@ -1,4 +1,4 @@
-import { CreateIngredientPayload, CreateRecipePayload, IngredientData, RecipeData } from './generated'
+import { CreateRecipePayload, IngredientData, RecipeData } from './generated'
 
 export type PlainIngredientData = Omit<IngredientData, 'measure'> & {
   measure: string
@@ -9,15 +9,10 @@ export type PlainRecipeData = Omit<
   'ingredients'
 > & {
   category: string
+} & {
+  ingredients: PlainIngredientData[]
 }
 
 export type PlainCreateRecipePayload = Omit<CreateRecipePayload, 'data'> & {
   data: PlainRecipeData
-}
-
-export type PlainCreateIngredientPayload = Omit<
-  CreateIngredientPayload,
-  'data'
-> & {
-  data: PlainIngredientData
 }
