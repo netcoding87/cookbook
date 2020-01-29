@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
   const { categories } = useStaticData()
 
   if (!data) {
-    return <div>Loading...</div>
+    return <Layout>Loading...</Layout>
   }
 
   const dict: CategoryRecipeMap = {}

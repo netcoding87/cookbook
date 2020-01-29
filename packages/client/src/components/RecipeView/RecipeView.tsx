@@ -50,15 +50,13 @@ const RecipeView: React.FC = () => {
   }
 
   if (!data || !data.recipe) {
-    return <div>Loading...</div>
+    return <Layout>Loading...</Layout>
   }
 
   if (data.recipe.title !== title) {
     // TODO: Return NotFoundPage when implemented
     return <Layout>Invalid!</Layout>
   }
-
-  console.log(data.recipe.ingredients)
 
   const difficulty =
     data.recipe.difficulty === 0
