@@ -32,7 +32,6 @@ const RecipeNew: React.FC = () => {
     image: string | null
   ) => {
     // Create recipe
-    console.log(ingredients)
     const { data } = await createRecipeMutation({
       variables: {
         title: recipe.title,
