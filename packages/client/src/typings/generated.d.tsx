@@ -373,6 +373,12 @@ export type CategoriesQuery = { __typename?: 'Query' } & {
   >
 }
 
+export type TagsQueryVariables = {}
+
+export type TagsQuery = { __typename?: 'Query' } & {
+  recipes: Array<{ __typename?: 'RecipeData' } & Pick<RecipeData, 'tags'>>
+}
+
 export type CreateImageMutationVariables = {
   image: Scalars['String']
   recipe: Scalars['ID']
@@ -994,6 +1000,54 @@ export type CategoriesLazyQueryHookResult = ReturnType<
 export type CategoriesQueryResult = ApolloReactCommon.QueryResult<
   CategoriesQuery,
   CategoriesQueryVariables
+>
+export const TagsDocument = gql`
+  query tags {
+    recipes {
+      tags
+    }
+  }
+`
+
+/**
+ * __useTagsQuery__
+ *
+ * To run a query within a React component, call `useTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTagsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTagsQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<TagsQuery, TagsQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<TagsQuery, TagsQueryVariables>(
+    TagsDocument,
+    baseOptions
+  )
+}
+export function useTagsLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    TagsQuery,
+    TagsQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<TagsQuery, TagsQueryVariables>(
+    TagsDocument,
+    baseOptions
+  )
+}
+export type TagsQueryHookResult = ReturnType<typeof useTagsQuery>
+export type TagsLazyQueryHookResult = ReturnType<typeof useTagsLazyQuery>
+export type TagsQueryResult = ApolloReactCommon.QueryResult<
+  TagsQuery,
+  TagsQueryVariables
 >
 export const CreateImageDocument = gql`
   mutation createImage($image: String!, $recipe: ID!) {

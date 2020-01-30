@@ -1,41 +1,31 @@
 import { useEffect, useState } from 'react'
 
-import { RecipeData } from '../interfaces'
-
-const api = <T extends {}>(url: string): Promise<T> => {
-  return fetch(url).then(response => response.json() as Promise<T>)
-}
+import { useTagsQuery } from '../typings/generated.d'
 
 export const useTags = () => {
   const [tags, setTags] = useState<string[]>([])
 
-  const fetchRecipes = async () => {
-    try {
-      const response = await api<RecipeData[]>('http://localhost:4000/recipes')
-      if (response) {
-        const tags: string[] = []
-
-        // iterate through recipes and add tags if not exists
-        response.forEach(recipe => {
-          recipe.tags &&
-            recipe.tags
-              .split(';')
-              .forEach(tag => !tags.includes(tag) && tags.push(tag))
-        })
-
-        // sort tags
-        tags.sort((a, b) => a.localeCompare(b))
-
-        setTags(tags)
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  const { data } = useTagsQuery()
 
   useEffect(() => {
-    fetchRecipes()
-  }, [])
+    if (data && data.recipes) {
+      const tags: string[] = []
+
+      // iterate through recipes and add tags if not exists
+      data.recipes.forEach(recipe => {
+        recipe.tags &&
+          recipe.tags
+            .split(',')
+            .forEach(tag => !tags.includes(tag.trim()) && tags.push(tag.trim()))
+      })
+
+      // sort tags
+      tags.sort((a, b) => a.localeCompare(b))
+
+      setTags(tags)
+      console.info(tags)
+    }
+  }, [data])
 
   return { tags }
 }
