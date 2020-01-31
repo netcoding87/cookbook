@@ -7,7 +7,7 @@
   "scripts": {
     "start": "lerna run start --parallel",
     "bootstrap": "lerna bootstrap",
-    "build": "lerna build",
+    "build": "lerna run build",
     "test": "lerna test",
     "lint": "lerna run --concurrency 1 --stream lint",
     "electron": "electron .",
