@@ -2,8 +2,6 @@ overwrite: true
 generates:
   ../server/src/typings/generated.d.ts:
     schema: schema.graphql
-    config:
-      contextType: ../utils/createContext#ContextType
     plugins:
       - add: &header |
           /**

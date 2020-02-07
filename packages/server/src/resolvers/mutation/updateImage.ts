@@ -1,15 +1,10 @@
 import { update } from '../../database/images'
-import {
-  MutationUpdateImageArgs,
-  ResolverFn,
-  UpdateImagePayload,
-} from '../../typings/generated'
-import { ContextType } from '../../utils/createContext'
+import { MutationUpdateImageArgs, ResolverFn, UpdateImagePayload } from '../../typings/generated'
 
 type UpdateImageResolver = ResolverFn<
   UpdateImagePayload,
   {},
-  ContextType,
+  {},
   MutationUpdateImageArgs
 >
 

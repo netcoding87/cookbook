@@ -1,11 +1,10 @@
 import { update } from '../../database/recipes'
 import { MutationUpdateRecipeArgs, ResolverFn, UpdateRecipePayload } from '../../typings/generated'
-import { ContextType } from '../../utils/createContext'
 
 type UpdateRecipeResolver = ResolverFn<
   UpdateRecipePayload,
   {},
-  ContextType,
+  {},
   MutationUpdateRecipeArgs
 >
 

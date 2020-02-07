@@ -1,15 +1,10 @@
 import { add } from '../../database/images'
-import {
-  CreateImagePayload,
-  MutationCreateImageArgs,
-  ResolverFn,
-} from '../../typings/generated'
-import { ContextType } from '../../utils/createContext'
+import { CreateImagePayload, MutationCreateImageArgs, ResolverFn } from '../../typings/generated'
 
 type CreateImageResolver = ResolverFn<
   CreateImagePayload,
   {},
-  ContextType,
+  {},
   MutationCreateImageArgs
 >
 

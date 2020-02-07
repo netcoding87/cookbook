@@ -1,15 +1,10 @@
 import { remove } from '../../database/images'
-import {
-  MutationRemoveImageArgs,
-  RemoveImagePayload,
-  ResolverFn,
-} from '../../typings/generated'
-import { ContextType } from '../../utils/createContext'
+import { MutationRemoveImageArgs, RemoveImagePayload, ResolverFn } from '../../typings/generated'
 
 type RemoveImageResolver = ResolverFn<
   RemoveImagePayload,
   {},
-  ContextType,
+  {},
   MutationRemoveImageArgs
 >
 

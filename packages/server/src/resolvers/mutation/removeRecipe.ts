@@ -1,15 +1,10 @@
 import { remove } from '../../database/recipes'
-import {
-  MutationRemoveRecipeArgs,
-  RemoveRecipePayload,
-  ResolverFn,
-} from '../../typings/generated'
-import { ContextType } from '../../utils/createContext'
+import { MutationRemoveRecipeArgs, RemoveRecipePayload, ResolverFn } from '../../typings/generated'
 
 type RemoveRecipeResolver = ResolverFn<
   RemoveRecipePayload,
   {},
-  ContextType,
+  {},
   MutationRemoveRecipeArgs
 >
 
