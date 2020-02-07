@@ -1,7 +1,8 @@
 import Datastore from 'nedb'
 import path from 'path'
-
 import { DB_MEASURES, ROOT } from '../utils/config'
+
+
 
 const db = new Datastore({
   filename: `${ROOT}${path.sep}${DB_MEASURES}`,
@@ -94,7 +95,7 @@ export const init = () => {
 
 export const getAll = (): Promise<Measure[]> => {
   return new Promise(resolve => {
-    db.find({}, (err, docs) => {
+    db.find({}, (err: any, docs: any) => {
       resolve(docs)
     })
   })

@@ -1,8 +1,6 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow } from "electron"
-// import { MyServer } from "../packages/server/build/server"
-
-// let server = MyServer()
+import { app, BrowserWindow } from "electron";
+import { Server } from '../packages/server/src/index';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -10,7 +8,7 @@ let mainWindow: Electron.BrowserWindow;
 
 const createWindow = () => {
   // Start server
-  // server.start();
+  Server().start()
 
   // Create the browser window.
   mainWindow = new BrowserWindow({

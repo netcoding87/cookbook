@@ -1,7 +1,8 @@
 import Datastore from 'nedb'
 import path from 'path'
-
 import { DB_CATEGORIES, ROOT } from '../utils/config'
+
+
 
 const db = new Datastore({
   filename: `${ROOT}${path.sep}${DB_CATEGORIES}`,
@@ -16,7 +17,7 @@ export interface Category {
 
 export const getAll = (): Promise<Category[]> => {
   return new Promise(resolve => {
-    db.find({}, (err, docs) => {
+    db.find({}, (err: any, docs: any) => {
       resolve(docs)
     })
   })

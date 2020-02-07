@@ -8,7 +8,9 @@
     "paths": {
       "*": ["node_modules/*"]
     },
-    "sourceMap": true
+    "sourceMap": true,
+    "typeRoots": ["node_modules/@types", "./packages/server/src/typings"]
   },
+  "files": ["./packages/server/src/typings/filetypes.d.ts"],
   "include": ["electron/**/*"]
 }

@@ -3,6 +3,7 @@ import path from 'path'
 import { DB_RECIPES, ROOT } from '../utils/config'
 
 
+
 const db = new Datastore({
   filename: `${ROOT}${path.sep}${DB_RECIPES}`,
   autoload: true,
@@ -74,7 +75,7 @@ export const add = (
 
 export const getAll = (): Promise<Recipe[]> => {
   return new Promise(resolve => {
-    db.find({}, (err, docs) => {
+    db.find({}, (err: any, docs: any) => {
       resolve(docs)
     })
   })

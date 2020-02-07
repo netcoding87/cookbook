@@ -1,5 +1,5 @@
 import { getAll, getById as getRecipeById } from '../../database/recipes'
-import { QueryRecipeArgs } from '../../typings/generated'
+import { QueryRecipeArgs, ResolverFn } from '../../typings/generated'
 import { PlainRecipeData } from '../../typings/plaintypes'
 
 export const listRecipes = async (): Promise<PlainRecipeData[]> => {
@@ -29,9 +29,16 @@ export const listRecipes = async (): Promise<PlainRecipeData[]> => {
   }))
 }
 
-export const listRecipe = async (
+type ListRecipeResolver = ResolverFn<
+  PlainRecipeData | null,
+  {},
+  {},
+  QueryRecipeArgs
+>
+
+export const listRecipe: ListRecipeResolver = async (
   root,
-  { id }: QueryRecipeArgs
+  { id }
 ): Promise<PlainRecipeData | null> => {
   const recipe = await getRecipeById(id)
 
