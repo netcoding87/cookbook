@@ -1,6 +1,18 @@
+import fs from 'fs'
 import path from 'path'
 
-export const ROOT = `.${path.sep}src${path.sep}database`
+const userdir =
+  process.env[process.platform == 'win32' ? 'USERPROFILE' : 'HOME']
+const dir = `${userdir}${path.sep}.cookbook`
+
+if (process.env.NODE_ENV !== 'development') {
+  !fs.existsSync(dir) && fs.mkdirSync(dir)
+}
+
+export const ROOT =
+  process.env.NODE_ENV === 'development'
+    ? `.${path.sep}src${path.sep}database`
+    : `${dir}`
 
 export const DB_CATEGORIES = 'categories.db'
 export const DB_IMAGES = 'images.db'
