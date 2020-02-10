@@ -5,7 +5,7 @@ import { ApolloLink } from 'apollo-link'
 import { onError } from 'apollo-link-error'
 import { HttpLink } from 'apollo-link-http'
 import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
 import Dashboard from '../Dashboard'
 import GlobalStyle from '../GlobalStyle'
@@ -46,10 +46,10 @@ const App: React.FC = () => {
           <BrowserRouter>
             <GlobalStyle />
             <Switch>
-              <Route exact path="/">
+              <Route path="/" exact>
                 <Dashboard />
               </Route>
-              <Route exact path="/new">
+              <Route path="/new" exact>
                 <RecipeNew />
               </Route>
               <Route path="/recipe/:id/:title" exact>
@@ -62,6 +62,9 @@ const App: React.FC = () => {
                 <RecipeView />
               </Route>
             </Switch>
+            {window.location.pathname.includes('index.html') && (
+              <Redirect to="/" />
+            )}
           </BrowserRouter>
         </StaticDataProvider>
       </ApolloProvider>
