@@ -1,12 +1,12 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow } from "electron";
-import { Server } from '../packages/server/src/index';
+import { Server } from '../packages/server/build/index';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: Electron.BrowserWindow;
 
-const createWindow = () => {
+const createWindow = async () => {
   // Start server
   Server().start()
 
@@ -23,9 +23,11 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === "development") {
-    mainWindow.loadURL("http://localhost:3000");
+    mainWindow.loadURL("http://localhost:3201");
   } else {
+    console.info('in production mode...')
     mainWindow.loadFile("../packages/client/build/index.html");
+    mainWindow.reload()
   }
 
   // Show window once it is ready to show.

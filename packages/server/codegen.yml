@@ -1,7 +1,7 @@
 overwrite: true
 generates:
-  ../server/src/typings/generated.d.ts:
-    schema: schema.graphql
+  src/typings/generated.d.ts:
+    schema: ./src/graphql/schema.graphql
     plugins:
       - add: &header |
           /**
@@ -11,7 +11,7 @@ generates:
       - typescript
       - typescript-resolvers
   ../client/src/typings/generated.d.tsx:
-    schema: schema.graphql
+    schema: ./src/graphql/schema.graphql
     documents: ../client/src/**/*.graphql
     config:
       skipTypename: false

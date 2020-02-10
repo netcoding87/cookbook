@@ -9,7 +9,7 @@
     "build": "lerna run build",
     "test": "lerna test",
     "lint": "lerna run --concurrency 1 --stream lint",
-    "electron": "tsc && electron ./dist/electron/main.js",
+    "electron": "tsc && electron ./dist/main.js",
     "pack-win": "electron-packager . --out=electron/out --overwrite --asar --platform=win32 --icon=./public/favicon.ico",
     "pack-osx": "electron-packager . --out=electron/out --overwrite --asar --platform=darwin --icon=./dist/assets/icon/logo.icns --ignore=/src",
     "pack-linux": "electron-packager . --out=electron/out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",

@@ -267,7 +267,7 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes>;
 
-export type isTypeOfResolverFn = (obj: any, info: GraphQLResolveInfo) => boolean;
+export type isTypeOfResolverFn<T = {}> = (obj: T, info: GraphQLResolveInfo) => boolean;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
@@ -339,37 +339,37 @@ export type CategoryDataResolvers<ContextType = any, ParentType extends Resolver
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   parent?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type CreateImagePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateImagePayload'] = ResolversParentTypes['CreateImagePayload']> = {
   data?: Resolver<ResolversTypes['ImageData'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type CreateRecipePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateRecipePayload'] = ResolversParentTypes['CreateRecipePayload']> = {
   data?: Resolver<ResolversTypes['RecipeData'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type ImageDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['ImageData'] = ResolversParentTypes['ImageData']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   recipe?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type IngredientDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['IngredientData'] = ResolversParentTypes['IngredientData']> = {
   amount?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   ingredient?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   measure?: Resolver<ResolversTypes['MeasureData'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type MeasureDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['MeasureData'] = ResolversParentTypes['MeasureData']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -404,27 +404,27 @@ export type RecipeDataResolvers<ContextType = any, ParentType extends ResolversP
   source?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   category?: Resolver<ResolversTypes['CategoryData'], ParentType, ContextType>,
   ingredients?: Resolver<Array<ResolversTypes['IngredientData']>, ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type RemoveImagePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['RemoveImagePayload'] = ResolversParentTypes['RemoveImagePayload']> = {
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type RemoveRecipePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['RemoveRecipePayload'] = ResolversParentTypes['RemoveRecipePayload']> = {
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type UpdateImagePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateImagePayload'] = ResolversParentTypes['UpdateImagePayload']> = {
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type UpdateRecipePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateRecipePayload'] = ResolversParentTypes['UpdateRecipePayload']> = {
   data?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type Resolvers<ContextType = any> = {
