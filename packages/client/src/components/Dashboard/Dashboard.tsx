@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
   })
 
   return (
-    <Layout>
+    <Layout footer>
       <Container fluid>
         {Object.keys(dict).map(key => {
           const recipes = dict[key]

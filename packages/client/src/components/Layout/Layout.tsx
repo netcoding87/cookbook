@@ -1,13 +1,19 @@
 import React from 'react'
 
+import Footer from '../Footer'
 import Header from '../Header'
 import { Content } from './Layout.styles'
 
-const Layout: React.FC = ({ children }) => {
+interface LayoutProps {
+  footer?: boolean
+}
+
+const Layout: React.FC<LayoutProps> = ({ footer = false, children }) => {
   return (
     <>
-      <Header></Header>
-      <Content>{children}</Content>
+      <Header />
+      <Content footer={footer}>{children}</Content>
+      {footer && <Footer />}
     </>
   )
 }
