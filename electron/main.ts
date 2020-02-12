@@ -1,5 +1,7 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow } from "electron";
+import path from 'path';
+import url from 'url';
 import { Server } from '../packages/server/build/index';
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -25,9 +27,12 @@ const createWindow = async () => {
   if (process.env.NODE_ENV === "development") {
     mainWindow.loadURL("http://localhost:3201");
   } else {
-    console.info('in production mode...')
-    mainWindow.loadFile("../packages/client/build/index.html");
-    mainWindow.reload()
+    const startUrl = url.format({
+      pathname: path.join(__dirname, '../packages/client/build/index.html'),
+      protocol: 'file:',
+      slashes: true,
+    })
+    mainWindow.loadURL(startUrl);
   }
 
   // Show window once it is ready to show.

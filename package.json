@@ -3,17 +3,18 @@
   "version": "0.1.0",
   "homepage": ".",
   "private": true,
+  "main": "dist/main.js",
   "scripts": {
     "start": "lerna run start --parallel",
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna test",
     "lint": "lerna run --concurrency 1 --stream lint",
-    "electron": "tsc && electron ./dist/main.js",
-    "pack-win": "electron-packager . --out=electron/out --overwrite --asar --platform=win32 --icon=./public/favicon.ico",
-    "pack-osx": "electron-packager . --out=electron/out --overwrite --asar --platform=darwin --icon=./dist/assets/icon/logo.icns --ignore=/src",
-    "pack-linux": "electron-packager . --out=electron/out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",
-    "pack-mas": "electron-packager . --out=electron/out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json"
+    "electron": "tsc && electron .",
+    "pack-win": "electron-packager . --out=dist/out --overwrite --platform=win32 --icon=./src/client/public/favicon.ico",
+    "pack-osx": "electron-packager . --out=dist/out --overwrite --asar --platform=darwin --icon=./dist/assets/icon/logo.icns --ignore=/src",
+    "pack-linux": "electron-packager . --out=dist/out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",
+    "pack-mas": "electron-packager . --out=dist/out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json"
   },
   "husky": {
     "hooks": {
