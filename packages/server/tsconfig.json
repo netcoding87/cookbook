@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": false,
+    "lib": ["es2017", "esnext.asynciterable"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "outDir": "build",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5",
+    "typeRoots": ["node_modules/@types", "src/typings"]
+  },
+  "files": ["src/typings/generated.d.ts", "src/typings/plaintypes.d.ts"],
+  "include": ["src/index.ts"]
+}

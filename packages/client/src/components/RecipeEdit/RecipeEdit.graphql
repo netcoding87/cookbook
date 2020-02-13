@@ -1,0 +1,70 @@
+query recipeEdit($id: ID!) {
+  recipe(id: $id) {
+    id
+    title
+    subtitle
+    tags
+    ranking
+    servings
+    difficulty
+    preparationTime
+    cookingTime
+    restTime
+    preparations
+    source
+    category {
+      id
+    }
+    ingredients {
+      amount
+      ingredient
+      measure {
+        id
+      }
+    }
+  }
+}
+
+mutation updateRecipe(
+  $id: ID!
+  $title: String!
+  $subtitle: String
+  $tags: String
+  $ranking: Int!
+  $servings: String
+  $difficulty: Int!
+  $preparationTime: String
+  $cookingTime: String
+  $restTime: String
+  $preparations: String
+  $source: String
+  $category: ID!
+  $ingredients: [IngredientDataInput!]!
+) {
+  updateRecipe(
+    input: {
+      id: $id
+      title: $title
+      subtitle: $subtitle
+      tags: $tags
+      ranking: $ranking
+      servings: $servings
+      difficulty: $difficulty
+      preparationTime: $preparationTime
+      cookingTime: $cookingTime
+      restTime: $restTime
+      preparations: $preparations
+      source: $source
+      category: $category
+      ingredients: $ingredients
+    }
+  ) {
+    data
+  }
+}
+
+mutation updateImage($id: ID!, $image: String!, $recipe: ID!) {
+  updateImage(input: { id: $id, image: $image, recipe: $recipe }) {
+    data
+  }
+}

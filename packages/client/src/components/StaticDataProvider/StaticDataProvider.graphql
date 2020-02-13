@@ -1,0 +1,14 @@
+query measures {
+  measures {
+    id
+    name
+  }
+}
+
+query categories {
+  categories {
+    id
+    name
+    parent
+  }
+}

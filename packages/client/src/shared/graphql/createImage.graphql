@@ -1,0 +1,7 @@
+mutation createImage($image: String!, $recipe: ID!) {
+  createImage(input: { image: $image, recipe: $recipe }) {
+    data {
+      id
+    }
+  }
+}

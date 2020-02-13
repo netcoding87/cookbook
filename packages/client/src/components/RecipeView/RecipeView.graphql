@@ -1,0 +1,29 @@
+query recipeView($id: ID!) {
+  recipe(id: $id) {
+    id
+    title
+    subtitle
+    tags
+    ranking
+    servings
+    difficulty
+    preparationTime
+    cookingTime
+    restTime
+    preparations
+    source
+    ingredients {
+      amount
+      ingredient
+      measure {
+        name
+      }
+    }
+  }
+}
+
+mutation deleteRecipe($id: ID!) {
+  removeRecipe(input: { id: $id }) {
+    data
+  }
+}

@@ -1,0 +1,139 @@
+type CategoryData {
+  id: ID!
+  name: String!
+  parent: ID!
+}
+
+type ImageData {
+  id: ID!
+  image: String!
+  recipe: ID!
+}
+
+type IngredientData {
+  amount: String
+  ingredient: String!
+  measure: MeasureData!
+}
+
+type MeasureData {
+  id: ID!
+  name: String!
+}
+
+type RecipeData {
+  id: ID!
+  title: String!
+  subtitle: String
+  tags: String
+  ranking: Int!
+  servings: String
+  difficulty: Int!
+  preparationTime: String
+  cookingTime: String
+  restTime: String
+  preparations: String
+  source: String
+  category: CategoryData!
+  ingredients: [IngredientData!]!
+}
+
+type Query {
+  categories: [CategoryData!]!
+  image(recipeId: ID!): ImageData
+  measures: [MeasureData!]!
+  recipes: [RecipeData!]!
+  recipe(id: ID!): RecipeData
+}
+
+type Mutation {
+  createImage(input: CreateImageInput!): CreateImagePayload!
+  removeImage(input: RemoveImageInput!): RemoveImagePayload!
+  updateImage(input: UpdateImageInput!): UpdateImagePayload!
+
+  createRecipe(input: CreateRecipeInput!): CreateRecipePayload!
+  removeRecipe(input: RemoveRecipeInput!): RemoveRecipePayload!
+  updateRecipe(input: UpdateRecipeInput!): UpdateRecipePayload!
+}
+
+input CreateImageInput {
+  image: String!
+  recipe: ID!
+}
+
+input RemoveImageInput {
+  id: ID!
+}
+
+input UpdateImageInput {
+  id: ID!
+  image: String!
+  recipe: ID!
+}
+
+type CreateImagePayload {
+  data: ImageData!
+}
+
+type RemoveImagePayload {
+  data: Boolean!
+}
+
+type UpdateImagePayload {
+  data: Boolean!
+}
+
+input IngredientDataInput {
+  amount: String
+  ingredient: String!
+  measure: ID!
+}
+
+input CreateRecipeInput {
+  title: String!
+  subtitle: String
+  tags: String
+  ranking: Int!
+  servings: String
+  difficulty: Int!
+  preparationTime: String
+  cookingTime: String
+  restTime: String
+  preparations: String
+  source: String
+  category: ID!
+  ingredients: [IngredientDataInput!]!
+}
+
+input RemoveRecipeInput {
+  id: ID!
+}
+
+input UpdateRecipeInput {
+  id: ID!
+  title: String!
+  subtitle: String
+  tags: String
+  ranking: Int!
+  servings: String
+  difficulty: Int!
+  preparationTime: String
+  cookingTime: String
+  restTime: String
+  preparations: String
+  source: String
+  category: ID!
+  ingredients: [IngredientDataInput!]!
+}
+
+type CreateRecipePayload {
+  data: RecipeData!
+}
+
+type RemoveRecipePayload {
+  data: Boolean!
+}
+
+type UpdateRecipePayload {
+  data: Boolean!
+}
