@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import React, { Fragment, useState } from 'react'
@@ -11,7 +12,12 @@ import {
 import Layout from '../Layout'
 import RecipeCard from '../RecipeCard'
 import { useStaticData } from '../StaticDataProvider'
-import { Box, CategoryTitle, SliderContainer } from './Dashboard.styles'
+import {
+  Box,
+  CategoryTitle,
+  SliderContainer,
+  SliderIcon,
+} from './Dashboard.styles'
 
 type DashboardRecipeData = Pick<RecipeData, 'id' | 'title'> & {
   category: Pick<CategoryData, 'id' | 'name'>
@@ -75,11 +81,15 @@ const Dashboard: React.FC = () => {
         })}
       </Container>
       <SliderContainer>
+        <SliderIcon>
+          <FontAwesomeIcon icon={['fas', 'search-plus']} flip="horizontal" />
+        </SliderIcon>
         <Slider
-          step={1}
+          step={5}
           defaultValue={cardWidth}
           min={100}
           max={500}
+          marks={{ 200: '' }}
           onChange={value => {
             setCardWidth(value)
           }}

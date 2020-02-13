@@ -14,13 +14,31 @@ export const Box = styled.div`
   flex-wrap: wrap;
 `
 
+export const SliderIcon = styled.div`
+  color: #ddd;
+  margin-right: 8px;
+`
+
 export const SliderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 
   position: fixed;
-  bottom: 25px;
+  bottom: 15px;
   right: 25px;
   width: 200px;
+
+  border: 1px solid transparent;
+  padding: 12px;
+
+  &:hover {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #eef8fffa;
+
+    ${SliderIcon} {
+      color: #aaa;
+    }
+  }
 `
