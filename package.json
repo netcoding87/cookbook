@@ -11,7 +11,7 @@
     "test": "lerna test",
     "lint": "lerna run --concurrency 1 --stream lint",
     "electron": "tsc && electron .",
-    "pack-win": "electron-packager . --out=dist/out --overwrite --platform=win32 --icon=./src/client/public/favicon.ico",
+    "pack-win": "electron-packager . --out=dist/out --overwrite --platform=win32 --icon=./packages/client/public/favicon.ico",
     "pack-osx": "electron-packager . --out=dist/out --overwrite --asar --platform=darwin --icon=./dist/assets/icon/logo.icns --ignore=/src",
     "pack-linux": "electron-packager . --out=dist/out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json",
     "pack-mas": "electron-packager . --out=dist/out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/db --ignore=/e2e --ignore=/src --ignore=.angular-cli.json --ignore=.editorconfig --ignore=.gitignore --ignore=karma.conf.js --ignore=protractor.conf.json --ignore=README.md --ignore=tsconfig.json --ignore=tslint.json"
