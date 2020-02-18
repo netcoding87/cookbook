@@ -1,11 +1,17 @@
-import { ApolloServer } from 'apollo-server-express'
+import { ApolloServer, makeExecutableSchema } from 'apollo-server-express'
 import bodyParser from 'body-parser'
 import express from 'express'
-import schema from './graphql/schema'
+import * as typeDefs from './graphql/schema.graphql'
+import resolvers from './resolvers'
 
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const PORT = process.env.PORT || 4321
+
+const schema = makeExecutableSchema({
+  resolvers,
+  typeDefs,
+})
 
 const server = new ApolloServer({
   schema,
