@@ -12,9 +12,9 @@
     "lint": "lerna run --concurrency 1 --stream lint",
     "electron": "tsc && electron .",
     "pack-win": "electron-packager . --out=dist/out --overwrite --platform=win32 --icon=./packages/client/public/favicon.ico --ignore=/packages/server/node_modules --ignore=/packages/client/node_modules",
-    "pack-osx": "electron-packager . --out=dist/out --overwrite --asar --platform=darwin --icon=./dist/assets/icon/logo.icns --ignore=/packages/server/node_modules --ignore=/packages/client/node_modules",
-    "pack-linux": "electron-packager . --out=dist/out --overwrite --asar --platform=linux --icon=./dist/assets/icon/logo.icns --ignore=/packages/server/node_modules --ignore=/packages/client/node_modules",
-    "pack-mas": "electron-packager . --out=dist/out --overwrite --asar --platform=mas --icon=./dist/assets/icon/logo.icns --ignore=/packages/server/node_modules --ignore=/packages/client/node_modules"
+    "pack-osx": "electron-packager . --out=dist/out --overwrite --asar --platform=darwin --icon=./packages/client/public/apple-icon.icns --ignore=/packages/server/node_modules --ignore=/packages/client/node_modules",
+    "pack-linux": "electron-packager . --out=dist/out --overwrite --asar --platform=linux --icon=./packages/client/public/apple-icon.icns --ignore=/packages/server/node_modules --ignore=/packages/client/node_modules",
+    "pack-mas": "electron-packager . --out=dist/out --overwrite --asar --platform=mas --icon=./packages/client/public/apple-icon.icns --ignore=/packages/server/node_modules --ignore=/packages/client/node_modules"
   },
   "husky": {
     "hooks": {
