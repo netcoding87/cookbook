@@ -5,6 +5,7 @@ import * as typeDefs from './graphql/schema.graphql'
 import resolvers from './resolvers'
 
 
+
 const isDevelopment = process.env.NODE_ENV === 'development'
 const PORT = process.env.PORT || 4321
 
@@ -34,13 +35,20 @@ app.use(
 server.applyMiddleware({ app })
 
 export const Server = () => {
+  let server: any
   return {
     start: () => {
-      app.listen({ port: PORT }, () =>
+      server = app.listen({ port: PORT }, () =>
         console.info(
           `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
         )
       )
+    },
+    stop: () => {
+      server &&
+        server.close(() => {
+          console.info('🚨 Server stopped')
+        })
     },
   }
 }
