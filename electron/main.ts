@@ -8,9 +8,11 @@ import { Server } from '../packages/server/build/index';
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: Electron.BrowserWindow;
 
+let server = Server()
+
 const createWindow = async () => {
   // Start server
-  Server().start()
+  server.start()
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -44,6 +46,9 @@ const createWindow = async () => {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
+
+    // Stop server
+    server.stop()
   });
 };
 
