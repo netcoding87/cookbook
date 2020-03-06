@@ -38,17 +38,19 @@ const createWindow = async () => {
   }
 
   // Show window once it is ready to show.
-  mainWindow.once("ready-to-show", () => mainWindow.show());
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show()
+    mainWindow.maximize()
+  });
+
+  // Emitted when the window is about to be closed.
+  mainWindow.on("close", () => {
+    // Stop server
+    server.stop()
+  })
 
   // Emitted when the window is closed.
   mainWindow.on("closed", async () => {
-    // Stop server
-    server.stop()
-    console.log('here')
-
-    // Sleep for 2 seconds
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
