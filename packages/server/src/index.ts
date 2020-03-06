@@ -44,14 +44,10 @@ export const Server = () => {
       )
     },
     stop: () => {
-      if (httpServer) {
-        console.log('Stopping server...')
+      httpServer &&
         httpServer.close(() => {
           console.info('🚨 Server stopped')
         })
-      } else {
-        console.log('No server')
-      }
     },
   }
 }
