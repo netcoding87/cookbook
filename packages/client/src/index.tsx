@@ -1,5 +1,8 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
+import {
+  faArrowAltCircleLeft,
+  faStar as farStar,
+} from '@fortawesome/free-regular-svg-icons'
 import {
   faBalanceScale,
   faBlender,
@@ -25,6 +28,7 @@ import './index.css'
 import * as serviceWorker from './serviceWorker'
 
 library.add(
+  faArrowAltCircleLeft,
   faBalanceScale,
   faBlender,
   faCandyCane,
