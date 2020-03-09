@@ -13,6 +13,7 @@ import {
   useRecipeViewQuery,
 } from '../../typings/generated.d'
 import { ActionBar } from '../ActionBar'
+import Breadcrumbs from '../Breadcrumbs'
 import Layout from '../Layout'
 import Rating from '../Rating'
 import RecipeImage from '../RecipeImage'
@@ -70,6 +71,19 @@ const RecipeView: React.FC = () => {
   return (
     <Layout>
       <Container fluid>
+        <Breadcrumbs
+          items={[
+            {
+              url: '/',
+              title: 'Rezepte',
+            },
+            {
+              url: `/recipe/${id}/${title}`,
+              title: title,
+            },
+          ]}
+          showHome={false}
+        />
         <h1>
           {isElectron && (
             <Button variant="link" onClick={() => history.goBack()}>

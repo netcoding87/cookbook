@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Container from 'react-bootstrap/Container'
 import { useHistory, useParams } from 'react-router-dom'
 
 import {
@@ -8,6 +9,7 @@ import {
   useUpdateImageMutation,
   useUpdateRecipeMutation,
 } from '../../typings/generated.d'
+import Breadcrumbs from '../Breadcrumbs'
 import Layout from '../Layout'
 import RecipeEditForm from '../RecipeEditForm'
 import {
@@ -101,6 +103,25 @@ const RecipeEdit: React.FC = () => {
 
   return (
     <Layout>
+      <Container fluid>
+        <Breadcrumbs
+          items={[
+            {
+              url: '/',
+              title: 'Rezepte',
+            },
+            {
+              url: `/recipe/${id}/${title}`,
+              title: title!,
+            },
+            {
+              url: `/recipe/${id}/${title}/edit`,
+              title: 'Edit',
+            },
+          ]}
+          showHome={false}
+        />
+      </Container>
       <RecipeEditForm
         onSubmit={handleSubmit}
         recipe={data.recipe!}

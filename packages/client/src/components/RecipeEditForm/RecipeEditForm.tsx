@@ -189,19 +189,19 @@ const RecipeEditForm: React.FC<RecipeEditFormProps> = ({
     >
       {({ handleSubmit, submitting, pristine }) => (
         <form noValidate onSubmit={handleSubmit}>
-          <FormSpy subscription={{ values: true }}>
-            {({ values }) => (
-              <h1>
-                {values['title'] && values['title'].length > 0 ? (
-                  values['title']
-                ) : (
-                  <i>Rezept</i>
-                )}
-              </h1>
-            )}
-          </FormSpy>
-          <hr />
           <Container fluid>
+            <FormSpy subscription={{ values: true }}>
+              {({ values }) => (
+                <h1>
+                  {values['title'] && values['title'].length > 0 ? (
+                    values['title']
+                  ) : (
+                    <i>Rezept</i>
+                  )}
+                </h1>
+              )}
+            </FormSpy>
+            <hr />
             <Row>
               <Col xs={12} sm={8} md={6}>
                 <Field name="title" placeholder="Titel" validate={required}>

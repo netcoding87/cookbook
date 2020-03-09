@@ -10,6 +10,7 @@ import {
   RecipeData,
   useRecipesQuery,
 } from '../../typings/generated.d'
+import Breadcrumbs from '../Breadcrumbs'
 import Layout from '../Layout'
 import RecipeCard from '../RecipeCard'
 import { useStaticData } from '../StaticDataProvider'
@@ -61,6 +62,15 @@ const Dashboard: React.FC = () => {
   return (
     <Layout>
       <Container fluid>
+        <Breadcrumbs
+          items={[
+            {
+              url: '/',
+              title: 'Rezepte',
+            },
+          ]}
+          showHome={false}
+        />
         {Object.keys(dict).map(key => {
           const recipes = dict[key]
           const category = categories.find(
