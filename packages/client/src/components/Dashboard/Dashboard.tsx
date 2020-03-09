@@ -3,6 +3,7 @@ import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import React, { Fragment, useState } from 'react'
 import Container from 'react-bootstrap/Container'
+import { useParams } from 'react-router-dom'
 
 import {
   CategoryData,
@@ -28,9 +29,15 @@ interface CategoryRecipeMap {
 }
 
 const Dashboard: React.FC = () => {
+  const { searchTerm } = useParams()
+
   const [cardWidth, setCardWidth] = useState(200)
 
-  const { data } = useRecipesQuery()
+  const { data } = useRecipesQuery({
+    variables: {
+      filter: searchTerm,
+    },
+  })
 
   const { categories } = useStaticData()
 

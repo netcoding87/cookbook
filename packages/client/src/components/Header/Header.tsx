@@ -1,17 +1,45 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
+import { useHistory, useParams } from 'react-router-dom'
 
 import { ActionBar } from '../ActionBar'
 import logo from './favicon-32x32.png'
 import { Head, StyledLink, Title } from './Header.styles'
 
 const Header: React.FC = () => {
+  const history = useHistory()
+  const { searchTerm: param } = useParams()
+
+  const [searchTerm, setSearchTerm] = useState('')
+
+  useEffect(() => {
+    setSearchTerm(param ? param : '')
+  }, [param])
+
+  const handleSearchTermChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const handleSearchTermKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.keyCode === 13) {
+      if (searchTerm.length) {
+        history.push(`/search/${searchTerm}`)
+      } else {
+        history.push(`/`)
+      }
+    }
+  }
+
   return (
     <Head>
       <Container fluid>
@@ -43,6 +71,9 @@ const Header: React.FC = () => {
                   type="text"
                   placeholder="Search..."
                   aria-describedby="inputGroupPrepend"
+                  value={searchTerm}
+                  onChange={handleSearchTermChange}
+                  onKeyDown={handleSearchTermKeyDown}
                 />
               </InputGroup>
             </ActionBar>

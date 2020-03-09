@@ -128,6 +128,10 @@ export type QueryImageArgs = {
   recipeId: Scalars['ID']
 }
 
+export type QueryRecipesArgs = {
+  filter?: Maybe<Scalars['String']>
+}
+
 export type QueryRecipeArgs = {
   id: Scalars['ID']
 }
@@ -201,7 +205,9 @@ export type UpdateRecipePayload = {
   data: Scalars['Boolean']
 }
 
-export type RecipesQueryVariables = {}
+export type RecipesQueryVariables = {
+  filter?: Maybe<Scalars['String']>
+}
 
 export type RecipesQuery = { __typename?: 'Query' } & {
   recipes: Array<
@@ -399,8 +405,8 @@ export type ImageQuery = { __typename?: 'Query' } & {
 }
 
 export const RecipesDocument = gql`
-  query recipes {
-    recipes {
+  query recipes($filter: String) {
+    recipes(filter: $filter) {
       id
       title
       category {
@@ -423,6 +429,7 @@ export const RecipesDocument = gql`
  * @example
  * const { data, loading, error } = useRecipesQuery({
  *   variables: {
+ *      filter: // value for 'filter'
  *   },
  * });
  */

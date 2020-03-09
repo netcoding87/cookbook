@@ -58,10 +58,14 @@ const App: React.FC = () => {
               <Route path="/recipe/:id/:title/edit" exact>
                 <RecipeEdit />
               </Route>
+              <Route path="/search/:searchTerm" exact>
+                <Dashboard />
+              </Route>
               <Route>
                 <RecipeView />
               </Route>
             </Switch>
+            {/* This is for use in electron */}
             {window.location.pathname.includes('index.html') && (
               <Redirect to="/" />
             )}

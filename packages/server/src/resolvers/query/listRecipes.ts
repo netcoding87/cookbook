@@ -1,9 +1,31 @@
 import { getAll, getById as getRecipeById } from '../../database/recipes'
-import { QueryRecipeArgs, ResolverFn } from '../../typings/generated'
+import { QueryRecipeArgs, QueryRecipesArgs, ResolverFn } from '../../typings/generated'
 import { PlainRecipeData } from '../../typings/plaintypes'
 
-export const listRecipes = async (): Promise<PlainRecipeData[]> => {
-  const recipes = await getAll()
+type ListRecipesResolver = ResolverFn<
+  PlainRecipeData[],
+  {},
+  {},
+  QueryRecipesArgs
+>
+
+export const listRecipes: ListRecipesResolver = async (
+  root,
+  { filter }
+): Promise<PlainRecipeData[]> => {
+  let recipes = await getAll()
+
+  if (filter) {
+    recipes = recipes.filter(recipe => {
+      if (
+        recipe.title.toLowerCase().includes(filter.toLowerCase()) ||
+        recipe.subtitle?.toLowerCase().includes(filter.toLowerCase()) ||
+        recipe.tags?.toLowerCase().includes(filter.toLowerCase())
+      ) {
+        return recipe
+      }
+    })
+  }
 
   return recipes.map(recipe => ({
     id: recipe._id,

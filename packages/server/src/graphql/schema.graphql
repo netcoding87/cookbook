@@ -42,7 +42,7 @@ type Query {
   categories: [CategoryData!]!
   image(recipeId: ID!): ImageData
   measures: [MeasureData!]!
-  recipes: [RecipeData!]!
+  recipes(filter: String): [RecipeData!]!
   recipe(id: ID!): RecipeData
 }
 

@@ -135,6 +135,11 @@ export type QueryImageArgs = {
 };
 
 
+export type QueryRecipesArgs = {
+  filter?: Maybe<Scalars['String']>
+};
+
+
 export type QueryRecipeArgs = {
   id: Scalars['ID']
 };
@@ -385,7 +390,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   categories?: Resolver<Array<ResolversTypes['CategoryData']>, ParentType, ContextType>,
   image?: Resolver<Maybe<ResolversTypes['ImageData']>, ParentType, ContextType, RequireFields<QueryImageArgs, 'recipeId'>>,
   measures?: Resolver<Array<ResolversTypes['MeasureData']>, ParentType, ContextType>,
-  recipes?: Resolver<Array<ResolversTypes['RecipeData']>, ParentType, ContextType>,
+  recipes?: Resolver<Array<ResolversTypes['RecipeData']>, ParentType, ContextType, QueryRecipesArgs>,
   recipe?: Resolver<Maybe<ResolversTypes['RecipeData']>, ParentType, ContextType, RequireFields<QueryRecipeArgs, 'id'>>,
 };
 
