@@ -39,8 +39,8 @@ const createWindow = async () => {
 
   // Show window once it is ready to show.
   mainWindow.once("ready-to-show", () => {
-    mainWindow.show()
     mainWindow.maximize()
+    mainWindow.show()
   });
 
   // Emitted when the window is about to be closed.
