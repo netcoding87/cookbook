@@ -25,8 +25,6 @@ const RecipeView: React.FC = () => {
   const history = useHistory()
   const { id, title } = useParams()
 
-  const isElectron = !!window.navigator.userAgent.match(/electron/i)
-
   const { data } = useRecipeViewQuery({
     variables: {
       id: id!,
@@ -84,18 +82,7 @@ const RecipeView: React.FC = () => {
           ]}
           showHome={false}
         />
-        <h1>
-          {isElectron && (
-            <Button variant="link" onClick={() => history.goBack()}>
-              <FontAwesomeIcon
-                icon={['far', 'arrow-alt-circle-left']}
-                size="2x"
-                color="lightgray"
-              />
-            </Button>
-          )}
-          {data.recipe.title}
-        </h1>
+        <h1>{data.recipe.title}</h1>
         {data.recipe.subtitle && <div>{data.recipe.subtitle}</div>}
       </Container>
       <hr />
