@@ -6,6 +6,11 @@ export const ImageContainer = styled.div`
   align-items: flex-start;
 
   height: 100%;
+
+  @media print {
+    width: 100%;
+    height: auto;
+  }
 `
 
 export const Gutter = styled.div`
