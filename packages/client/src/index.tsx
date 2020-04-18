@@ -1,51 +1,12 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-  faArrowAltCircleLeft,
-  faStar as farStar,
-} from '@fortawesome/free-regular-svg-icons'
-import {
-  faBalanceScale,
-  faBlender,
-  faCandyCane,
-  faCheck,
-  faEdit,
-  faImage,
-  faPlus,
-  faPrint,
-  faSave,
-  faSearch,
-  faSearchPlus,
-  faStar,
-  faTimes,
-  faTrash,
-  faWeight,
-} from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
 import App from './components/App'
+import loadIcons from './fontawesomeIcons'
 import './index.css'
 import * as serviceWorker from './serviceWorker'
 
-library.add(
-  faArrowAltCircleLeft,
-  faBalanceScale,
-  faBlender,
-  faCandyCane,
-  faCheck,
-  faEdit,
-  faImage,
-  faPlus,
-  faPrint,
-  faSave,
-  faSearch,
-  faSearchPlus,
-  faStar,
-  faTimes,
-  faTrash,
-  faWeight,
-  farStar
-)
+loadIcons()
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
