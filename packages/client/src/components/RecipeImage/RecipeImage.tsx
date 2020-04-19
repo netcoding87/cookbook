@@ -24,6 +24,7 @@ const RecipeImage: React.FC<RecipeImageProps> = ({
       icon={['fas', 'image']}
       color="#6c757d"
       size={size === 'large' ? '10x' : '5x'}
+      data-testid="noImage"
     />
   )
 }
