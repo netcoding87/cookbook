@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import App from './components/App'
-import loadIcons from './fontawesomeIcons'
+import loadIcons from './fontAwesomeIcons'
 import './index.css'
 import * as serviceWorker from './serviceWorker'
 
