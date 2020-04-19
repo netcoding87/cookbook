@@ -18,7 +18,7 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write",
-      "cross-env CI=true react-scripts test --bail --findRelatedTests",
+      "cross-env CI=true react-scripts test --env=jest-environment-jsdom-sixteen --bail --findRelatedTests",
       "git add"
     ]
   },
