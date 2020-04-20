@@ -4,7 +4,7 @@ import React from 'react'
 import { IngredientData, MeasureData } from '../../../typings/generated.d'
 import { HeadlineContainer } from './IngredientsView.styles'
 
-type IngredientsViewData = Array<
+export type IngredientsViewData = Array<
   Pick<IngredientData, 'amount' | 'ingredient'> & {
     measure: Pick<MeasureData, 'name'>
   }
