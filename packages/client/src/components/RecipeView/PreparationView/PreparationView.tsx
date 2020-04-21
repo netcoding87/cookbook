@@ -8,9 +8,7 @@ interface PreparationViewProps {
   preparations: string | null | undefined
 }
 
-const PreparationView: React.FC<PreparationViewProps> = ({
-  preparations = undefined,
-}) => {
+const PreparationView: React.FC<PreparationViewProps> = ({ preparations }) => {
   return (
     <>
       <HeadlineContainer>

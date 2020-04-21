@@ -7,7 +7,7 @@ import PreparationView from './PreparationView'
 describe('<PreparationView />', () => {
   it('should render with no preparations', async () => {
     // Arrange
-    const preparations = ''
+    const preparations = null
 
     // Act
     render(<PreparationView preparations={preparations} />)
