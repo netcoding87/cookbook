@@ -1,3 +1,4 @@
+import { screen } from '@testing-library/react'
 import React from 'react'
 
 import { render } from '../../../../tests/testUtils'
@@ -9,10 +10,10 @@ describe('<IngredientsView />', () => {
     const ingredients: IngredientsViewData = []
 
     // Act
-    const { getByText } = render(<IngredientsView ingredients={ingredients} />)
+    render(<IngredientsView ingredients={ingredients} />)
 
     // Assert
-    expect(getByText(/zutaten/i)).toBeVisible()
+    expect(screen.getByRole('heading')).toHaveTextContent(/zutaten/i)
   })
 
   it('should render with ingredients', async () => {
@@ -31,15 +32,15 @@ describe('<IngredientsView />', () => {
     ]
 
     // Act
-    const { getByText } = render(<IngredientsView ingredients={ingredients} />)
+    render(<IngredientsView ingredients={ingredients} />)
 
     // Assert
-    expect(getByText(/zucker/i)).toBeVisible()
-    expect(getByText(/100/i)).toBeVisible()
-    expect(getByText(/g/i)).toBeVisible()
+    expect(screen.getByText(/zucker/i)).toBeVisible()
+    expect(screen.getByText(/100/i)).toBeVisible()
+    expect(screen.getByText(/g/i)).toBeVisible()
 
-    expect(getByText(/mehl/i)).toBeVisible()
-    expect(getByText(/2/i)).toBeVisible()
-    expect(getByText(/el/i)).toBeVisible()
+    expect(screen.getByText(/mehl/i)).toBeVisible()
+    expect(screen.getByText(/2/i)).toBeVisible()
+    expect(screen.getByText(/el/i)).toBeVisible()
   })
 })
