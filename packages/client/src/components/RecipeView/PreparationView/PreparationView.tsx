@@ -19,7 +19,7 @@ const PreparationView: React.FC<PreparationViewProps> = ({
         </h5>
       </HeadlineContainer>
       {
-        <div>
+        <div data-testid="preparations">
           {preparations ? (
             ReactHtmlParser(preparations)
           ) : (
