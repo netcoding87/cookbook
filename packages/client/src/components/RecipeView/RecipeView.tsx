@@ -25,7 +25,7 @@ const RecipeView: React.FC = () => {
   const history = useHistory()
   const { id, title } = useParams()
 
-  const { data } = useRecipeViewQuery({
+  const { data, loading, error } = useRecipeViewQuery({
     variables: {
       id: id!,
     },
@@ -50,11 +50,15 @@ const RecipeView: React.FC = () => {
     setShowModal(false)
   }
 
-  if (!data || !data.recipe) {
+  if (loading) {
     return <Layout>Loading...</Layout>
   }
 
-  if (data.recipe.title !== title) {
+  if (error) {
+    return <Layout>An error ocurred...</Layout>
+  }
+
+  if (!data || !data.recipe || data.recipe.title !== title) {
     // TODO: Return NotFoundPage when implemented
     return <Layout>Invalid!</Layout>
   }
