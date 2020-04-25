@@ -48,7 +48,6 @@ drag & drop
 ✔ create new recipe
 ✔ recipe view
 ✔ delete recipes
-electron reload problem
-filter / search
+reimplement tags (use string[] instead of string; implement distinct on server in order to remove useTags hook!)
 category menu
 TESTS!
