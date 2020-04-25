@@ -3,10 +3,9 @@ import { waitFor } from '@testing-library/dom'
 import { screen } from '@testing-library/react'
 import { GraphQLError } from 'graphql'
 import React from 'react'
-import routeData from 'react-router'
-import { MemoryRouter } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
-import { render } from '../../../tests/testUtils'
+import { renderWithRouter } from '../../../tests/testUtils'
 import {
   DeleteRecipeDocument,
   RecipeViewDocument,
@@ -18,7 +17,6 @@ describe('<RecipeView />', () => {
     // Arrange
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
 
     const mocks: MockedResponse[] = [
       {
@@ -52,11 +50,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    render(
-      <MemoryRouter>
+    renderWithRouter(
+      <Route path="/recipe/:id/:title">
         <RecipeView />
-      </MemoryRouter>,
-      mocks
+      </Route>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
 
     expect(screen.getByText(/loading/i)).toBeVisible()
@@ -78,7 +76,6 @@ describe('<RecipeView />', () => {
     // Arrange
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
 
     const mocks: MockedResponse[] = [
       {
@@ -97,11 +94,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    render(
-      <MemoryRouter>
+    renderWithRouter(
+      <Route path="/recipe/:id/:title">
         <RecipeView />
-      </MemoryRouter>,
-      mocks
+      </Route>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
 
     expect(screen.getByText(/loading/i)).toBeVisible()
@@ -116,7 +113,6 @@ describe('<RecipeView />', () => {
     // Arrange
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
 
     const mocks: MockedResponse[] = [
       {
@@ -149,11 +145,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    render(
-      <MemoryRouter>
+    renderWithRouter(
+      <Route path="/recipe/:id/:title">
         <RecipeView />
-      </MemoryRouter>,
-      mocks
+      </Route>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
 
     expect(screen.getByText(/loading/i)).toBeVisible()
@@ -168,7 +164,6 @@ describe('<RecipeView />', () => {
     // Arrange
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
 
     const mocks: MockedResponse[] = [
       {
@@ -185,11 +180,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    render(
-      <MemoryRouter>
+    renderWithRouter(
+      <Route path="/recipe/:id/:title">
         <RecipeView />
-      </MemoryRouter>,
-      mocks
+      </Route>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
 
     expect(screen.getByText(/loading/i)).toBeVisible()
@@ -200,12 +195,10 @@ describe('<RecipeView />', () => {
     })
   })
 
-  it('should open modal dialog before deleting', async () => {
+  it('should open modal dialog before deleting and navigate to root page on success', async () => {
     // Arrange
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
-    const deleteRecipeSpy = jest.fn()
 
     const mocks: MockedResponse[] = [
       {
@@ -219,7 +212,7 @@ describe('<RecipeView />', () => {
           data: {
             recipe: {
               id: id,
-              title: 'My favourite bread',
+              title: title,
               subtitle: '',
               tags: '',
               ranking: 5,
@@ -242,23 +235,26 @@ describe('<RecipeView />', () => {
             id: id,
           },
         },
-        result: () => {
-          deleteRecipeSpy()
-          return {
-            data: {
-              removeRecipe: {
-                data: true,
-              },
+        result: {
+          data: {
+            removeRecipe: {
+              data: true,
             },
-          }
+          },
         },
       },
     ]
-    render(
-      <MemoryRouter>
-        <RecipeView />
-      </MemoryRouter>,
-      mocks
+
+    renderWithRouter(
+      <Switch>
+        <Route path="/recipe/:id/:title">
+          <RecipeView />
+        </Route>
+        <Route path="/">
+          <div>Home</div>
+        </Route>
+      </Switch>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
     await waitFor(() => {
       expect(screen.queryByText(/loading/i)).not.toBeInTheDocument()
@@ -299,7 +295,7 @@ describe('<RecipeView />', () => {
 
     // Assert
     await waitFor(() => {
-      expect(deleteRecipeSpy).toHaveBeenCalledTimes(1)
+      expect(screen.getByText('Home')).toBeVisible()
     })
   })
 
@@ -310,7 +306,6 @@ describe('<RecipeView />', () => {
 
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
 
     const mocks: MockedResponse[] = [
       {
@@ -341,11 +336,11 @@ describe('<RecipeView />', () => {
         },
       },
     ]
-    render(
-      <MemoryRouter>
+    renderWithRouter(
+      <Route path="/recipe/:id/:title">
         <RecipeView />
-      </MemoryRouter>,
-      mocks
+      </Route>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
     await waitFor(() => {
       expect(screen.queryByText(/loading/i)).not.toBeInTheDocument()
@@ -364,7 +359,6 @@ describe('<RecipeView />', () => {
     // Arrange
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
 
     const mocks: MockedResponse[] = [
       {
@@ -398,11 +392,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    render(
-      <MemoryRouter>
+    renderWithRouter(
+      <Route path="/recipe/:id/:title">
         <RecipeView />
-      </MemoryRouter>,
-      mocks
+      </Route>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
 
     // Assert
@@ -415,7 +409,6 @@ describe('<RecipeView />', () => {
     // Arrange
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
 
     const mocks: MockedResponse[] = [
       {
@@ -449,11 +442,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    render(
-      <MemoryRouter>
+    renderWithRouter(
+      <Route path="/recipe/:id/:title">
         <RecipeView />
-      </MemoryRouter>,
-      mocks
+      </Route>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
 
     // Assert
@@ -466,7 +459,6 @@ describe('<RecipeView />', () => {
     // Arrange
     const id = 'someRecipeID'
     const title = 'My favourite bread'
-    jest.spyOn(routeData, 'useParams').mockReturnValue({ id, title })
 
     const mocks: MockedResponse[] = [
       {
@@ -500,11 +492,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    render(
-      <MemoryRouter>
+    renderWithRouter(
+      <Route path="/recipe/:id/:title">
         <RecipeView />
-      </MemoryRouter>,
-      mocks
+      </Route>,
+      { mocks: mocks, route: `/recipe/${id}/${title}` }
     )
 
     // Assert
