@@ -27,6 +27,7 @@ const Rating: React.FC<RatingProps> = ({
           icon={['fas', 'star']}
           color="lightgray"
           size={iconSize}
+          data-testid="emptyStar"
         />
       }
       fullSymbol={
@@ -34,6 +35,7 @@ const Rating: React.FC<RatingProps> = ({
           icon={['fas', 'star']}
           color="orange"
           size={iconSize}
+          data-testid="fullStar"
         />
       }
     />
