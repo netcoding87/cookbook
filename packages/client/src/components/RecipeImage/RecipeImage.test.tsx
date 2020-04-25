@@ -1,7 +1,6 @@
 import { MockedResponse } from '@apollo/react-testing'
 import { waitFor } from '@testing-library/dom'
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
 
 import { render } from '../../../tests/testUtils'
 import { ImageDocument } from '../../typings/generated.d'
@@ -31,9 +30,7 @@ describe('<RecipeImage />', () => {
 
     // Act
     const { getByAltText } = render(
-      <MemoryRouter>
-        <RecipeImage id="1" title="TestImage" size="small" />
-      </MemoryRouter>,
+      <RecipeImage id="1" title="TestImage" size="small" />,
       { mocks }
     )
 
@@ -63,9 +60,7 @@ describe('<RecipeImage />', () => {
 
     // Act
     const { getByTestId } = render(
-      <MemoryRouter>
-        <RecipeImage id="1" title="TestImage" size="small" />
-      </MemoryRouter>,
+      <RecipeImage id="1" title="TestImage" size="small" />,
       { mocks }
     )
 
@@ -94,12 +89,9 @@ describe('<RecipeImage />', () => {
     ]
 
     // Act
-    const { getByTestId } = render(
-      <MemoryRouter>
-        <RecipeImage id="1" title="TestImage" />
-      </MemoryRouter>,
-      { mocks }
-    )
+    const { getByTestId } = render(<RecipeImage id="1" title="TestImage" />, {
+      mocks,
+    })
 
     // Assert
     await waitFor(() => {

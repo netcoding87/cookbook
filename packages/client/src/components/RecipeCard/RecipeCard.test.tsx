@@ -1,7 +1,6 @@
 import { MockedResponse } from '@apollo/react-testing'
 import { waitFor } from '@testing-library/dom'
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
 
 import { render } from '../../../tests/testUtils'
 import { ImageDocument } from '../../typings/generated.d'
@@ -35,9 +34,7 @@ describe('<RecipeCard />', () => {
 
     // Act
     const { getByText, getByAltText } = render(
-      <MemoryRouter>
-        <RecipeCard recipe={recipe} cardWidth={200} />
-      </MemoryRouter>,
+      <RecipeCard recipe={recipe} cardWidth={200} />,
       { mocks }
     )
 
