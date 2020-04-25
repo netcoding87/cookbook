@@ -34,7 +34,7 @@ describe('<RecipeImage />', () => {
       <MemoryRouter>
         <RecipeImage id="1" title="TestImage" size="small" />
       </MemoryRouter>,
-      mocks
+      { mocks }
     )
 
     // Assert
@@ -66,7 +66,7 @@ describe('<RecipeImage />', () => {
       <MemoryRouter>
         <RecipeImage id="1" title="TestImage" size="small" />
       </MemoryRouter>,
-      mocks
+      { mocks }
     )
 
     // Assert
@@ -98,7 +98,7 @@ describe('<RecipeImage />', () => {
       <MemoryRouter>
         <RecipeImage id="1" title="TestImage" />
       </MemoryRouter>,
-      mocks
+      { mocks }
     )
 
     // Assert

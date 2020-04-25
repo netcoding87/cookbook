@@ -5,7 +5,7 @@ import { GraphQLError } from 'graphql'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import { renderWithRouter } from '../../../tests/testUtils'
+import { render } from '../../../tests/testUtils'
 import {
   DeleteRecipeDocument,
   RecipeViewDocument,
@@ -50,11 +50,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    renderWithRouter(
+    render(
       <Route path="/recipe/:id/:title">
         <RecipeView />
       </Route>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
 
     expect(screen.getByText(/loading/i)).toBeVisible()
@@ -94,11 +94,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    renderWithRouter(
+    render(
       <Route path="/recipe/:id/:title">
         <RecipeView />
       </Route>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
 
     expect(screen.getByText(/loading/i)).toBeVisible()
@@ -145,11 +145,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    renderWithRouter(
+    render(
       <Route path="/recipe/:id/:title">
         <RecipeView />
       </Route>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
 
     expect(screen.getByText(/loading/i)).toBeVisible()
@@ -180,11 +180,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    renderWithRouter(
+    render(
       <Route path="/recipe/:id/:title">
         <RecipeView />
       </Route>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
 
     expect(screen.getByText(/loading/i)).toBeVisible()
@@ -245,7 +245,7 @@ describe('<RecipeView />', () => {
       },
     ]
 
-    renderWithRouter(
+    render(
       <Switch>
         <Route path="/recipe/:id/:title">
           <RecipeView />
@@ -254,7 +254,7 @@ describe('<RecipeView />', () => {
           <div>Home</div>
         </Route>
       </Switch>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
     await waitFor(() => {
       expect(screen.queryByText(/loading/i)).not.toBeInTheDocument()
@@ -336,11 +336,11 @@ describe('<RecipeView />', () => {
         },
       },
     ]
-    renderWithRouter(
+    render(
       <Route path="/recipe/:id/:title">
         <RecipeView />
       </Route>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
     await waitFor(() => {
       expect(screen.queryByText(/loading/i)).not.toBeInTheDocument()
@@ -392,11 +392,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    renderWithRouter(
+    render(
       <Route path="/recipe/:id/:title">
         <RecipeView />
       </Route>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
 
     // Assert
@@ -442,11 +442,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    renderWithRouter(
+    render(
       <Route path="/recipe/:id/:title">
         <RecipeView />
       </Route>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
 
     // Assert
@@ -492,11 +492,11 @@ describe('<RecipeView />', () => {
     ]
 
     // Act
-    renderWithRouter(
+    render(
       <Route path="/recipe/:id/:title">
         <RecipeView />
       </Route>,
-      { mocks: mocks, route: `/recipe/${id}/${title}` }
+      { mocks: mocks, url: `/recipe/${id}/${title}` }
     )
 
     // Assert

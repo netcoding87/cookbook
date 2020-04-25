@@ -38,7 +38,7 @@ describe('<RecipeCard />', () => {
       <MemoryRouter>
         <RecipeCard recipe={recipe} cardWidth={200} />
       </MemoryRouter>,
-      mocks
+      { mocks }
     )
 
     // Assert
