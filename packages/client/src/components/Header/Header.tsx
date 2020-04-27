@@ -33,6 +33,7 @@ const Header: React.FC = () => {
   ) => {
     if (event.keyCode === 13) {
       if (searchTerm.length) {
+        console.info('here')
         history.push(`/search/${searchTerm}`)
       } else {
         history.push(`/`)
