@@ -61,4 +61,26 @@ describe('<Header />', () => {
       expect(container.textContent).not.toContain('Searched for:')
     })
   })
+
+  it('should do nothing when keyDown is not enter key', async () => {
+    // Arrange
+    const { container } = render(
+      <Switch>
+        <Route exact path="/">
+          <Header />
+        </Route>
+        <Route exact path="/search/:searchTerm">
+          <SearchPage />
+        </Route>
+      </Switch>
+    )
+
+    // Act (enter empty search value)
+    fireEvent.keyDown(screen.getByPlaceholderText(/search/i), { keyCode: 86 })
+
+    // Assert
+    await waitFor(() => {
+      expect(container.textContent).not.toContain('Searched for:')
+    })
+  })
 })
