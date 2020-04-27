@@ -83,4 +83,17 @@ describe('<Header />', () => {
       expect(container.textContent).not.toContain('Searched for:')
     })
   })
+
+  it('should have search box prefilled with value from useParams', async () => {
+    // Act
+    render(
+      <Route exact path="/search/:searchTerm">
+        <Header />
+      </Route>,
+      { url: '/search/prefilled' }
+    )
+
+    // Assert
+    expect(screen.getByPlaceholderText(/search/i)).toHaveValue('prefilled')
+  })
 })
