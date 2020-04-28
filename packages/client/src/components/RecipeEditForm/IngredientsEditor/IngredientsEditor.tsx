@@ -88,7 +88,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
 
   const measureOptions = measures
     .sort((a, b) => a.name.localeCompare(b.name))
-    .map(measure => ({
+    .map((measure) => ({
       value: measure.id,
       label: measure.name,
     }))
@@ -135,7 +135,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
       <tbody>
         {ingredients.map((ingredient, index) => {
           const measure = measures.find(
-            item => item.id === ingredient.measure.id
+            (item) => item.id === ingredient.measure.id
           )
 
           return (
@@ -190,7 +190,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
           )
         })}
       </tbody>
-      <tfoot>
+      <tfoot data-testid="addIngredientRow">
         <tr>
           <td style={{ width: '100px' }}>
             <Input
