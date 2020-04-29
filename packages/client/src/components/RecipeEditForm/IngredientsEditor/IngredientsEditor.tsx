@@ -114,7 +114,7 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
     setIngredient(event.target.value)
   }
 
-  const handleIngredientKeyPress = (
+  const handleIngredientKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key.toLowerCase() === 'enter') {
@@ -214,11 +214,15 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
                 placeholder="Zutat"
                 value={ingredient}
                 onChange={handleIngredientChange}
-                onKeyPress={handleIngredientKeyPress}
+                onKeyDown={handleIngredientKeyDown}
                 required
               />
               <InputGroup.Append>
-                <Button variant="secondary" onClick={handleIngredientAdd}>
+                <Button
+                  variant="secondary"
+                  onClick={handleIngredientAdd}
+                  data-testid="addIngredientButton"
+                >
                   <FontAwesomeIcon icon="plus" />
                 </Button>
               </InputGroup.Append>

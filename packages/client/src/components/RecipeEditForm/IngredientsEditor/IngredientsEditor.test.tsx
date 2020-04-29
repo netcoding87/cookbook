@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/dom'
+import { fireEvent } from '@testing-library/react'
 import React from 'react'
 
 import { render } from '../../../../tests/testUtils'
@@ -13,7 +14,7 @@ describe('<IngredientsEditor />', () => {
     const handleDelete = jest.fn()
     const handleChange = jest.fn()
 
-    // Act (enter some search value)
+    // Act
     render(
       <IngredientsEditor
         ingredients={ingredients}
@@ -44,7 +45,7 @@ describe('<IngredientsEditor />', () => {
     const handleDelete = jest.fn()
     const handleChange = jest.fn()
 
-    // Act (enter some search value)
+    // Act
     render(
       <IngredientsEditor
         ingredients={ingredients}
@@ -59,5 +60,58 @@ describe('<IngredientsEditor />', () => {
     expect(screen.getByDisplayValue(/zucker/i)).toBeVisible()
     expect(screen.getByDisplayValue(/mehl/i)).toBeVisible()
     expect(screen.getByTestId('addIngredientRow')).toBeVisible()
+  })
+
+  it('should call the onAdd handler on adding a new ingredient', async () => {
+    // Arrange
+    const ingredients: RecipeEditFormIngredientData[] = []
+
+    const handleAdd = jest.fn()
+    const handleDelete = jest.fn()
+    const handleChange = jest.fn()
+
+    render(
+      <IngredientsEditor
+        ingredients={ingredients}
+        onChange={handleChange}
+        onAdd={handleAdd}
+        onDelete={handleDelete}
+      />
+    )
+
+    // Act (enter by button)
+    fireEvent.change(screen.getByPlaceholderText(/menge/i), {
+      target: { value: '100' },
+    })
+    fireEvent.change(screen.getByPlaceholderText(/zutat/i), {
+      target: { value: 'Zucker' },
+    })
+    screen.getByTestId('addIngredientButton').click()
+
+    // Assert
+    expect(handleAdd).toBeCalledTimes(1)
+    expect(handleAdd).toBeCalledWith('100', '', 'Zucker')
+
+    expect(screen.getByPlaceholderText(/menge/i)).toHaveValue('')
+    expect(screen.getByPlaceholderText(/zutat/i)).toHaveValue('')
+
+    // Arrange
+    handleAdd.mockClear()
+
+    // Act (enter by 'enter' key)
+    fireEvent.change(screen.getByPlaceholderText(/menge/i), {
+      target: { value: '2' },
+    })
+    fireEvent.change(screen.getByPlaceholderText(/zutat/i), {
+      target: { value: 'Eier' },
+    })
+    fireEvent.keyDown(screen.getByPlaceholderText(/zutat/i), { keyCode: 13 })
+
+    // Assert
+    expect(handleAdd).toBeCalledTimes(1)
+    expect(handleAdd).toBeCalledWith('2', '', 'Eier')
+
+    expect(screen.getByPlaceholderText(/menge/i)).toHaveValue('')
+    expect(screen.getByPlaceholderText(/zutat/i)).toHaveValue('')
   })
 })
