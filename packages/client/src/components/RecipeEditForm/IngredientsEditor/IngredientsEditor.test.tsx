@@ -141,14 +141,69 @@ describe('<IngredientsEditor />', () => {
     )
 
     const table = container.getElementsByTagName('tbody')[0]
-
-    // Act
     const row = within(table).getByDisplayValue(/mehl/i).closest('tr')
     expect(row).not.toBeNull()
+
+    // Act
     within(row!).getByRole('button').click()
 
     // Assert
     expect(handleDelete).toBeCalledTimes(1)
     expect(handleDelete).toBeCalledWith(ingredients[1])
+  })
+
+  it('should call the onChange handler when chaning one ingredient', async () => {
+    // Arrange
+    const ingredients: RecipeEditFormIngredientData[] = [
+      {
+        ingredient: 'Zucker',
+        measure: {
+          id: '1',
+        },
+      },
+      { ingredient: 'Mehl', measure: { id: '2' }, amount: '200' },
+    ]
+
+    const handleAdd = jest.fn()
+    const handleDelete = jest.fn()
+    const handleChange = jest.fn()
+
+    const { container } = render(
+      <IngredientsEditor
+        ingredients={ingredients}
+        onChange={handleChange}
+        onAdd={handleAdd}
+        onDelete={handleDelete}
+      />
+    )
+
+    const table = container.getElementsByTagName('tbody')[0]
+    const row = within(table).getByDisplayValue(/mehl/i).closest('tr')
+    expect(row).not.toBeNull()
+
+    // Act (change amount)
+    const amountInput = within(row!).getByPlaceholderText(/menge/i)
+    fireEvent.change(amountInput, {
+      target: { value: '100' },
+    })
+    fireEvent.blur(amountInput)
+
+    // Assert
+    expect(handleChange).toBeCalledTimes(1)
+    expect(handleChange).toBeCalledWith(ingredients[1], 'amount', '100')
+
+    // Arrange
+    handleChange.mockClear()
+
+    // Act (change ingredient)
+    const ingredientInput = within(row!).getByPlaceholderText(/zutat/i)
+    fireEvent.change(ingredientInput, {
+      target: { value: 'Mais' },
+    })
+    fireEvent.blur(ingredientInput)
+
+    // Assert
+    expect(handleChange).toBeCalledTimes(1)
+    expect(handleChange).toBeCalledWith(ingredients[1], 'ingredient', 'Mais')
   })
 })
