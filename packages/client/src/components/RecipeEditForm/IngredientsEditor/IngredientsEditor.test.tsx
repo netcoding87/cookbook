@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/dom'
-import { fireEvent } from '@testing-library/react'
+import { fireEvent, within } from '@testing-library/react'
 import React from 'react'
 
 import { render } from '../../../../tests/testUtils'
@@ -113,5 +113,42 @@ describe('<IngredientsEditor />', () => {
 
     expect(screen.getByPlaceholderText(/menge/i)).toHaveValue('')
     expect(screen.getByPlaceholderText(/zutat/i)).toHaveValue('')
+  })
+
+  it('should call the onDelete handler on clicking delete button of one ingredient', async () => {
+    // Arrange
+    const ingredients: RecipeEditFormIngredientData[] = [
+      {
+        ingredient: 'Zucker',
+        measure: {
+          id: '1',
+        },
+      },
+      { ingredient: 'Mehl', measure: { id: '2' }, amount: '200' },
+    ]
+
+    const handleAdd = jest.fn()
+    const handleDelete = jest.fn()
+    const handleChange = jest.fn()
+
+    const { container } = render(
+      <IngredientsEditor
+        ingredients={ingredients}
+        onChange={handleChange}
+        onAdd={handleAdd}
+        onDelete={handleDelete}
+      />
+    )
+
+    const table = container.getElementsByTagName('tbody')[0]
+
+    // Act
+    const row = within(table).getByDisplayValue(/mehl/i).closest('tr')
+    expect(row).not.toBeNull()
+    within(row!).getByRole('button').click()
+
+    // Assert
+    expect(handleDelete).toBeCalledTimes(1)
+    expect(handleDelete).toBeCalledWith(ingredients[1])
   })
 })
