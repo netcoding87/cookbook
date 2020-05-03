@@ -113,6 +113,24 @@ describe('<IngredientsEditor />', () => {
 
     expect(screen.getByPlaceholderText(/menge/i)).toHaveValue('')
     expect(screen.getByPlaceholderText(/zutat/i)).toHaveValue('')
+
+    // Arrange
+    handleAdd.mockClear()
+
+    // Act (key down different than 'enter' key)
+    fireEvent.change(screen.getByPlaceholderText(/menge/i), {
+      target: { value: '5' },
+    })
+    fireEvent.change(screen.getByPlaceholderText(/zutat/i), {
+      target: { value: 'Butter' },
+    })
+    fireEvent.keyDown(screen.getByPlaceholderText(/zutat/i), { keyCode: 86 })
+
+    // Assert
+    expect(handleAdd).not.toBeCalled()
+
+    expect(screen.getByPlaceholderText(/menge/i)).toHaveValue('5')
+    expect(screen.getByPlaceholderText(/zutat/i)).toHaveValue('Butter')
   })
 
   it('should call the onDelete handler on clicking delete button of one ingredient', async () => {
