@@ -1,12 +1,23 @@
-import { screen } from '@testing-library/dom'
-import { fireEvent, within } from '@testing-library/react'
+import { fireEvent, screen, within } from '@testing-library/react'
 import React from 'react'
+import selectEvent from 'react-select-event'
+import { mocked } from 'ts-jest/utils'
 
 import { render } from '../../../../tests/testUtils'
+import { useStaticData } from '../../StaticDataProvider'
 import { RecipeEditFormIngredientData } from '../RecipeEditForm'
 import IngredientsEditor from './IngredientsEditor'
 
+jest.mock('../../StaticDataProvider')
+
 describe('<IngredientsEditor />', () => {
+  beforeEach(() => {
+    mocked(useStaticData).mockReturnValue({
+      categories: [],
+      measures: [],
+    })
+  })
+
   it('should render with empty input', async () => {
     // Arrange
     const ingredients: RecipeEditFormIngredientData[] = []
@@ -64,6 +75,24 @@ describe('<IngredientsEditor />', () => {
 
   it('should call the onAdd handler on adding a new ingredient', async () => {
     // Arrange
+    mocked(useStaticData).mockReturnValue({
+      categories: [],
+      measures: [
+        {
+          id: '1',
+          name: 'Tasse',
+        },
+        {
+          id: '2',
+          name: 'Bd',
+        },
+        {
+          id: '3',
+          name: 'Stk',
+        },
+      ],
+    })
+
     const ingredients: RecipeEditFormIngredientData[] = []
 
     const handleAdd = jest.fn()
@@ -86,11 +115,17 @@ describe('<IngredientsEditor />', () => {
     fireEvent.change(screen.getByPlaceholderText(/zutat/i), {
       target: { value: 'Zucker' },
     })
+    await selectEvent.select(
+      within(screen.getByTestId('addIngredientMeasureSelect')).getByText(
+        /einheit/i
+      ),
+      'Stk'
+    )
     screen.getByTestId('addIngredientButton').click()
 
     // Assert
     expect(handleAdd).toBeCalledTimes(1)
-    expect(handleAdd).toBeCalledWith('100', '', 'Zucker')
+    expect(handleAdd).toBeCalledWith('100', '3', 'Zucker')
 
     expect(screen.getByPlaceholderText(/menge/i)).toHaveValue('')
     expect(screen.getByPlaceholderText(/zutat/i)).toHaveValue('')
@@ -172,6 +207,24 @@ describe('<IngredientsEditor />', () => {
 
   it('should call the onChange handler when chaning one ingredient', async () => {
     // Arrange
+    mocked(useStaticData).mockReturnValue({
+      categories: [],
+      measures: [
+        {
+          id: '1',
+          name: 'Tasse',
+        },
+        {
+          id: '2',
+          name: 'Bd',
+        },
+        {
+          id: '3',
+          name: 'Stk',
+        },
+      ],
+    })
+
     const ingredients: RecipeEditFormIngredientData[] = [
       {
         ingredient: 'Zucker',
@@ -209,6 +262,16 @@ describe('<IngredientsEditor />', () => {
     // Assert
     expect(handleChange).toBeCalledTimes(1)
     expect(handleChange).toBeCalledWith(ingredients[1], 'amount', '100')
+
+    // Arrange
+    handleChange.mockClear()
+
+    // Act (change measure)
+    await selectEvent.select(within(row!).getByText(/bd/i), 'Stk')
+
+    // Assert
+    expect(handleChange).toBeCalledTimes(1)
+    expect(handleChange).toBeCalledWith(ingredients[1], 'measureId', '3')
 
     // Arrange
     handleChange.mockClear()

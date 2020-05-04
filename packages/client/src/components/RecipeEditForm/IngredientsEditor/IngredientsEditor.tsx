@@ -200,7 +200,10 @@ const IngredientsEditor: React.FC<IngredientsEditorProps> = ({
               onChange={handleAmountChange}
             />
           </td>
-          <td style={{ width: '110px' }}>
+          <td
+            style={{ width: '110px' }}
+            data-testid="addIngredientMeasureSelect"
+          >
             <Select
               placeholder="Einheit"
               options={measureOptions}
