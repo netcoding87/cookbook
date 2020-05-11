@@ -48,7 +48,7 @@ const Dashboard: React.FC = () => {
 
   const dict: CategoryRecipeMap = {}
 
-  data.recipes.forEach(recipe => {
+  data.recipes.forEach((recipe) => {
     const catId = recipe.category.id
 
     if (dict[catId]) {
@@ -71,10 +71,10 @@ const Dashboard: React.FC = () => {
           ]}
           showHome={false}
         />
-        {Object.keys(dict).map(key => {
+        {Object.keys(dict).map((key) => {
           const recipes = dict[key]
           const category = categories.find(
-            category => category.id.toString() === key.toLowerCase()
+            (category) => category.id.toString() === key.toLowerCase()
           )
 
           return (
@@ -83,7 +83,7 @@ const Dashboard: React.FC = () => {
               <Box>
                 {recipes
                   .sort((a, b) => a.title.localeCompare(b.title))
-                  .map(recipe => {
+                  .map((recipe) => {
                     return (
                       <RecipeCard
                         key={recipe.id}
@@ -107,7 +107,7 @@ const Dashboard: React.FC = () => {
           min={100}
           max={500}
           marks={{ 200: '' }}
-          onChange={value => {
+          onChange={(value) => {
             setCardWidth(value)
           }}
         />
