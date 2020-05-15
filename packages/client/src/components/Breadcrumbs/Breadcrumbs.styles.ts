@@ -44,9 +44,7 @@ export const Link = styled(NavLink)`
   padding: 0 4px;
 
   &:hover {
-    background: hsl(0, 0%, 93%);
     color: hsl(0, 0%, 61%);
-    text-decoration: none;
   }
 
   [data-whatinput='keyboard'] &:focus {
